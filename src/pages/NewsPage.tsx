@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, TrendingUp, TrendingDown, ChevronRight } from "lucide-react";
+import { Search, TrendingUp, TrendingDown, ChevronRight, Bell } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SparklineChart from "../components/SparklineChart";
 
@@ -92,7 +92,7 @@ const NewsPage = () => {
 
       {/* Breaking News Label */}
       <div className="flex items-center gap-2 mb-4">
-        <div className="w-2 h-2 rounded-full bg-bearish animate-pulse" />
+        <Bell className="w-3.5 h-3.5 text-destructive animate-pulse" />
         <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Breaking News</span>
       </div>
 

@@ -1,10 +1,24 @@
 import { useState } from "react";
-import { MessageCircle, X, Send, Mic } from "lucide-react";
+import { MessageCircle, X, Send, Mic, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const FinBot = () => {
+interface FinBotProps {
+  credits: number;
+  onConsumeCredits: (amount: number) => void;
+}
+
+const FinBot = ({ credits, onConsumeCredits }: FinBotProps) => {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [showCreditAnim, setShowCreditAnim] = useState(false);
+
+  const handleSend = () => {
+    if (!input.trim()) return;
+    setShowCreditAnim(true);
+    onConsumeCredits(1);
+    setTimeout(() => setShowCreditAnim(false), 1500);
+    setInput("");
+  };
 
   return (
     <>
@@ -26,17 +40,33 @@ const FinBot = () => {
             transition={{ type: "spring", damping: 25 }}
             className="fixed bottom-36 right-4 left-4 z-40 max-w-sm ml-auto bg-card border border-border rounded-2xl shadow-2xl overflow-hidden"
           >
-            <div className="gradient-holographic p-3">
+            <div className="gradient-holographic p-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-primary-foreground animate-pulse" />
                 <span className="text-sm font-semibold text-primary-foreground">FinBot — Fast Response AI</span>
               </div>
+              <span className="text-[10px] text-primary-foreground/70 font-mono">1 cr/msg</span>
             </div>
 
-            <div className="h-48 p-4 overflow-y-auto">
+            <div className="h-48 p-4 overflow-y-auto relative">
               <div className="bg-secondary rounded-xl px-3 py-2 text-sm max-w-[80%]">
                 Hi! I'm FinBot. Ask me anything about the markets — I'll respond instantly. ⚡
               </div>
+              {/* Credit animation */}
+              <AnimatePresence>
+                {showCreditAnim && (
+                  <motion.div
+                    initial={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 0, y: -20 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1 }}
+                    className="absolute top-2 right-4 text-accent font-mono text-xs font-bold flex items-center gap-1"
+                  >
+                    <Zap className="w-3 h-3" />
+                    -1 Credit
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className="p-3 border-t border-border/50 flex items-center gap-2">
@@ -46,10 +76,11 @@ const FinBot = () => {
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Ask FinBot..."
                 className="flex-1 bg-secondary rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
               />
-              <button className="p-2 text-primary hover:text-primary/80 transition-colors">
+              <button onClick={handleSend} className="p-2 text-primary hover:text-primary/80 transition-colors">
                 <Send className="w-4 h-4" />
               </button>
             </div>
