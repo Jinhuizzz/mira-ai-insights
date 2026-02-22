@@ -1,6 +1,11 @@
 import { useState } from "react";
-import { Brain, Send, Sparkles, ChevronDown } from "lucide-react";
-import { motion } from "framer-motion";
+import { Brain, Send, Sparkles, Zap } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface AskMiraPageProps {
+  credits: number;
+  onConsumeCredits: (amount: number) => void;
+}
 
 const suggestedQueries = [
   "Find healthcare stocks up >10% this week",
@@ -9,23 +14,42 @@ const suggestedQueries = [
   "Compare AAPL vs MSFT fundamentals",
 ];
 
-const AskMiraPage = () => {
+const AskMiraPage = ({ credits, onConsumeCredits }: AskMiraPageProps) => {
   const [deepAnalysis, setDeepAnalysis] = useState(false);
   const [answerType, setAnswerType] = useState<"Balanced" | "Concise" | "Comprehensive">("Balanced");
   const [input, setInput] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showCreditAnim, setShowCreditAnim] = useState(false);
+  const [creditCost, setCreditCost] = useState(0);
+
+  const handleSend = () => {
+    if (!input.trim()) return;
+    const cost = deepAnalysis ? 5 : 1;
+    setCreditCost(cost);
+    setShowCreditAnim(true);
+    onConsumeCredits(cost);
+    setTimeout(() => setShowCreditAnim(false), 1500);
+    setInput("");
+  };
+
+  const answerTypes = ["Balanced", "Concise", "Comprehensive"] as const;
+  const currentIdx = answerTypes.indexOf(answerType);
 
   return (
     <div className="px-4 py-6 flex flex-col items-center min-h-[calc(100vh-8rem)]">
-      {/* Brain Icon */}
+      {/* Data Brain Icon */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", damping: 15 }}
         className="relative mb-6 mt-8"
       >
-        <div className="w-20 h-20 rounded-full gradient-holographic flex items-center justify-center glow-holographic animate-float">
-          <Brain className="w-10 h-10 text-primary-foreground" />
+        <div className="w-24 h-24 rounded-full relative flex items-center justify-center animate-float">
+          {/* Neural network glow effect */}
+          <div className="absolute inset-0 rounded-full gradient-holographic opacity-30 blur-xl animate-pulse-glow" />
+          <div className="absolute inset-1 rounded-full gradient-holographic opacity-60 blur-md" />
+          <div className="relative w-20 h-20 rounded-full gradient-holographic flex items-center justify-center glow-holographic">
+            <Brain className="w-10 h-10 text-primary-foreground" />
+          </div>
         </div>
         <div className="absolute -right-1 -top-1 w-6 h-6 rounded-full bg-card border border-border flex items-center justify-center">
           <Sparkles className="w-3 h-3 text-accent" />
@@ -37,56 +61,6 @@ const AskMiraPage = () => {
       <p className="text-sm text-muted-foreground text-center max-w-xs mb-8">
         Ask <span className="gradient-holographic-text font-semibold">MIRA</span> — Your AI trading assistant, more than a chatbot.
       </p>
-
-      {/* Settings */}
-      <div className="w-full max-w-sm space-y-3 mb-8">
-        {/* Deep Analysis Toggle */}
-        <div className="flex items-center justify-between bg-card rounded-xl px-4 py-3 border border-border/50">
-          <div>
-            <div className="text-sm font-medium">Deep Analysis</div>
-            <div className="text-xs text-muted-foreground">More thorough, takes longer</div>
-          </div>
-          <button
-            onClick={() => setDeepAnalysis(!deepAnalysis)}
-            className={`w-11 h-6 rounded-full transition-colors relative ${deepAnalysis ? "gradient-holographic" : "bg-secondary"}`}
-          >
-            <div className={`w-5 h-5 rounded-full bg-foreground absolute top-0.5 transition-transform ${deepAnalysis ? "translate-x-5.5 left-[1px]" : "left-[2px]"}`}
-              style={{ transform: deepAnalysis ? "translateX(21px)" : "translateX(0)" }}
-            />
-          </button>
-        </div>
-
-        {/* Answer Type */}
-        <div className="relative">
-          <button
-            onClick={() => setShowDropdown(!showDropdown)}
-            className="w-full flex items-center justify-between bg-card rounded-xl px-4 py-3 border border-border/50"
-          >
-            <div>
-              <div className="text-sm font-medium">Answer Type</div>
-              <div className="text-xs text-muted-foreground">{answerType}</div>
-            </div>
-            <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${showDropdown ? "rotate-180" : ""}`} />
-          </button>
-          {showDropdown && (
-            <motion.div
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="absolute top-full mt-1 left-0 right-0 bg-card border border-border rounded-xl overflow-hidden z-10"
-            >
-              {(["Balanced", "Concise", "Comprehensive"] as const).map((type) => (
-                <button
-                  key={type}
-                  onClick={() => { setAnswerType(type); setShowDropdown(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-secondary transition-colors ${answerType === type ? "text-primary font-medium" : ""}`}
-                >
-                  {type}
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </div>
-      </div>
 
       {/* Suggested Queries */}
       <div className="w-full max-w-sm mb-6">
@@ -104,18 +78,67 @@ const AskMiraPage = () => {
         </div>
       </div>
 
-      {/* Input */}
-      <div className="w-full max-w-sm mt-auto">
+      {/* Input Area */}
+      <div className="w-full max-w-sm mt-auto relative">
+        {/* Credit consumption animation */}
+        <AnimatePresence>
+          {showCreditAnim && (
+            <motion.div
+              initial={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 0, y: -30 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2 }}
+              className="absolute -top-8 left-1/2 -translate-x-1/2 text-accent font-mono text-sm font-bold flex items-center gap-1"
+            >
+              <Zap className="w-3.5 h-3.5" />
+              -{creditCost} Credit{creditCost > 1 ? "s" : ""}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <div className="relative">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder="Ask Mira anything..."
             className="w-full bg-card border border-border/50 rounded-xl pl-4 pr-12 py-3.5 text-sm outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
           />
-          <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg gradient-holographic flex items-center justify-center">
+          <button
+            onClick={handleSend}
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg gradient-holographic flex items-center justify-center"
+          >
             <Send className="w-4 h-4 text-primary-foreground" />
           </button>
+        </div>
+
+        {/* Capsule Toggles below input */}
+        <div className="flex items-center gap-2 mt-2.5">
+          {/* Deep Analysis Toggle */}
+          <button
+            onClick={() => setDeepAnalysis(!deepAnalysis)}
+            className={`flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full border transition-all ${
+              deepAnalysis
+                ? "border-accent/50 bg-accent/10 text-accent"
+                : "border-border/50 bg-secondary/50 text-muted-foreground"
+            }`}
+          >
+            <div className={`w-1.5 h-1.5 rounded-full transition-colors ${deepAnalysis ? "bg-accent shadow-[0_0_4px_hsl(260_70%_58%)]" : "bg-muted-foreground/50"}`} />
+            Deep Analysis
+            <span className="text-[10px] opacity-60">{deepAnalysis ? "5cr" : "Off"}</span>
+          </button>
+
+          {/* Answer Type Cycle */}
+          <button
+            onClick={() => setAnswerType(answerTypes[(currentIdx + 1) % 3])}
+            className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full border border-border/50 bg-secondary/50 text-muted-foreground transition-all hover:text-foreground"
+          >
+            {answerType}
+          </button>
+
+          <div className="ml-auto text-[10px] text-muted-foreground font-mono">
+            Cost: <span className="text-accent font-semibold">{deepAnalysis ? 5 : 1}</span> cr
+          </div>
         </div>
       </div>
     </div>

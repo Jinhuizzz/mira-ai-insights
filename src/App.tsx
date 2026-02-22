@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Newspaper, Brain, FileText, BarChart3, Menu, X } from "lucide-react";
+import { Bell, Brain, FileText, BarChart3, Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import NewsPage from "./pages/NewsPage";
 import AskMiraPage from "./pages/AskMiraPage";
@@ -9,7 +9,7 @@ import FinBot from "./components/FinBot";
 import AppSidebar from "./components/AppSidebar";
 
 const tabs = [
-  { id: "news", label: "News", icon: Newspaper },
+  { id: "news", label: "News", icon: Bell },
   { id: "mira", label: "Ask Mira", icon: Brain },
   { id: "research", label: "Research", icon: FileText },
   { id: "watchlist", label: "Watchlist", icon: BarChart3 },
@@ -20,12 +20,17 @@ type TabId = (typeof tabs)[number]["id"];
 const App = () => {
   const [activeTab, setActiveTab] = useState<TabId>("news");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [credits, setCredits] = useState(20);
+
+  const consumeCredits = (amount: number) => {
+    setCredits((prev) => Math.max(0, prev - amount));
+  };
 
   const renderPage = () => {
     switch (activeTab) {
       case "news": return <NewsPage />;
-      case "mira": return <AskMiraPage />;
-      case "research": return <ResearchPage />;
+      case "mira": return <AskMiraPage credits={credits} onConsumeCredits={consumeCredits} />;
+      case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} />;
       case "watchlist": return <WatchlistPage />;
     }
   };
@@ -38,10 +43,13 @@ const App = () => {
           <Menu className="w-5 h-5 text-muted-foreground" />
         </button>
         <h1 className="text-lg font-bold tracking-tight">
-          <span className="gradient-holographic-text">Mira</span>{" "}
-          <span className="text-foreground">Finance</span>
+          <span className="gradient-holographic-text">Watch</span>
+          <span className="text-foreground">Wise</span>
         </h1>
-        <div className="w-9" />
+        <div className="flex items-center gap-1 text-xs font-mono text-muted-foreground bg-secondary rounded-full px-2.5 py-1">
+          <span className="text-accent font-semibold">{credits}</span>
+          <span>cr</span>
+        </div>
       </header>
 
       {/* Page Content */}
@@ -60,7 +68,7 @@ const App = () => {
       </main>
 
       {/* Floating FinBot */}
-      <FinBot />
+      <FinBot credits={credits} onConsumeCredits={consumeCredits} />
 
       {/* Bottom Tab Bar */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-border/50">
@@ -97,7 +105,7 @@ const App = () => {
       </nav>
 
       {/* Sidebar */}
-      <AppSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <AppSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} credits={credits} />
     </div>
   );
 };
