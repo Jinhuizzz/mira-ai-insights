@@ -83,9 +83,9 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
 
   const handleSwipe = (dir: "left" | "right") => {
     if (dir === "left") {
-      toast("We will reduce recommendations for this type of news.", { duration: 2500 });
+      toast("We will reduce such news recommendations.", { duration: 2500 });
     } else {
-      toast("Preferences noted. We will prioritize news from this company.", { duration: 2500 });
+      toast("Understood your preference. We will prioritize this company's news.", { duration: 2500 });
     }
     setDirection(dir);
     setTimeout(() => {
@@ -165,14 +165,14 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
 
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] relative overflow-hidden">
-      {/* Now Header */}
+      {/* Header */}
       <div className="flex items-center justify-between px-4 pt-3 pb-2">
-        <h2 className="text-lg font-bold">Now</h2>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground font-mono">
-            {currentIndex + 1}/{newsCards.length}
-          </span>
-          <Bell className="w-5 h-5 text-muted-foreground" />
+        <span className="text-xs text-muted-foreground font-mono">
+          {currentIndex + 1}/{newsCards.length}
+        </span>
+        <div className="relative w-9 h-9 rounded-full bg-foreground/10 flex items-center justify-center">
+          <Bell className="w-4.5 h-4.5 text-muted-foreground" />
+          <span className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-primary" />
         </div>
       </div>
 
@@ -283,27 +283,27 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
         </AnimatePresence>
       </div>
 
-      {/* Action buttons — equal size */}
+      {/* Action buttons — all same size */}
       <div className="flex items-center justify-center gap-5 pb-4 px-4">
         <button
           onClick={() => handleSwipe("left")}
-          className="w-14 h-14 rounded-full border-2 border-bearish/30 bg-bearish/10 flex items-center justify-center active:scale-90 transition-transform"
+          className="w-[60px] h-[60px] rounded-full border-2 border-bearish/30 bg-bearish/10 flex items-center justify-center active:scale-90 transition-transform"
         >
           <X className="w-6 h-6 text-bearish" />
         </button>
         <button
           onClick={handleBookmark}
-          className={`w-14 h-14 rounded-full border-2 flex items-center justify-center active:scale-90 transition-all ${
+          className={`w-[60px] h-[60px] rounded-full border-2 flex items-center justify-center active:scale-90 transition-all ${
             bookmarked.has(currentCard.id)
-              ? "border-accent bg-accent/20"
+              ? "border-primary bg-primary/20"
               : "border-border bg-secondary"
           }`}
         >
-          <Bookmark className={`w-6 h-6 ${bookmarked.has(currentCard.id) ? "text-accent fill-accent" : "text-muted-foreground"}`} />
+          <Bookmark className={`w-6 h-6 ${bookmarked.has(currentCard.id) ? "text-primary fill-primary" : "text-muted-foreground"}`} />
         </button>
         <button
           onClick={() => handleSwipe("right")}
-          className="w-14 h-14 rounded-full border-2 border-bullish/30 bg-bullish/10 flex items-center justify-center active:scale-90 transition-transform"
+          className="w-[60px] h-[60px] rounded-full border-2 border-bullish/30 bg-bullish/10 flex items-center justify-center active:scale-90 transition-transform"
         >
           <Check className="w-6 h-6 text-bullish" />
         </button>
