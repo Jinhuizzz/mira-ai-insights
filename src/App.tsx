@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Bell, BrainCog, FileText, BarChart3, Menu, Bookmark, Bot } from "lucide-react";
+import { Bell, FileText, BarChart3, Menu, Bookmark, Bot } from "lucide-react";
+import MiraBrainIcon from "./components/MiraBrainIcon";
 import { motion, AnimatePresence } from "framer-motion";
 import NowPage from "./pages/NowPage";
 import AskMiraPage from "./pages/AskMiraPage";
@@ -10,7 +11,7 @@ import AppSidebar from "./components/AppSidebar";
 
 const tabs = [
   { id: "now", label: "Now", icon: Bell },
-  { id: "mira", label: "Mira", icon: BrainCog },
+  { id: "mira", label: "Mira", icon: MiraBrainIcon },
   { id: "research", label: "Research", icon: FileText },
   { id: "watchlist", label: "Watchlist", icon: BarChart3 },
 ] as const;
