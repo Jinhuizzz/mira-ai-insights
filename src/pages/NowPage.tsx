@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Bookmark, Check, TrendingUp, TrendingDown, FolderOpen, Plus, RotateCcw, Brain } from "lucide-react";
+import { X, Bookmark, Check, TrendingUp, TrendingDown, FolderOpen, Plus, RotateCcw, Brain, Send } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { toast } from "sonner";
 
@@ -79,7 +79,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
   const [showFolderPicker, setShowFolderPicker] = useState(false);
   const [folders] = useState(["General", "Earnings", "Tech", "Macro"]);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
-  
+  const [miraQuestion, setMiraQuestion] = useState("");
   const [recapMode, setRecapMode] = useState(false);
   const [activeCards, setActiveCards] = useState(newsCards);
   const [flipped, setFlipped] = useState(false);
@@ -420,22 +420,50 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
                   {currentCard.detail}
                 </p>
 
-                {/* Ask Mira button */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onAskMira({
-                      title: currentCard.title,
-                      summary: currentCard.detail || currentCard.summary,
-                      ticker: currentCard.ticker,
-                      question: `Tell me more about "${currentCard.title}" and its impact on ${currentCard.ticker}.`,
-                    });
-                  }}
-                  className="w-full flex items-center justify-center gap-2 bg-accent/15 border border-accent/30 rounded-xl py-2.5 text-xs font-medium text-accent hover:bg-accent/25 transition-colors"
-                >
-                  <Brain className="w-3.5 h-3.5" />
-                  Ask Mira about this
-                </button>
+                {/* Ask Mira input */}
+                <div className="bg-accent/10 border border-accent/30 rounded-xl p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Brain className="w-3.5 h-3.5 text-accent" />
+                    <span className="text-[11px] font-medium text-accent">Ask Mira about this</span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      value={miraQuestion}
+                      onChange={(e) => setMiraQuestion(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && miraQuestion.trim()) {
+                          e.stopPropagation();
+                          onAskMira({
+                            title: currentCard.title,
+                            summary: currentCard.detail || currentCard.summary,
+                            ticker: currentCard.ticker,
+                            question: miraQuestion.trim(),
+                          });
+                          setMiraQuestion("");
+                        }
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      placeholder={`e.g. What does this mean for ${currentCard.ticker}?`}
+                      className="w-full bg-secondary/80 border border-border/50 rounded-lg pl-3 pr-9 py-2 text-xs outline-none focus:ring-1 focus:ring-accent placeholder:text-muted-foreground/60"
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!miraQuestion.trim()) return;
+                        onAskMira({
+                          title: currentCard.title,
+                          summary: currentCard.detail || currentCard.summary,
+                          ticker: currentCard.ticker,
+                          question: miraQuestion.trim(),
+                        });
+                        setMiraQuestion("");
+                      }}
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-md bg-accent flex items-center justify-center"
+                    >
+                      <Send className="w-3 h-3 text-accent-foreground" />
+                    </button>
+                  </div>
+                </div>
                 <p className="text-[10px] text-muted-foreground/60 text-center mt-3">Tap to flip back</p>
               </div>
             </div>
