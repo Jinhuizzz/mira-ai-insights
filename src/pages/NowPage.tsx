@@ -328,7 +328,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
         <AnimatePresence>
           <motion.div
             key={currentCard.id}
-            style={{ transformStyle: "preserve-3d", ...(!flipped ? { x, rotate } : {}) }}
+            style={!flipped ? { x, rotate } : {}}
             drag={!flipped ? "x" : false}
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.8}
@@ -338,13 +338,17 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
               scale: 1,
               opacity: 1,
               x: direction === "left" ? -400 : direction === "right" ? 400 : 0,
-              rotateY: flipped ? 180 : 0,
             }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", damping: 20, stiffness: 200 }}
             className="absolute inset-x-4 top-1 bottom-2 rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing border border-border/30"
             onClick={() => setFlipped(!flipped)}
           >
+            {/* Inner flip wrapper – CSS transition, no spring overshoot */}
+            <div
+              className="absolute inset-0 transition-transform duration-500 ease-in-out"
+              style={{ transformStyle: "preserve-3d", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
+            >
             {/* Front face */}
             <div
               className="absolute inset-0"
@@ -447,6 +451,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
                 <p className="text-[10px] text-muted-foreground/60 text-center mt-3">Tap to flip back</p>
               </div>
             </div>
+            </div>{/* end inner flip wrapper */}
           </motion.div>
         </AnimatePresence>
       </div>
