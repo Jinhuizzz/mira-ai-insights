@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Bookmark, Check, Send, TrendingUp, TrendingDown } from "lucide-react";
+import { X, Bookmark, Check, Send, TrendingUp, TrendingDown, FolderOpen, Plus } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { toast } from "sonner";
 
@@ -70,6 +70,8 @@ const SWIPE_THRESHOLD = 100;
 const NowPage = ({ onAskMira }: NowPageProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [bookmarked, setBookmarked] = useState<Set<number>>(new Set());
+  const [showFolderPicker, setShowFolderPicker] = useState(false);
+  const [folders] = useState(["General", "Earnings", "Tech", "Macro"]);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
   const [question, setQuestion] = useState("");
 
@@ -116,11 +118,9 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
       toast("Saved to your bookmarks", {
         action: {
           label: "Change",
-          onClick: () => {
-            // Future: open folder picker
-          },
+          onClick: () => setShowFolderPicker(true),
         },
-        duration: 3000,
+        duration: 2000,
       });
     }
   };
@@ -165,6 +165,53 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
 
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] relative overflow-hidden">
+      {/* Folder Picker Overlay */}
+      <AnimatePresence>
+        {showFolderPicker && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-50 bg-background/60 backdrop-blur-sm flex items-end justify-center pb-24"
+            onClick={() => setShowFolderPicker(false)}
+          >
+            <motion.div
+              initial={{ y: 80, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 80, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-card border border-border/50 rounded-2xl w-[85%] p-4 shadow-xl"
+            >
+              <h3 className="text-sm font-semibold mb-3">Move to folder</h3>
+              <div className="flex flex-col gap-1.5">
+                {folders.map((folder) => (
+                  <button
+                    key={folder}
+                    onClick={() => {
+                      toast(`Moved to "${folder}"`, { duration: 1000 });
+                      setShowFolderPicker(false);
+                    }}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-secondary/80 transition-colors text-left"
+                  >
+                    <FolderOpen className="w-4 h-4 text-primary" />
+                    <span className="text-sm">{folder}</span>
+                  </button>
+                ))}
+                <button
+                  onClick={() => {
+                    toast("New folder created", { duration: 1000 });
+                    setShowFolderPicker(false);
+                  }}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-secondary/80 transition-colors text-left text-muted-foreground"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span className="text-sm">New Folder</span>
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Header */}
       <div className="flex items-center justify-end px-4 pt-3 pb-2">
         <span className="text-xs text-muted-foreground font-mono">
