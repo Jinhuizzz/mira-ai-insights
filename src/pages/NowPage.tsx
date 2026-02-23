@@ -170,10 +170,10 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
         <span className="text-xs text-muted-foreground font-mono">
           {currentIndex + 1}/{newsCards.length}
         </span>
-        <div className="relative w-9 h-9 rounded-full bg-foreground/10 flex items-center justify-center">
-          <Bell className="w-4.5 h-4.5 text-muted-foreground" />
-          <span className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-primary" />
-        </div>
+        <button className="relative w-10 h-10 rounded-full bg-secondary/60 backdrop-blur-sm flex items-center justify-center border border-border/40 hover:bg-secondary transition-colors">
+          <Bell className="w-[18px] h-[18px] text-muted-foreground" />
+          <span className="absolute top-2 right-2.5 w-[7px] h-[7px] rounded-full bg-primary ring-2 ring-background" />
+        </button>
       </div>
 
       {/* Progress dots */}
