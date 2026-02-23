@@ -83,9 +83,9 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
 
   const handleSwipe = (dir: "left" | "right") => {
     if (dir === "left") {
-      toast("We'll reduce this type of news for you.", { duration: 1500 });
+      toast("We'll reduce this type of news for you.", { duration: 1000 });
     } else {
-      toast("Got it! We'll prioritize this company's news.", { duration: 1500 });
+      toast("Got it! We'll prioritize this company's news.", { duration: 1000 });
     }
     setDirection(dir);
     setTimeout(() => {
