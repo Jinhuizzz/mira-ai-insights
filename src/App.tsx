@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Bell, Brain, FileText, BarChart3, Menu } from "lucide-react";
+import { Zap, Brain, FileText, BarChart3, Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import NewsPage from "./pages/NewsPage";
+import NowPage from "./pages/NowPage";
 import AskMiraPage from "./pages/AskMiraPage";
 import ResearchPage from "./pages/ResearchPage";
 import WatchlistPage from "./pages/WatchlistPage";
@@ -9,27 +9,40 @@ import FinBot from "./components/FinBot";
 import AppSidebar from "./components/AppSidebar";
 
 const tabs = [
-  { id: "news", label: "News", icon: Bell },
-  { id: "mira", label: "Ask Mira", icon: Brain },
+  { id: "now", label: "Now", icon: Zap },
+  { id: "mira", label: "Mira", icon: Brain },
   { id: "research", label: "Research", icon: FileText },
   { id: "watchlist", label: "Watchlist", icon: BarChart3 },
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];
 
+interface NewsContext {
+  title: string;
+  summary: string;
+  ticker: string;
+  question: string;
+}
+
 const App = () => {
-  const [activeTab, setActiveTab] = useState<TabId>("news");
+  const [activeTab, setActiveTab] = useState<TabId>("now");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [credits, setCredits] = useState(20);
+  const [newsContext, setNewsContext] = useState<NewsContext | null>(null);
 
   const consumeCredits = (amount: number) => {
     setCredits((prev) => Math.max(0, prev - amount));
   };
 
+  const handleAskMiraFromNow = (context: NewsContext) => {
+    setNewsContext(context);
+    setActiveTab("mira");
+  };
+
   const renderPage = () => {
     switch (activeTab) {
-      case "news": return <NewsPage />;
-      case "mira": return <AskMiraPage credits={credits} onConsumeCredits={consumeCredits} />;
+      case "now": return <NowPage onAskMira={handleAskMiraFromNow} />;
+      case "mira": return <AskMiraPage credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} />;
       case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} />;
       case "watchlist": return <WatchlistPage />;
     }
