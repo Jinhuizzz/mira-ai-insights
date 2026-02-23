@@ -7,27 +7,18 @@ createRoot(document.getElementById("root")!).render(
   <>
     <App />
     <Toaster
-      position="top-center"
+      position="bottom-center"
       theme="dark"
+      offset="70px"
       toastOptions={{
         style: {
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '200px',
-          height: '200px',
-          borderRadius: '16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          background: 'hsl(210 100% 65% / 0.9)',
+          background: 'linear-gradient(135deg, hsl(212 58% 18% / 0.95), hsl(210 100% 65% / 0.15))',
           color: '#fff',
-          fontWeight: 600,
-          fontSize: '14px',
-          border: 'none',
-          backdropFilter: 'blur(12px)',
+          border: '1px solid hsl(210 100% 65% / 0.2)',
+          backdropFilter: 'blur(16px)',
+          borderRadius: '12px',
+          fontSize: '13px',
+          fontWeight: 500,
         }
       }}
     />
