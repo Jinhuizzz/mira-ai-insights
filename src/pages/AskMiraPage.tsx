@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Brain, Send, Sparkles, Zap } from "lucide-react";
+import { Brain, Send, Sparkles, Zap, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NewsContext {
@@ -14,6 +14,7 @@ interface AskMiraPageProps {
   onConsumeCredits: (amount: number) => void;
   newsContext?: NewsContext | null;
   onClearContext?: () => void;
+  onBack?: () => void;
 }
 
 const suggestedQueries = [
@@ -23,7 +24,7 @@ const suggestedQueries = [
   "Compare AAPL vs MSFT fundamentals",
 ];
 
-const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext }: AskMiraPageProps) => {
+const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, onBack }: AskMiraPageProps) => {
   const [deepAnalysis, setDeepAnalysis] = useState(false);
   const [answerType, setAnswerType] = useState<"Balanced" | "Concise" | "Comprehensive">("Balanced");
   const [input, setInput] = useState("");
@@ -45,6 +46,16 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext }:
 
   return (
     <div className="px-4 py-6 flex flex-col items-center min-h-[calc(100vh-8rem)]">
+      {/* Back button */}
+      {onBack && (
+        <button
+          onClick={onBack}
+          className="self-start flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </button>
+      )}
       {/* News Context Banner */}
       {newsContext && (
         <motion.div
