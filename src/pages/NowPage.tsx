@@ -331,11 +331,6 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", damping: 20, stiffness: 200 }}
             className="absolute inset-x-4 top-1 bottom-2 rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing border border-border/30"
-            onTap={(e) => {
-              const target = e.target as HTMLElement;
-              if (target.closest('[data-mira-input]')) return;
-              setFlipped(!flipped);
-            }}
           >
             {/* Inner flip wrapper – CSS transition, no spring overshoot */}
             <div
@@ -344,8 +339,9 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
             >
             {/* Front face */}
             <div
-              className="absolute inset-0"
+              className="absolute inset-0 cursor-pointer"
               style={{ backfaceVisibility: "hidden" }}
+              onClick={() => setFlipped(true)}
             >
               {/* Background image */}
               <div className="absolute inset-0">
@@ -425,7 +421,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
                 </p>
 
                 {/* Ask Mira input */}
-                <div data-mira-input className="bg-accent/10 border border-accent/30 rounded-xl p-3" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()} onTouchStart={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+                <div data-mira-input className="bg-accent/10 border border-accent/30 rounded-xl p-3">
                   <div className="flex items-center gap-2 mb-2">
                     <Brain className="w-3.5 h-3.5 text-accent" />
                     <span className="text-[11px] font-medium text-accent">Ask Mira about this</span>
@@ -433,9 +429,8 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
                   <div className="relative">
                     <input
                       value={miraQuestion}
-                      onChange={(e) => { e.stopPropagation(); setMiraQuestion(e.target.value); }}
+                      onChange={(e) => setMiraQuestion(e.target.value)}
                       onKeyDown={(e) => {
-                        e.stopPropagation();
                         if (e.key === "Enter" && miraQuestion.trim()) {
                           onAskMira({
                             title: currentCard.title,
@@ -446,18 +441,11 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
                           setMiraQuestion("");
                         }
                       }}
-                      onClick={(e) => e.stopPropagation()}
-                      onPointerDown={(e) => e.stopPropagation()}
-                      onTouchStart={(e) => e.stopPropagation()}
-                      onMouseDown={(e) => e.stopPropagation()}
-                      onFocus={(e) => e.stopPropagation()}
                       placeholder={`e.g. What does this mean for ${currentCard.ticker}?`}
                       className="w-full bg-secondary/80 border border-border/50 rounded-lg pl-3 pr-9 py-2 text-xs outline-none focus:ring-1 focus:ring-accent placeholder:text-muted-foreground/60"
                     />
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
+                      onClick={() => {
                         if (!miraQuestion.trim()) return;
                         onAskMira({
                           title: currentCard.title,
@@ -467,16 +455,13 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
                         });
                         setMiraQuestion("");
                       }}
-                      onPointerDown={(e) => e.stopPropagation()}
-                      onTouchStart={(e) => e.stopPropagation()}
-                      onMouseDown={(e) => e.stopPropagation()}
                       className="absolute right-1.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-md bg-accent flex items-center justify-center"
                     >
                       <Send className="w-3 h-3 text-accent-foreground" />
                     </button>
                   </div>
                 </div>
-                <p className="text-[10px] text-muted-foreground/60 text-center mt-3">Tap to flip back</p>
+                <button onClick={() => setFlipped(false)} className="text-[10px] text-muted-foreground/60 text-center mt-3 w-full">Tap to flip back</button>
               </div>
             </div>
             </div>{/* end inner flip wrapper */}
