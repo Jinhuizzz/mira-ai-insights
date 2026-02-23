@@ -340,7 +340,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
             {/* Front face */}
             <div
               className="absolute inset-0 cursor-pointer"
-              style={{ backfaceVisibility: "hidden" }}
+              style={{ backfaceVisibility: "hidden", pointerEvents: flipped ? "none" : "auto" }}
               onClick={() => setFlipped(true)}
             >
               {/* Background image */}
@@ -394,7 +394,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
             {/* Back face */}
             <div
               className="absolute inset-0 bg-card rounded-2xl overflow-y-auto"
-              style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+              style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)", pointerEvents: flipped ? "auto" : "none" }}
             >
               <div className="p-5 pt-6">
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
