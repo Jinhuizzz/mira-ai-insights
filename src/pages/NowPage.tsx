@@ -421,7 +421,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
                 </p>
 
                 {/* Ask Mira input */}
-                <div className="bg-accent/10 border border-accent/30 rounded-xl p-3">
+                <div className="bg-accent/10 border border-accent/30 rounded-xl p-3" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
                   <div className="flex items-center gap-2 mb-2">
                     <Brain className="w-3.5 h-3.5 text-accent" />
                     <span className="text-[11px] font-medium text-accent">Ask Mira about this</span>
