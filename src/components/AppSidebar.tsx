@@ -61,54 +61,7 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
             </div>
 
             <div className="flex-1 py-4 overflow-y-auto">
-              {/* Credit Usage Section */}
-              <div className="px-4 mb-6">
-                <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-3">Credit Usage</div>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="relative w-24 h-24 flex-shrink-0">
-                    <svg className="w-24 h-24 -rotate-90" viewBox="0 0 96 96">
-                      <circle cx="48" cy="48" r="40" fill="none" stroke="hsl(var(--secondary))" strokeWidth="6" />
-                      <circle
-                        cx="48" cy="48" r="40" fill="none"
-                        stroke="url(#creditGradient)" strokeWidth="6"
-                        strokeLinecap="round"
-                        strokeDasharray={circumference}
-                        strokeDashoffset={strokeDashoffset}
-                        className="transition-all duration-500"
-                      />
-                      <defs>
-                        <linearGradient id="creditGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="hsl(260 70% 58%)" />
-                          <stop offset="100%" stopColor="hsl(217 91% 60%)" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-xl font-bold font-mono">{credits}</span>
-                      <span className="text-[10px] text-muted-foreground">Credits</span>
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-medium mb-1">{credits} of {maxCredits}</div>
-                    <div className="text-xs text-muted-foreground">Credits available</div>
-                  </div>
-                </div>
-
-                {/* Recent Activity */}
-                <div className="space-y-1.5 mb-3">
-                  {creditHistory.map((item, i) => (
-                    <div key={i} className="flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground truncate mr-2">{item.label}</span>
-                      <span className="text-bearish font-mono font-medium whitespace-nowrap">{item.cost}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <button className="w-full gradient-holographic rounded-lg py-2.5 text-sm font-semibold text-primary-foreground flex items-center justify-center gap-2">
-                  <Coins className="w-4 h-4" />
-                  Get More Credits
-                </button>
-              </div>
+              {/* Menu Items */}
 
               <div className="border-t border-border/50 pt-4">
                 {menuItems.map((item) => (

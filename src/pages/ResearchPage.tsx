@@ -69,7 +69,7 @@ const ResearchPage = ({ credits, onConsumeCredits }: ResearchPageProps) => {
                   ) : (
                     <span className="flex items-center gap-1.5 text-xs font-medium bg-accent/20 text-accent px-2.5 py-1 rounded-full">
                       <Lock className="w-3 h-3" />
-                      Unlock for {report.creditCost} Credits
+                      Unlock
                     </span>
                   )}
                 </div>

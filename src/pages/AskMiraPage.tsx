@@ -218,21 +218,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
       )}
 
       {/* Input Area */}
-      <div className="px-4 pb-4 pt-2 relative">
-        <AnimatePresence>
-          {showCreditAnim && (
-            <motion.div
-              initial={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 0, y: -30 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.2 }}
-              className="absolute -top-8 left-1/2 -translate-x-1/2 text-accent font-mono text-sm font-bold flex items-center gap-1"
-            >
-              <Zap className="w-3.5 h-3.5" />
-              -{creditCost} Credit{creditCost > 1 ? "s" : ""}
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className="px-4 pb-4 pt-2">
 
         <div className="relative">
           <input
@@ -261,7 +247,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
           >
             <div className={`w-1.5 h-1.5 rounded-full transition-colors ${deepAnalysis ? "bg-accent shadow-[0_0_4px_hsl(260_70%_58%)]" : "bg-muted-foreground/50"}`} />
             Deep Analysis
-            <span className="text-[10px] opacity-60">{deepAnalysis ? "5cr" : "Off"}</span>
+            <span className="text-[10px] opacity-60">{deepAnalysis ? "On" : "Off"}</span>
           </button>
 
           <button
