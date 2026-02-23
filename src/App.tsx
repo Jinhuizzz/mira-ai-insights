@@ -42,7 +42,7 @@ const App = () => {
   const renderPage = () => {
     switch (activeTab) {
       case "now": return <NowPage onAskMira={handleAskMiraFromNow} />;
-      case "mira": return <AskMiraPage credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} />;
+      case "mira": return <AskMiraPage credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} />;
       case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} />;
       case "watchlist": return <WatchlistPage />;
     }
