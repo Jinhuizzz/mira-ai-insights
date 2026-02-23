@@ -2,9 +2,18 @@ import { useState } from "react";
 import { Brain, Send, Sparkles, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface NewsContext {
+  title: string;
+  summary: string;
+  ticker: string;
+  question: string;
+}
+
 interface AskMiraPageProps {
   credits: number;
   onConsumeCredits: (amount: number) => void;
+  newsContext?: NewsContext | null;
+  onClearContext?: () => void;
 }
 
 const suggestedQueries = [
@@ -14,7 +23,7 @@ const suggestedQueries = [
   "Compare AAPL vs MSFT fundamentals",
 ];
 
-const AskMiraPage = ({ credits, onConsumeCredits }: AskMiraPageProps) => {
+const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext }: AskMiraPageProps) => {
   const [deepAnalysis, setDeepAnalysis] = useState(false);
   const [answerType, setAnswerType] = useState<"Balanced" | "Concise" | "Comprehensive">("Balanced");
   const [input, setInput] = useState("");
@@ -36,6 +45,25 @@ const AskMiraPage = ({ credits, onConsumeCredits }: AskMiraPageProps) => {
 
   return (
     <div className="px-4 py-6 flex flex-col items-center min-h-[calc(100vh-8rem)]">
+      {/* News Context Banner */}
+      {newsContext && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-sm mb-4 bg-secondary border border-border/50 rounded-xl p-3"
+        >
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <div className="text-[10px] uppercase tracking-wider text-accent font-semibold mb-1">Context from Now</div>
+              <p className="text-xs font-medium leading-tight line-clamp-2">{newsContext.title}</p>
+              <p className="text-[11px] text-muted-foreground mt-1">"{newsContext.question}"</p>
+            </div>
+            <button onClick={onClearContext} className="text-muted-foreground hover:text-foreground p-1">
+              <span className="text-xs">✕</span>
+            </button>
+          </div>
+        </motion.div>
+      )}
       {/* Data Brain Icon */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
