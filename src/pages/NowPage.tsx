@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Bookmark, Check, Send, TrendingUp, TrendingDown, Bell } from "lucide-react";
+import { X, Bookmark, Check, Send, TrendingUp, TrendingDown } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { toast } from "sonner";
 
@@ -166,14 +166,10 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] relative overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 pt-3 pb-2">
+      <div className="flex items-center justify-end px-4 pt-3 pb-2">
         <span className="text-xs text-muted-foreground font-mono">
           {currentIndex + 1}/{newsCards.length}
         </span>
-        <button className="relative w-10 h-10 rounded-full bg-secondary/60 backdrop-blur-sm flex items-center justify-center border border-border/40 hover:bg-secondary transition-colors">
-          <Bell className="w-[18px] h-[18px] text-muted-foreground" />
-          <span className="absolute top-2 right-2.5 w-[7px] h-[7px] rounded-full bg-primary ring-2 ring-background" />
-        </button>
       </div>
 
       {/* Progress dots */}

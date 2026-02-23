@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Zap, Brain, FileText, BarChart3, Menu } from "lucide-react";
+import { Bell, Brain, FileText, BarChart3, Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import NowPage from "./pages/NowPage";
 import AskMiraPage from "./pages/AskMiraPage";
@@ -9,7 +9,7 @@ import FinBot from "./components/FinBot";
 import AppSidebar from "./components/AppSidebar";
 
 const tabs = [
-  { id: "now", label: "Now", icon: Zap },
+  { id: "now", label: "Now", icon: Bell },
   { id: "mira", label: "Mira", icon: Brain },
   { id: "research", label: "Research", icon: FileText },
   { id: "watchlist", label: "Watchlist", icon: BarChart3 },
