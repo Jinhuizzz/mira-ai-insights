@@ -80,8 +80,8 @@ const App = () => {
         </AnimatePresence>
       </main>
 
-      {/* Floating FinBot */}
-      <FinBot credits={credits} onConsumeCredits={consumeCredits} />
+      {/* Floating FinBot - temporarily disabled */}
+      {/* <FinBot credits={credits} onConsumeCredits={consumeCredits} /> */}
 
       {/* Bottom Tab Bar */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-border/50">
