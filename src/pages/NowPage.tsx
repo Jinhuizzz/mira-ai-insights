@@ -70,13 +70,16 @@ const SWIPE_THRESHOLD = 100;
 const NowPage = ({ onAskMira }: NowPageProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [bookmarked, setBookmarked] = useState<Set<number>>(new Set());
+  const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
   const [showFolderPicker, setShowFolderPicker] = useState(false);
   const [folders] = useState(["General", "Earnings", "Tech", "Macro"]);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
   const [question, setQuestion] = useState("");
+  const [recapMode, setRecapMode] = useState(false);
+  const [activeCards, setActiveCards] = useState(newsCards);
 
-  const currentCard = newsCards[currentIndex];
-  const isFinished = currentIndex >= newsCards.length;
+  const currentCard = activeCards[currentIndex];
+  const isFinished = currentIndex >= activeCards.length;
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
@@ -88,6 +91,9 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
       toast("We'll reduce this type of news for you.", { duration: 1000 });
     } else {
       toast("Got it! We'll prioritize this company's news.", { duration: 1000 });
+      if (!recapMode) {
+        setLikedIds((prev) => new Set(prev).add(activeCards[currentIndex].id));
+      }
     }
     setDirection(dir);
     setTimeout(() => {
@@ -137,6 +143,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
   };
 
   if (isFinished) {
+    const likedCards = newsCards.filter((c) => likedIds.has(c.id));
     return (
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] px-6">
         <motion.div
@@ -149,15 +156,29 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
           </div>
           <h2 className="text-xl font-bold mb-2">You're all caught up!</h2>
           <p className="text-sm text-muted-foreground mb-6">Check back later for more breaking news.</p>
-          <button
-            onClick={() => setCurrentIndex(0)}
-            className="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold mb-3"
-          >
-            Start Over
-          </button>
-          <button className="block mx-auto px-6 py-2.5 rounded-xl bg-secondary text-secondary-foreground text-sm font-medium">
-            📰 Weekly News Recap
-          </button>
+          <div className="flex flex-col gap-3 w-full max-w-[240px] mx-auto">
+            <button
+              onClick={() => {
+                setCurrentIndex(0);
+                setActiveCards(newsCards);
+                setRecapMode(false);
+              }}
+              className="w-full px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold"
+            >
+              Start Over
+            </button>
+            <button
+              disabled={likedCards.length === 0}
+              onClick={() => {
+                setActiveCards(likedCards);
+                setCurrentIndex(0);
+                setRecapMode(true);
+              }}
+              className="w-full px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              📰 Weekly News Recap
+            </button>
+          </div>
         </motion.div>
       </div>
     );
@@ -215,13 +236,13 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
       {/* Header */}
       <div className="flex items-center justify-end px-4 pt-3 pb-2">
         <span className="text-xs text-muted-foreground font-mono">
-          {currentIndex + 1}/{newsCards.length}
+          {currentIndex + 1}/{activeCards.length}
         </span>
       </div>
 
       {/* Progress dots */}
       <div className="flex items-center gap-1.5 px-4 pb-2">
-        {newsCards.map((_, i) => (
+        {activeCards.map((_, i) => (
           <div
             key={i}
             className={`h-1 rounded-full flex-1 transition-all duration-300 ${
