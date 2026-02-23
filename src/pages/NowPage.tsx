@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Bookmark, Check, Send, TrendingUp, TrendingDown, FolderOpen, Plus, RotateCcw } from "lucide-react";
+import { X, Bookmark, Check, TrendingUp, TrendingDown, FolderOpen, Plus, RotateCcw, Brain } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { toast } from "sonner";
 
@@ -79,7 +79,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
   const [showFolderPicker, setShowFolderPicker] = useState(false);
   const [folders] = useState(["General", "Earnings", "Tech", "Macro"]);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
-  const [question, setQuestion] = useState("");
+  
   const [recapMode, setRecapMode] = useState(false);
   const [activeCards, setActiveCards] = useState(newsCards);
   const [flipped, setFlipped] = useState(false);
@@ -106,7 +106,6 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
     setTimeout(() => {
       setCurrentIndex((i) => i + 1);
       setDirection(null);
-      setQuestion("");
       setFlipped(false);
     }, 300);
   };
@@ -140,16 +139,6 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
     }
   };
 
-  const handleAskQuestion = () => {
-    if (!question.trim() || !currentCard) return;
-    onAskMira({
-      title: currentCard.title,
-      summary: currentCard.summary,
-      ticker: currentCard.ticker,
-      question: question.trim(),
-    });
-    setQuestion("");
-  };
 
   // Recap stacked cards view
   if (showRecapView) {
@@ -431,23 +420,22 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
                   {currentCard.detail}
                 </p>
 
-                {/* Question input */}
-                <div className="relative mb-2">
-                  <input
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleAskQuestion()}
-                    onClick={(e) => e.stopPropagation()}
-                    placeholder="Ask about this news..."
-                    className="w-full bg-secondary/80 border border-border/50 rounded-xl pl-4 pr-10 py-2.5 text-xs outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
-                  />
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handleAskQuestion(); }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-lg bg-primary flex items-center justify-center"
-                  >
-                    <Send className="w-3 h-3 text-primary-foreground" />
-                  </button>
-                </div>
+                {/* Ask Mira button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onAskMira({
+                      title: currentCard.title,
+                      summary: currentCard.detail || currentCard.summary,
+                      ticker: currentCard.ticker,
+                      question: `Tell me more about "${currentCard.title}" and its impact on ${currentCard.ticker}.`,
+                    });
+                  }}
+                  className="w-full flex items-center justify-center gap-2 bg-accent/15 border border-accent/30 rounded-xl py-2.5 text-xs font-medium text-accent hover:bg-accent/25 transition-colors"
+                >
+                  <Brain className="w-3.5 h-3.5" />
+                  Ask Mira about this
+                </button>
                 <p className="text-[10px] text-muted-foreground/60 text-center mt-3">Tap to flip back</p>
               </div>
             </div>
