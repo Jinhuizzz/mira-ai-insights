@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, Brain, FileText, BarChart3, Menu } from "lucide-react";
+import { Bell, Brain, FileText, BarChart3, Menu, Bookmark, Bot } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import NowPage from "./pages/NowPage";
 import AskMiraPage from "./pages/AskMiraPage";
@@ -59,9 +59,13 @@ const App = () => {
           <span className="gradient-holographic-text">Watch</span>
           <span className="text-foreground">Wise</span>
         </h1>
-        <div className="flex items-center gap-1 text-xs font-mono text-muted-foreground bg-secondary rounded-full px-2.5 py-1">
-          <span className="text-accent font-semibold">{credits}</span>
-          <span>cr</span>
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
+            <Bookmark className="w-5 h-5 text-muted-foreground" />
+          </button>
+          <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
+            <Bot className="w-5 h-5 text-muted-foreground" />
+          </button>
         </div>
       </header>
 
