@@ -145,27 +145,9 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             </motion.div>
           )}
 
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", damping: 15 }}
-            className="relative mb-6 mt-8"
-          >
-            <div className="w-24 h-24 rounded-full relative flex items-center justify-center animate-float">
-              <div className="absolute inset-0 rounded-full gradient-holographic opacity-30 blur-xl animate-pulse-glow" />
-              <div className="absolute inset-1 rounded-full gradient-holographic opacity-60 blur-md" />
-              <div className="relative w-20 h-20 rounded-full gradient-holographic flex items-center justify-center glow-holographic">
-                <Brain className="w-10 h-10 text-primary-foreground" />
-              </div>
-            </div>
-            <div className="absolute -right-1 -top-1 w-6 h-6 rounded-full bg-card border border-border flex items-center justify-center">
-              <Sparkles className="w-3 h-3 text-accent" />
-            </div>
-          </motion.div>
-
-          <h2 className="text-2xl font-bold mb-1 text-center">"What's the trade?"</h2>
+          <h2 className="text-2xl font-bold mb-1 text-center mt-12">Hi, I am <span className="gradient-holographic-text">MIRA</span></h2>
           <p className="text-sm text-muted-foreground text-center max-w-xs mb-8">
-            Ask <span className="gradient-holographic-text font-semibold">MIRA</span> — Your AI trading assistant.
+            Your AI trading assistant.
           </p>
 
           <div className="w-full max-w-sm mb-6">
@@ -289,9 +271,6 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             {answerType}
           </button>
 
-          <div className="ml-auto text-[10px] text-muted-foreground font-mono">
-            Cost: <span className="text-accent font-semibold">{deepAnalysis ? 5 : 1}</span> cr
-          </div>
         </div>
       </div>
     </div>
