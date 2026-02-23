@@ -331,7 +331,11 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", damping: 20, stiffness: 200 }}
             className="absolute inset-x-4 top-1 bottom-2 rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing border border-border/30"
-            onClick={() => setFlipped(!flipped)}
+            onTap={(e) => {
+              const target = e.target as HTMLElement;
+              if (target.closest('[data-mira-input]')) return;
+              setFlipped(!flipped);
+            }}
           >
             {/* Inner flip wrapper – CSS transition, no spring overshoot */}
             <div
@@ -421,7 +425,7 @@ const NowPage = ({ onAskMira }: NowPageProps) => {
                 </p>
 
                 {/* Ask Mira input */}
-                <div className="bg-accent/10 border border-accent/30 rounded-xl p-3" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()} onTouchStart={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+                <div data-mira-input className="bg-accent/10 border border-accent/30 rounded-xl p-3" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()} onTouchStart={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
                   <div className="flex items-center gap-2 mb-2">
                     <Brain className="w-3.5 h-3.5 text-accent" />
                     <span className="text-[11px] font-medium text-accent">Ask Mira about this</span>
