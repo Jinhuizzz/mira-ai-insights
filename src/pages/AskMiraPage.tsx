@@ -35,7 +35,7 @@ const generateMockAnswer = (ctx: NewsContext): string => {
 };
 
 const benefits = [
-  "Custom MBTI",
+  "Customed MBTI",
   "Versatile for any scenario",
   "Bring your own agent wherever you communicate.",
 ];
