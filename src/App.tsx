@@ -59,20 +59,20 @@ const App = () => {
         <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-secondary transition-colors">
           <Menu className="w-5 h-5 text-muted-foreground" />
         </button>
-        {activeTab === "mira" ? (
-          <h1 className="text-lg font-bold tracking-tight">
+        <h1 className="text-lg font-bold tracking-tight">
+          {activeTab === "mira" ? (
             <span className="gradient-holographic-text">MIRA</span>
-          </h1>
-        ) : activeTab === "research" ? (
-          <h1 className="text-lg font-bold tracking-tight">
+          ) : activeTab === "research" ? (
             <span className="gradient-holographic-text">Research</span>
-          </h1>
-        ) : (
-          <h1 className="text-lg font-bold tracking-tight">
-            <span className="gradient-holographic-text">Watch</span>
-            <span className="text-foreground">Wise</span>
-          </h1>
-        )}
+          ) : activeTab === "watchlist" ? (
+            <span className="gradient-holographic-text">Watchlist</span>
+          ) : (
+            <>
+              <span className="gradient-holographic-text">Watch</span>
+              <span className="text-foreground">Wise</span>
+            </>
+          )}
+        </h1>
         <div className="flex items-center gap-2">
           {activeTab === "mira" ? (
             <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
