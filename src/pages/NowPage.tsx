@@ -68,12 +68,13 @@ const newsCards = [
 
 interface NowPageProps {
   onAskMira: (context: { title: string; summary: string; ticker: string; question: string }) => void;
+  currentIndex: number;
+  setCurrentIndex: (index: number | ((prev: number) => number)) => void;
 }
 
 const SWIPE_THRESHOLD = 100;
 
-const NowPage = ({ onAskMira }: NowPageProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const NowPage = ({ onAskMira, currentIndex, setCurrentIndex }: NowPageProps) => {
   const [bookmarked, setBookmarked] = useState<Set<number>>(new Set());
   const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
   const [showFolderPicker, setShowFolderPicker] = useState(false);
