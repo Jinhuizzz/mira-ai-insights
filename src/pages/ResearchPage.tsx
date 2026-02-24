@@ -257,19 +257,6 @@ const ResearchPage = ({ credits, onConsumeCredits }: ResearchPageProps) => {
             </AnimatePresence>
           </div>
 
-          {/* Substack CTA */}
-          <div className="bg-card border border-border/50 rounded-xl p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg gradient-holographic flex items-center justify-center flex-shrink-0">
-                <ExternalLink className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <div className="flex-1">
-                <div className="text-sm font-semibold">Subscribe to our Substack</div>
-                <div className="text-xs text-muted-foreground">Exclusive insights delivered weekly</div>
-              </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            </div>
-          </div>
         </motion.div>
       )}
     </AnimatePresence>

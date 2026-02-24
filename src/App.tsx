@@ -63,6 +63,10 @@ const App = () => {
           <h1 className="text-lg font-bold tracking-tight">
             <span className="gradient-holographic-text">MIRA</span>
           </h1>
+        ) : activeTab === "research" ? (
+          <h1 className="text-lg font-bold tracking-tight">
+            <span className="gradient-holographic-text">Research</span>
+          </h1>
         ) : (
           <h1 className="text-lg font-bold tracking-tight">
             <span className="gradient-holographic-text">Watch</span>
@@ -74,12 +78,21 @@ const App = () => {
             <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
               <History className="w-5 h-5 text-muted-foreground" />
             </button>
+          ) : activeTab === "research" ? (
+            <a
+              href="https://substack.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg hover:bg-secondary transition-colors"
+            >
+              <svg className="w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
+              </svg>
+            </a>
           ) : (
-            <>
-              <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
-                <Bot className="w-5 h-5 text-muted-foreground" />
-              </button>
-            </>
+            <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
+              <Bot className="w-5 h-5 text-muted-foreground" />
+            </button>
           )}
         </div>
       </header>
