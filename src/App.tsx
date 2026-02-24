@@ -30,6 +30,8 @@ const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [credits, setCredits] = useState(20);
   const [newsContext, setNewsContext] = useState<NewsContext | null>(null);
+  const [nowCardIndex, setNowCardIndex] = useState(0);
+  const [miraSessionKey, setMiraSessionKey] = useState(0);
 
   const consumeCredits = (amount: number) => {
     setCredits((prev) => Math.max(0, prev - amount));
@@ -37,6 +39,7 @@ const App = () => {
 
   const handleAskMiraFromNow = (context: NewsContext) => {
     setNewsContext(context);
+    setMiraSessionKey((k) => k + 1); // force new Mira session
     setActiveTab("mira");
   };
 
