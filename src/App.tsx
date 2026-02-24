@@ -63,6 +63,10 @@ const App = () => {
           <h1 className="text-lg font-bold tracking-tight">
             <span className="gradient-holographic-text">MIRA</span>
           </h1>
+        ) : activeTab === "research" ? (
+          <h1 className="text-lg font-bold tracking-tight">
+            <span className="gradient-holographic-text">Research</span>
+          </h1>
         ) : (
           <h1 className="text-lg font-bold tracking-tight">
             <span className="gradient-holographic-text">Watch</span>
