@@ -30,6 +30,8 @@ const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [credits, setCredits] = useState(20);
   const [newsContext, setNewsContext] = useState<NewsContext | null>(null);
+  const [nowCardIndex, setNowCardIndex] = useState(0);
+  const [miraSessionKey, setMiraSessionKey] = useState(0);
 
   const consumeCredits = (amount: number) => {
     setCredits((prev) => Math.max(0, prev - amount));
@@ -37,13 +39,14 @@ const App = () => {
 
   const handleAskMiraFromNow = (context: NewsContext) => {
     setNewsContext(context);
+    setMiraSessionKey((k) => k + 1); // force new Mira session
     setActiveTab("mira");
   };
 
   const renderPage = () => {
     switch (activeTab) {
-      case "now": return <NowPage onAskMira={handleAskMiraFromNow} />;
-      case "mira": return <AskMiraPage credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} />;
+      case "now": return <NowPage onAskMira={handleAskMiraFromNow} currentIndex={nowCardIndex} setCurrentIndex={setNowCardIndex} />;
+      case "mira": return <AskMiraPage key={miraSessionKey} credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} />;
       case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} />;
       case "watchlist": return <WatchlistPage />;
     }
