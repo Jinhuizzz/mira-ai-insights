@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowLeft, TrendingUp, TrendingDown } from "lucide-react";
+import { useState, useMemo } from "react";
+import { ArrowLeft, TrendingUp, TrendingDown, ChevronUp, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SparklineChart from "../components/SparklineChart";
 import LargeChart from "../components/LargeChart";
@@ -12,6 +12,12 @@ const companyLogos: Record<string, string> = {
   MSFT: "https://logo.clearbit.com/microsoft.com",
   AMZN: "https://logo.clearbit.com/amazon.com",
 };
+
+const marketIndices = [
+  { name: "S&P 500", value: 5234.18, change: 0.87 },
+  { name: "Dow Jones", value: 39512.84, change: -0.22 },
+  { name: "Nasdaq", value: 16388.24, change: 1.14 },
+];
 
 const watchlistData = [
   {
@@ -81,8 +87,38 @@ const watchlistData = [
   },
 ];
 
+type SortKey = "symbol" | "change";
+type SortDir = "asc" | "desc";
+
 const WatchlistPage = () => {
   const [selected, setSelected] = useState<typeof watchlistData[0] | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey>("symbol");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
+
+  const toggleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  };
+
+  const sortedStocks = useMemo(() => {
+    const sorted = [...watchlistData];
+    sorted.sort((a, b) => {
+      if (sortKey === "symbol") {
+        return sortDir === "asc" ? a.ticker.localeCompare(b.ticker) : b.ticker.localeCompare(a.ticker);
+      }
+      return sortDir === "asc" ? a.changePct - b.changePct : b.changePct - a.changePct;
+    });
+    return sorted;
+  }, [sortKey, sortDir]);
+
+  const SortIcon = ({ col }: { col: SortKey }) => {
+    if (sortKey !== col) return <ChevronUp className="w-3 h-3 text-muted-foreground/40" />;
+    return sortDir === "asc" ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />;
+  };
 
   return (
     <div className="px-4 py-4">
@@ -155,20 +191,48 @@ const WatchlistPage = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between mb-5">
-              <div>
-                <h2 className="text-xl font-bold">Watchlist</h2>
-                <p className="text-sm text-muted-foreground">{watchlistData.length} stocks tracked</p>
-              </div>
-              <button className="text-xs bg-primary text-primary-foreground px-3 py-1.5 rounded-lg font-medium">
-                + Add
+            {/* Market Indices */}
+            <div className="flex gap-2 mb-5">
+              {marketIndices.map((idx) => {
+                const up = idx.change >= 0;
+                return (
+                  <div
+                    key={idx.name}
+                    className="flex-1 bg-card rounded-xl border border-border/50 p-2.5"
+                  >
+                    <div className="text-[10px] text-muted-foreground font-medium truncate">{idx.name}</div>
+                    <div className="text-xs font-mono font-semibold mt-0.5">
+                      {idx.value.toLocaleString()}
+                    </div>
+                    <div className={`text-[10px] font-mono font-semibold flex items-center gap-0.5 ${up ? "text-bullish" : "text-bearish"}`}>
+                      {up ? <TrendingUp className="w-2.5 h-2.5" /> : <TrendingDown className="w-2.5 h-2.5" />}
+                      {up ? "+" : ""}{idx.change.toFixed(2)}%
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Table Header */}
+            <div className="flex items-center px-3 mb-2">
+              <button
+                onClick={() => toggleSort("symbol")}
+                className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold hover:text-foreground transition-colors"
+              >
+                Symbol <SortIcon col="symbol" />
+              </button>
+              <div className="flex-1" />
+              <button
+                onClick={() => toggleSort("change")}
+                className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold hover:text-foreground transition-colors"
+              >
+                % Change <SortIcon col="change" />
               </button>
             </div>
 
             {/* Stock List */}
             <div className="space-y-2">
-              {watchlistData.map((stock, i) => {
+              {sortedStocks.map((stock, i) => {
                 const bullish = stock.change >= 0;
                 return (
                   <motion.button
