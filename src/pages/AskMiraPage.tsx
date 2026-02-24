@@ -35,9 +35,9 @@ const generateMockAnswer = (ctx: NewsContext): string => {
 };
 
 const benefits = [
-  "Tailored AI persona",
+  "Custom MBTI",
   "Versatile for any scenario",
-  "Living inside your messenger",
+  "Bring your own agent wherever you communicate.",
 ];
 
 const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, onBack }: AskMiraPageProps) => {
