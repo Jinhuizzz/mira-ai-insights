@@ -35,7 +35,7 @@ const generateMockAnswer = (ctx: NewsContext): string => {
 };
 
 const benefits = [
-  "Custom MBTI",
+  "Customed MBTI",
   "Versatile for any scenario",
   "Bring your own agent wherever you communicate.",
 ];
@@ -368,16 +368,16 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
               {/* Platform logos */}
               <div className="flex items-center gap-8 mb-10">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 rounded-2xl bg-[hsl(200_80%_55%)] flex items-center justify-center">
-                    <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8 text-white">
+                  <div className="w-12 h-12 rounded-xl bg-[hsl(200_80%_55%)] flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6 text-white">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.97 1.25-5.55 3.67-.53.36-1 .54-1.42.53-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.41-1.41-.87.03-.24.37-.49 1.02-.74 3.99-1.74 6.65-2.89 7.99-3.44 3.81-1.59 4.6-1.87 5.12-1.87.11 0 .37.03.53.17.14.12.18.28.2.45-.01.06.01.24 0 .38z" fill="currentColor"/>
                     </svg>
                   </div>
                   <span className="text-xs font-medium text-muted-foreground">Telegram</span>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 rounded-2xl bg-[hsl(235_86%_65%)] flex items-center justify-center">
-                    <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8 text-white">
+                  <div className="w-12 h-12 rounded-xl bg-[hsl(235_86%_65%)] flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6 text-white">
                       <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" fill="currentColor"/>
                     </svg>
                   </div>
