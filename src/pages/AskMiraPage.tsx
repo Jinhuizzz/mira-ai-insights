@@ -37,7 +37,7 @@ const generateMockAnswer = (ctx: NewsContext): string => {
 const benefits = [
   "Customed MBTI",
   "Versatile for any scenario",
-  "Bring your own agent wherever you communicate.",
+  "Living inside your messenger",
 ];
 
 const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, onBack }: AskMiraPageProps) => {
@@ -362,7 +362,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 Connect <span className="gradient-holographic-text">Mira</span> to your platforms
               </p>
               <p className="text-sm text-muted-foreground text-center mb-10 max-w-xs">
-                Bring your AI assistant wherever you communicate.
+                Bring your own agent wherever you communicate.
               </p>
 
               {/* Platform logos */}
