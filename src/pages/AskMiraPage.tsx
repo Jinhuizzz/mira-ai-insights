@@ -362,7 +362,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 Connect <span className="gradient-holographic-text">Mira</span> to your platforms
               </p>
               <p className="text-sm text-muted-foreground text-center mb-10 max-w-xs">
-                Bring your AI assistant wherever you communicate.
+                Bring your own agent wherever you communicate.
               </p>
 
               {/* Platform logos */}
