@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Brain, Send, Sparkles, Zap, ArrowLeft } from "lucide-react";
+import { Brain, Send, Sparkles, Zap, ArrowLeft, History } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NewsContext {
