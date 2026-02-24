@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Brain, Send, Sparkles, Zap, ArrowLeft } from "lucide-react";
+import { Brain, Send, Sparkles, Zap, ArrowLeft, History } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NewsContext {
@@ -113,17 +113,23 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-8rem)]">
-      {onBack && (
-        <div className="px-4 pt-4">
+      <div className="flex items-center justify-between px-4 pt-4">
+        {onBack ? (
           <button
             onClick={onBack}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
           </button>
-        </div>
-      )}
+        ) : (
+          <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <History className="w-4 h-4" />
+            History
+          </button>
+        )}
+        <div />
+      </div>
 
       {!hasMessages ? (
         <div className="flex-1 flex flex-col items-center px-4 py-6">

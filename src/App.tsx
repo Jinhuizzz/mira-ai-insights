@@ -100,7 +100,13 @@ const App = () => {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  if (tab.id === "mira" && activeTab !== "mira") {
+                    setNewsContext(null);
+                    setMiraSessionKey((k) => k + 1);
+                  }
+                  setActiveTab(tab.id);
+                }}
                 className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-200 ${
                   isActive
                     ? tab.id === "mira"

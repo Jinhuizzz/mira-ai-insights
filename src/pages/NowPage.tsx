@@ -91,8 +91,6 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex }: NowPageProps) => 
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
-  const likeOpacity = useTransform(x, [0, 100], [0, 1]);
-  const nopeOpacity = useTransform(x, [-100, 0], [1, 0]);
 
   const handleSwipe = (dir: "left" | "right") => {
     if (dir === "left") {
@@ -354,19 +352,6 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex }: NowPageProps) => 
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
               </div>
 
-              {/* Swipe indicators */}
-              <motion.div
-                style={{ opacity: likeOpacity }}
-                className="absolute top-8 left-6 z-10 border-4 border-bullish rounded-xl px-4 py-2 rotate-[-15deg]"
-              >
-                <span className="text-bullish text-2xl font-black tracking-wider">LIKE</span>
-              </motion.div>
-              <motion.div
-                style={{ opacity: nopeOpacity }}
-                className="absolute top-8 right-6 z-10 border-4 border-bearish rounded-xl px-4 py-2 rotate-[15deg]"
-              >
-                <span className="text-bearish text-2xl font-black tracking-wider">NOPE</span>
-              </motion.div>
 
               {/* Card content - bottom */}
               <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
