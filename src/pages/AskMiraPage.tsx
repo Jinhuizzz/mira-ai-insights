@@ -345,8 +345,8 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col"
           >
             <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
-              <button onClick={() => setShowClaimAgent(false)} className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-                <X className="w-5 h-5" />
+              <button onClick={() => setShowClaimAgent(false)} className="flex items-center gap-1.5 p-2 text-muted-foreground hover:text-foreground transition-colors">
+                <ArrowLeft className="w-5 h-5" />
               </button>
               <h2 className="text-sm font-semibold">Claim Your Agent</h2>
               <div className="w-9" />
