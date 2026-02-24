@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, FileText, BarChart3, Menu, Bookmark, Bot } from "lucide-react";
+import { Bell, FileText, BarChart3, Menu, History, Bot } from "lucide-react";
 import MiraBrainIcon from "./components/MiraBrainIcon";
 import { motion, AnimatePresence } from "framer-motion";
 import NowPage from "./pages/NowPage";
