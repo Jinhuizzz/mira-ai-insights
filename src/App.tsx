@@ -58,6 +58,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col relative">
       {/* Header */}
+      {!isSubPage && (
       <header className="flex items-center justify-between px-4 py-3 border-b border-border/50 glass sticky top-0 z-40">
         <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-secondary transition-colors">
           <Menu className="w-5 h-5 text-muted-foreground" />
@@ -101,6 +102,7 @@ const App = () => {
           )}
         </div>
       </header>
+      )}
 
       {/* Page Content */}
       <main className={`flex-1 overflow-y-auto ${isSubPage ? 'pb-4' : 'pb-20'}`}>
