@@ -35,7 +35,7 @@ const continueReading = [
     progress: 45,
     currentPage: 10,
     totalPages: 30,
-    image: "https://images.unsplash.com/photo-1617886903355-9354c0e4cadc?w=200&h=200&fit=crop",
+    image: "https://images.unsplash.com/photo-1620288627223-53302f4e8c74?w=200&h=200&fit=crop",
   },
   {
     id: 2,
