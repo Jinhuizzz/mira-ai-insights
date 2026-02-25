@@ -113,53 +113,48 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                       <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
                     </button>
 
-                    {/* Credit Card */}
+                    {/* Credit + Invite Card */}
                     <div className="px-4 pb-4">
-                      <button
-                        onClick={() => setView("credits")}
-                        className="w-full rounded-2xl bg-secondary p-4 hover:bg-secondary/80 transition-all text-left group"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <CircleDollarSign className="w-4 h-4 text-amber-400" />
-                            <span className="text-sm font-semibold">Credit</span>
+                      <div className="rounded-2xl bg-secondary overflow-hidden">
+                        <button
+                          onClick={() => setView("credits")}
+                          className="w-full p-4 hover:bg-secondary/80 transition-all text-left group"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <CircleDollarSign className="w-4 h-4 text-amber-400" />
+                              <span className="text-sm font-semibold">Credit</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-lg font-bold">{credits}</span>
+                              <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-lg font-bold">{credits}</span>
-                            <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
+                        </button>
+                        <div className="h-px bg-border/30 mx-4" />
+                        <button
+                          onClick={() => {
+                            if (navigator.share) {
+                              navigator.share({
+                                title: "Join WatchWise",
+                                text: "Use my referral code to sign up and we'll both get 500 points!",
+                                url: "https://watchwise.ai/invite",
+                              }).catch(() => {});
+                            } else {
+                              navigator.clipboard.writeText("https://watchwise.ai/invite");
+                            }
+                          }}
+                          className="w-full p-4 hover:bg-secondary/80 transition-all text-left group"
+                        >
+                          <div className="flex items-center gap-2.5 mb-1.5">
+                            <Gift className="w-4 h-4 text-primary" />
+                            <span className="text-sm font-semibold">Invite & Earn</span>
                           </div>
-                        </div>
-                      </button>
-                    </div>
-
-                    {/* Invite & Earn Card */}
-                    <div className="px-4 pb-4">
-                      <button
-                        onClick={() => {
-                          if (navigator.share) {
-                            navigator.share({
-                              title: "Join WatchWise",
-                              text: "Use my referral code to sign up and we'll both get 500 points!",
-                              url: "https://watchwise.ai/invite",
-                            }).catch(() => {});
-                          } else {
-                            navigator.clipboard.writeText("https://watchwise.ai/invite");
-                            // Could add a toast here
-                          }
-                        }}
-                        className="w-full rounded-2xl bg-gradient-to-br from-primary/15 to-accent/20 border border-primary/20 p-4 hover:from-primary/20 hover:to-accent/25 transition-all text-left group"
-                      >
-                        <div className="flex items-center gap-2.5 mb-1.5">
-                          <Gift className="w-5 h-5 text-primary" />
-                          <span className="text-sm font-bold">Invite & Earn</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                          Invite friends with your referral code.
-                        </p>
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                          You'll both get <span className="font-semibold text-foreground">500 points</span>.
-                        </p>
-                      </button>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            Invite friends with your referral code. You'll both get <span className="font-semibold text-foreground">500 points</span>.
+                          </p>
+                        </button>
+                      </div>
                     </div>
 
                     {/* General */}
