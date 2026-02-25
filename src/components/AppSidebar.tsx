@@ -85,7 +85,7 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                 <div className="w-8" />
               )}
               <h2 className="text-sm font-semibold text-muted-foreground">
-                {view === "profile" ? "Edit Profile" : view === "credits" ? "Credit Details" : view === "language" ? "Language" : "Menu"}
+                {view === "profile" ? "Edit Profile" : view === "credits" ? "Credit Details" : view === "language" ? "Language" : "Settings"}
               </h2>
               <button onClick={handleClose} className="p-2 rounded-lg hover:bg-secondary transition-colors">
                 <X className="w-4 h-4" />
