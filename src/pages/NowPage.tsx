@@ -70,11 +70,12 @@ interface NowPageProps {
   onAskMira: (context: { title: string; summary: string; ticker: string; question: string }) => void;
   currentIndex: number;
   setCurrentIndex: (index: number | ((prev: number) => number)) => void;
+  onSubPageChange?: (isSubPage: boolean) => void;
 }
 
 const SWIPE_THRESHOLD = 100;
 
-const NowPage = ({ onAskMira, currentIndex, setCurrentIndex }: NowPageProps) => {
+const NowPage = ({ onAskMira, currentIndex, setCurrentIndex, onSubPageChange }: NowPageProps) => {
   const [bookmarked, setBookmarked] = useState<Set<number>>(new Set());
   const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
   const [showFolderPicker, setShowFolderPicker] = useState(false);
@@ -106,6 +107,7 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex }: NowPageProps) => 
       setCurrentIndex((i) => i + 1);
       setDirection(null);
       setFlipped(false);
+      onSubPageChange?.(false);
     }, 300);
   };
 
@@ -221,6 +223,7 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex }: NowPageProps) => 
                 setActiveCards(newsCards);
                 setRecapMode(false);
                 setFlipped(false);
+                onSubPageChange?.(false);
               }}
               className="w-full px-6 py-2.5 rounded-xl bg-secondary text-secondary-foreground text-sm font-semibold hover:bg-secondary/80 transition-colors"
             >
@@ -340,7 +343,7 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex }: NowPageProps) => 
             <div
               className="absolute inset-0 cursor-pointer"
               style={{ backfaceVisibility: "hidden", pointerEvents: flipped ? "none" : "auto" }}
-              onClick={() => setFlipped(true)}
+              onClick={() => { setFlipped(true); onSubPageChange?.(true); }}
             >
               {/* Background image */}
               <div className="absolute inset-0">
@@ -447,7 +450,7 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex }: NowPageProps) => 
                     </button>
                   </div>
                 </div>
-                <button onClick={() => setFlipped(false)} className="text-[10px] text-muted-foreground/60 text-center mt-3 w-full">Tap to flip back</button>
+                <button onClick={() => { setFlipped(false); onSubPageChange?.(false); }} className="text-[10px] text-muted-foreground/60 text-center mt-3 w-full">Tap to flip back</button>
               </div>
             </div>
             </div>{/* end inner flip wrapper */}
