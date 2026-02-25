@@ -32,6 +32,7 @@ const App = () => {
   const [newsContext, setNewsContext] = useState<NewsContext | null>(null);
   const [nowCardIndex, setNowCardIndex] = useState(0);
   const [miraSessionKey, setMiraSessionKey] = useState(0);
+  const [isSubPage, setIsSubPage] = useState(false);
 
   const consumeCredits = (amount: number) => {
     setCredits((prev) => Math.max(0, prev - amount));
@@ -47,8 +48,8 @@ const App = () => {
     switch (activeTab) {
       case "now": return <NowPage onAskMira={handleAskMiraFromNow} currentIndex={nowCardIndex} setCurrentIndex={setNowCardIndex} />;
       case "mira": return <AskMiraPage key={miraSessionKey} credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} />;
-      case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} />;
-      case "watchlist": return <WatchlistPage />;
+      case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} onSubPageChange={setIsSubPage} />;
+      case "watchlist": return <WatchlistPage onSubPageChange={setIsSubPage} />;
     }
   };
 
@@ -96,7 +97,7 @@ const App = () => {
       </header>
 
       {/* Page Content */}
-      <main className="flex-1 overflow-y-auto pb-20">
+      <main className={`flex-1 overflow-y-auto ${isSubPage ? 'pb-4' : 'pb-20'}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -114,6 +115,7 @@ const App = () => {
       {/* <FinBot credits={credits} onConsumeCredits={consumeCredits} /> */}
 
       {/* Bottom Tab Bar */}
+      {!isSubPage && (
       <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-border/50">
         <div className="flex items-center justify-around py-2 px-2 max-w-lg mx-auto">
           {tabs.map((tab) => {
@@ -127,6 +129,7 @@ const App = () => {
                     setNewsContext(null);
                     setMiraSessionKey((k) => k + 1);
                   }
+                  setIsSubPage(false);
                   setActiveTab(tab.id);
                 }}
                 className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-200 ${
@@ -152,6 +155,7 @@ const App = () => {
           })}
         </div>
       </nav>
+      )}
 
       {/* Sidebar */}
       <AppSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} credits={credits} />
