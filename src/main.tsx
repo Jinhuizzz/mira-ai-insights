@@ -9,6 +9,7 @@ createRoot(document.getElementById("root")!).render(
     <Toaster
       position="top-center"
       theme="dark"
+      duration={1000}
       style={{ top: '50%', transform: 'translateY(-50%)' }}
       toastOptions={{
         style: {
