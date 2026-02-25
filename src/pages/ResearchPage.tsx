@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 interface ResearchPageProps {
   credits: number;
   onConsumeCredits: (amount: number) => void;
+  onSubPageChange?: (isSubPage: boolean) => void;
 }
 
 const latestReport = {
@@ -117,7 +118,7 @@ const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
 };
 
 /* ─── Research Home ─── */
-const ResearchPage = ({ credits, onConsumeCredits }: ResearchPageProps) => {
+const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange }: ResearchPageProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showBrowse, setShowBrowse] = useState(false);
   const [activeSection, setActiveSection] = useState<"focus" | "recent">("focus");
@@ -125,7 +126,7 @@ const ResearchPage = ({ credits, onConsumeCredits }: ResearchPageProps) => {
   return (
     <AnimatePresence mode="wait">
       {showBrowse ? (
-        <BrowseReportsScreen key="browse" onBack={() => setShowBrowse(false)} />
+        <BrowseReportsScreen key="browse" onBack={() => { setShowBrowse(false); onSubPageChange?.(false); }} />
       ) : (
         <motion.div
           key="home"
@@ -153,7 +154,7 @@ const ResearchPage = ({ credits, onConsumeCredits }: ResearchPageProps) => {
               Wall-Street Grade research, in seconds.
             </h2>
             <button
-              onClick={() => setShowBrowse(true)}
+              onClick={() => { setShowBrowse(true); onSubPageChange?.(true); }}
               className="flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground whitespace-nowrap"
             >
               Browse

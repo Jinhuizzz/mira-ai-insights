@@ -90,7 +90,11 @@ const watchlistData = [
 type SortKey = "symbol" | "change";
 type SortDir = "asc" | "desc";
 
-const WatchlistPage = () => {
+interface WatchlistPageProps {
+  onSubPageChange?: (isSubPage: boolean) => void;
+}
+
+const WatchlistPage = ({ onSubPageChange }: WatchlistPageProps) => {
   const [selected, setSelected] = useState<typeof watchlistData[0] | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("symbol");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
@@ -133,7 +137,7 @@ const WatchlistPage = () => {
           >
             {/* Back */}
             <button
-              onClick={() => setSelected(null)}
+              onClick={() => { setSelected(null); onSubPageChange?.(false); }}
               className="flex items-center gap-1 text-sm text-muted-foreground mb-4 hover:text-foreground transition-colors"
             >
               <ArrowLeft className="w-4 h-4" /> Back
@@ -240,7 +244,7 @@ const WatchlistPage = () => {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    onClick={() => setSelected(stock)}
+                    onClick={() => { setSelected(stock); onSubPageChange?.(true); }}
                     className="w-full bg-card rounded-xl p-3 border border-border/50 hover:border-border transition-all flex items-center gap-3"
                   >
                     {/* Logo */}
