@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileImage, BrainCircuit } from "lucide-react";
+import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NewsContext {
@@ -50,6 +50,11 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
   const [isTyping, setIsTyping] = useState(false);
   const [showClaimAgent, setShowClaimAgent] = useState(false);
   const [showPlusMenu, setShowPlusMenu] = useState(false);
+  const [showNewChatModal, setShowNewChatModal] = useState(false);
+  const [pendingInput, setPendingInput] = useState("");
+  const [chatName, setChatName] = useState("");
+  const [persona, setPersona] = useState("");
+  const [focus, setFocus] = useState("");
   const chatEndRef = useRef<HTMLDivElement>(null);
   const processedContextRef = useRef<string | null>(null);
   const plusMenuRef = useRef<HTMLDivElement>(null);
@@ -107,7 +112,20 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
 
   const handleSend = () => {
     if (!input.trim()) return;
-    const userMsg: ChatMessage = { id: Date.now(), role: "user", content: input };
+    // If no messages yet, show new chat setup modal
+    if (messages.length === 0) {
+      setPendingInput(input);
+      setChatName(input.slice(0, 40));
+      setPersona("");
+      setFocus("");
+      setShowNewChatModal(true);
+      return;
+    }
+    sendMessage(input);
+  };
+
+  const sendMessage = (text: string) => {
+    const userMsg: ChatMessage = { id: Date.now(), role: "user", content: text };
     setMessages((prev) => [...prev, userMsg]);
 
     const cost = deepAnalysis ? 5 : 1;
@@ -117,18 +135,23 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
     setTimeout(() => setShowCreditAnim(false), 1500);
 
     setIsTyping(true);
-    const query = input;
     setInput("");
 
     setTimeout(() => {
       const assistantMsg: ChatMessage = {
         id: Date.now() + 1,
         role: "assistant",
-        content: `I've analyzed your question about "${query}". Here's what I found:\n\n- Market conditions suggest cautious optimism.\n- Key technical indicators are showing mixed signals.\n- Keep an eye on upcoming macro events for directional cues.\n\n> *This is a simulated response. Connect to an AI backend for real analysis.*`,
+        content: `I've analyzed your question about "${text}". Here's what I found:\n\n- Market conditions suggest cautious optimism.\n- Key technical indicators are showing mixed signals.\n- Keep an eye on upcoming macro events for directional cues.\n\n> *This is a simulated response. Connect to an AI backend for real analysis.*`,
       };
       setMessages((prev) => [...prev, assistantMsg]);
       setIsTyping(false);
     }, 1500);
+  };
+
+  const handleConfirmNewChat = () => {
+    setShowNewChatModal(false);
+    sendMessage(pendingInput);
+    setPendingInput("");
   };
 
   const hasMessages = messages.length > 0;
@@ -307,8 +330,16 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                       onClick={() => setShowPlusMenu(false)}
                       className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-secondary transition-colors"
                     >
-                      <FileImage className="w-4 h-4 text-muted-foreground" />
-                      Add file/photo
+                      <FileText className="w-4 h-4 text-muted-foreground" />
+                      Add File
+                    </button>
+                    <div className="h-px bg-border" />
+                    <button
+                      onClick={() => setShowPlusMenu(false)}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-secondary transition-colors"
+                    >
+                      <ImageIcon className="w-4 h-4 text-muted-foreground" />
+                      Add Photo
                     </button>
                     <div className="h-px bg-border" />
                     <button
@@ -419,6 +450,81 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 </button>
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* New Chat Setup Modal */}
+      <AnimatePresence>
+        {showNewChatModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-end justify-center"
+            onClick={() => setShowNewChatModal(false)}
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 300 }}
+              className="w-full max-w-lg bg-card border-t border-border rounded-t-2xl p-5 pb-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Handle bar */}
+              <div className="w-10 h-1 rounded-full bg-muted-foreground/30 mx-auto mb-5" />
+
+              <h3 className="text-base font-bold mb-4">New Conversation</h3>
+
+              {/* Chat Name */}
+              <div className="mb-4">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 block">Chat Name</label>
+                <input
+                  value={chatName}
+                  onChange={(e) => setChatName(e.target.value)}
+                  placeholder="e.g. TSLA Deep Dive"
+                  className="w-full bg-secondary/60 border border-border/50 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
+                />
+              </div>
+
+              {/* Persona */}
+              <div className="mb-4">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <User className="w-3 h-3" />
+                  Persona
+                </label>
+                <input
+                  value={persona}
+                  onChange={(e) => setPersona(e.target.value)}
+                  placeholder="e.g. Conservative value investor"
+                  className="w-full bg-secondary/60 border border-border/50 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
+                />
+              </div>
+
+              {/* Focus */}
+              <div className="mb-6">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <Target className="w-3 h-3" />
+                  Focus
+                </label>
+                <input
+                  value={focus}
+                  onChange={(e) => setFocus(e.target.value)}
+                  placeholder="e.g. Risk assessment & downside scenarios"
+                  className="w-full bg-secondary/60 border border-border/50 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
+                />
+              </div>
+
+              {/* Send button */}
+              <button
+                onClick={handleConfirmNewChat}
+                className="w-full py-3 rounded-xl gradient-holographic text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+              >
+                <Send className="w-4 h-4" />
+                Send
+              </button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
