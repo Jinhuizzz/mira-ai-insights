@@ -157,7 +157,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
   const hasMessages = messages.length > 0;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <div className={`flex flex-col ${hasMessages ? "h-[calc(100vh-3.5rem)]" : "h-[calc(100vh-8rem)]"}`}>
       <div className="flex items-center justify-between px-4 pt-4">
         {onBack ? (
           <button
