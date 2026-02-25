@@ -74,7 +74,7 @@ const App = () => {
           ) : activeTab === "watchlist" ? (
             <span className="gradient-holographic-text">Watchlist</span>
           ) : (
-            <img src={watchwiseLogo} alt="WatchWise.ai" className="h-6" />
+            <span className="gradient-holographic-text">WatchWise.ai</span>
           )}
         </h1>
         <div className="flex items-center gap-2">
