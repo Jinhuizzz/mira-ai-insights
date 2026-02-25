@@ -600,7 +600,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mb-5 text-center">
-                <h3 className="text-base font-bold text-foreground">Build your think tank, divide and conquer.</h3>
+                <h3 className="text-base font-bold text-foreground">You just hire. They do the rest.</h3>
                 <p className="text-[11px] text-muted-foreground mt-1">* You can create up to 5 teams.</p>
               </div>
 
