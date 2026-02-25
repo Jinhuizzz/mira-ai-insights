@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Globe, Trash2, HelpCircle, ExternalLink, Coins, ChevronRight, ArrowLeft, Camera, Pencil } from "lucide-react";
+import { X, Globe, Trash2, HelpCircle, ExternalLink, Star, ChevronRight, ArrowLeft, Camera, Pencil } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
@@ -101,7 +101,7 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
                             <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
-                              <Coins className="w-4 h-4 text-primary" />
+                              <Star className="w-4 h-4 text-primary" />
                             </div>
                             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Credit</span>
                           </div>
