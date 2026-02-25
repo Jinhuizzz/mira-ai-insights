@@ -123,38 +123,35 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                       <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
                     </button>
 
-                    {/* Credit + Invite Card */}
-                    <div className="px-4 pb-4">
-                      <div className="rounded-2xl bg-secondary overflow-hidden">
-                        <button
-                          onClick={() => setView("credits")}
-                          className="w-full p-4 hover:bg-secondary/80 transition-all text-left group"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <CircleDollarSign className="w-4 h-4 text-amber-400" />
-                              <span className="text-sm font-semibold">Credit</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-lg font-bold">{credits}</span>
-                              <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
-                            </div>
+                    {/* Credit & Invite Section */}
+                    <div className="px-4 pb-4 flex flex-col gap-2">
+                      <button
+                        onClick={() => setView("credits")}
+                        className="w-full rounded-2xl bg-secondary p-4 hover:bg-secondary/80 transition-all text-left group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <CircleDollarSign className="w-4 h-4 text-amber-400" />
+                            <span className="text-sm font-semibold">Credit</span>
                           </div>
-                        </button>
-                        <div className="h-px bg-border/30 mx-4" />
-                        <button
-                          onClick={() => setShowInviteModal(true)}
-                          className="w-full p-4 hover:bg-secondary/80 transition-all text-left group"
-                        >
-                          <div className="flex items-center gap-2.5 mb-1.5">
-                            <Gift className="w-4 h-4 text-primary" />
-                            <span className="text-sm font-semibold">Invite & Earn</span>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-lg font-bold">{credits}</span>
+                            <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
                           </div>
-                          <p className="text-xs text-muted-foreground leading-relaxed">
-                            Invite friends with your referral code. You'll both get <span className="font-semibold text-foreground">500 points</span>.
-                          </p>
-                        </button>
-                      </div>
+                        </div>
+                      </button>
+                      <button
+                        onClick={() => setShowInviteModal(true)}
+                        className="w-full rounded-2xl bg-secondary p-4 hover:bg-secondary/80 transition-all text-left group"
+                      >
+                        <div className="flex items-center gap-2.5 mb-1.5">
+                          <Gift className="w-4 h-4 text-primary" />
+                          <span className="text-sm font-semibold">Invite & Earn</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Invite friends with your referral code. You'll both get <span className="font-semibold text-foreground">500 points</span>.
+                        </p>
+                      </button>
                     </div>
 
                     {/* General */}
