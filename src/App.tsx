@@ -35,6 +35,7 @@ const App = () => {
   const [isSubPage, setIsSubPage] = useState(false);
   const [showSavedReports, setShowSavedReports] = useState(false);
   const [showReadingHistory, setShowReadingHistory] = useState(false);
+  const [showMiraHistory, setShowMiraHistory] = useState(false);
 
   const consumeCredits = (amount: number) => {
     setCredits((prev) => Math.max(0, prev - amount));
@@ -49,7 +50,7 @@ const App = () => {
   const renderPage = () => {
     switch (activeTab) {
       case "now": return <NowPage onAskMira={handleAskMiraFromNow} currentIndex={nowCardIndex} setCurrentIndex={setNowCardIndex} onSubPageChange={setIsSubPage} />;
-      case "mira": return <AskMiraPage key={miraSessionKey} credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} onSubPageChange={setIsSubPage} />;
+      case "mira": return <AskMiraPage key={miraSessionKey} credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} onSubPageChange={setIsSubPage} showHistory={showMiraHistory} onCloseHistory={() => setShowMiraHistory(false)} />;
       case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} onSubPageChange={setIsSubPage} showSavedReports={showSavedReports} onCloseSavedReports={() => setShowSavedReports(false)} showReadingHistory={showReadingHistory} onCloseReadingHistory={() => setShowReadingHistory(false)} />;
       case "watchlist": return <WatchlistPage onSubPageChange={setIsSubPage} />;
     }
@@ -77,7 +78,7 @@ const App = () => {
         </h1>
         <div className="flex items-center gap-2">
           {activeTab === "mira" ? (
-            <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
+            <button onClick={() => setShowMiraHistory(true)} className="p-2 rounded-lg hover:bg-secondary transition-colors">
               <History className="w-5 h-5 text-muted-foreground" />
             </button>
           ) : activeTab === "research" ? (

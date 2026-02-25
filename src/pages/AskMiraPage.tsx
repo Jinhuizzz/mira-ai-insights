@@ -15,6 +15,15 @@ interface ChatMessage {
   content: string;
 }
 
+interface ArchivedChat {
+  id: number;
+  topic: string;
+  persona: string;
+  focus: string;
+  messages: ChatMessage[];
+  date: string;
+}
+
 interface AskMiraPageProps {
   credits: number;
   onConsumeCredits: (amount: number) => void;
@@ -22,6 +31,8 @@ interface AskMiraPageProps {
   onClearContext?: () => void;
   onBack?: () => void;
   onSubPageChange?: (isSubPage: boolean) => void;
+  showHistory?: boolean;
+  onCloseHistory?: () => void;
 }
 
 const suggestedQueries = [
@@ -41,7 +52,7 @@ const benefits = [
   "Living inside your messenger",
 ];
 
-const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, onBack, onSubPageChange }: AskMiraPageProps) => {
+const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, onBack, onSubPageChange, showHistory, onCloseHistory }: AskMiraPageProps) => {
   const [deepAnalysis, setDeepAnalysis] = useState(false);
   const [input, setInput] = useState("");
   const [showCreditAnim, setShowCreditAnim] = useState(false);
@@ -55,6 +66,21 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
   const [chatName, setChatName] = useState("");
   const [persona, setPersona] = useState("");
   const [focus, setFocus] = useState("");
+  const [archivedChats, setArchivedChats] = useState<ArchivedChat[]>([
+    { id: 1, topic: "TSLA Valuation Analysis", persona: "Value Investor", focus: "Downside risk", messages: [
+      { id: 1, role: "user", content: "What's TSLA's fair value?" },
+      { id: 2, role: "assistant", content: "Based on DCF analysis, TSLA's fair value range is $180-$220. Current price suggests a premium for growth expectations." },
+    ], date: "Feb 24" },
+    { id: 2, topic: "Crypto Rally Drivers", persona: "Macro Analyst", focus: "Market momentum", messages: [
+      { id: 3, role: "user", content: "What's driving the crypto rally?" },
+      { id: 4, role: "assistant", content: "Key drivers include ETF inflows, halving anticipation, and improving macro conditions with rate cut expectations." },
+    ], date: "Feb 22" },
+    { id: 3, topic: "AAPL vs MSFT Comparison", persona: "Growth Investor", focus: "Revenue growth", messages: [
+      { id: 5, role: "user", content: "Compare AAPL vs MSFT fundamentals" },
+      { id: 6, role: "assistant", content: "MSFT leads in revenue growth (18% vs 8%) driven by cloud. AAPL has stronger margins and buyback program." },
+    ], date: "Feb 20" },
+  ]);
+  const [viewingArchivedChat, setViewingArchivedChat] = useState<ArchivedChat | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const processedContextRef = useRef<string | null>(null);
   const plusMenuRef = useRef<HTMLDivElement>(null);
@@ -154,7 +180,116 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
     setPendingInput("");
   };
 
+  const archiveAndReset = () => {
+    if (messages.length > 0 && chatName.trim()) {
+      setArchivedChats((prev) => [
+        { id: Date.now(), topic: chatName, persona, focus, messages: [...messages], date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }) },
+        ...prev,
+      ]);
+    }
+    setMessages([]);
+    setChatName("");
+    setPersona("");
+    setFocus("");
+    setViewingArchivedChat(null);
+  };
+
+  // Handle showHistory from parent
+  useEffect(() => {
+    if (showHistory) {
+      onSubPageChange?.(true);
+    }
+  }, [showHistory]);
+
   const hasMessages = messages.length > 0;
+
+  // History list screen
+  if (showHistory && !viewingArchivedChat) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 40 }}
+        transition={{ duration: 0.2 }}
+        className="px-4 py-4"
+      >
+        <button
+          onClick={() => { onCloseHistory?.(); onSubPageChange?.(false); }}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground mb-5 hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </button>
+        <h2 className="text-lg font-bold mb-1">Chat History</h2>
+        <p className="text-xs text-muted-foreground mb-4">Your past conversations with Mira</p>
+        <div className="flex flex-col gap-2">
+          {archivedChats.map((chat, i) => (
+            <motion.div
+              key={chat.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              onClick={() => setViewingArchivedChat(chat)}
+              className="bg-card border border-border/50 rounded-xl px-4 py-3 cursor-pointer hover:border-border transition-all"
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-sm font-semibold">{chat.topic}</span>
+                <span className="text-[10px] text-muted-foreground">{chat.date}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {chat.persona && <span className="text-[10px] px-2 py-0.5 rounded-md bg-accent/15 text-accent">{chat.persona}</span>}
+                {chat.focus && <span className="text-[10px] px-2 py-0.5 rounded-md bg-secondary text-muted-foreground">{chat.focus}</span>}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1.5 truncate">{chat.messages[chat.messages.length - 1]?.content}</p>
+            </motion.div>
+          ))}
+          {archivedChats.length === 0 && (
+            <p className="text-sm text-muted-foreground text-center py-8">No conversations yet</p>
+          )}
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Viewing an archived conversation
+  if (viewingArchivedChat) {
+    return (
+      <div className="flex flex-col h-[calc(100vh-3.5rem)]">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-border/50">
+          <button
+            onClick={() => setViewingArchivedChat(null)}
+            className="flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-semibold truncate">{viewingArchivedChat.topic}</h3>
+            <div className="flex items-center gap-2">
+              {viewingArchivedChat.persona && <span className="text-[9px] text-accent">{viewingArchivedChat.persona}</span>}
+              {viewingArchivedChat.focus && <span className="text-[9px] text-muted-foreground">· {viewingArchivedChat.focus}</span>}
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+          {viewingArchivedChat.messages.map((msg) => (
+            <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                msg.role === "user"
+                  ? "bg-primary text-primary-foreground rounded-br-md"
+                  : "bg-secondary text-secondary-foreground rounded-bl-md"
+              }`}>
+                <div className="space-y-1">
+                  {msg.content.split("\n").map((line, i) => (
+                    <p key={i} className="text-xs">{line}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`flex flex-col ${hasMessages ? "h-[calc(100vh-3.5rem)]" : "h-[calc(100vh-8rem)]"}`}>
@@ -169,7 +304,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
           </button>
         ) : hasMessages ? (
           <button
-            onClick={() => setMessages([])}
+            onClick={archiveAndReset}
             className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
