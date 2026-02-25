@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, FileText, BarChart3, Menu, History, Bot } from "lucide-react";
+import { Bell, FileText, BarChart3, Menu, History, Bot, Bookmark } from "lucide-react";
 import MiraBrainIcon from "./components/MiraBrainIcon";
 import { motion, AnimatePresence } from "framer-motion";
 import NowPage from "./pages/NowPage";
@@ -33,6 +33,7 @@ const App = () => {
   const [nowCardIndex, setNowCardIndex] = useState(0);
   const [miraSessionKey, setMiraSessionKey] = useState(0);
   const [isSubPage, setIsSubPage] = useState(false);
+  const [showSavedReports, setShowSavedReports] = useState(false);
 
   const consumeCredits = (amount: number) => {
     setCredits((prev) => Math.max(0, prev - amount));
@@ -48,7 +49,7 @@ const App = () => {
     switch (activeTab) {
       case "now": return <NowPage onAskMira={handleAskMiraFromNow} currentIndex={nowCardIndex} setCurrentIndex={setNowCardIndex} onSubPageChange={setIsSubPage} />;
       case "mira": return <AskMiraPage key={miraSessionKey} credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} onSubPageChange={setIsSubPage} />;
-      case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} onSubPageChange={setIsSubPage} />;
+      case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} onSubPageChange={setIsSubPage} showSavedReports={showSavedReports} onCloseSavedReports={() => setShowSavedReports(false)} />;
       case "watchlist": return <WatchlistPage onSubPageChange={setIsSubPage} />;
     }
   };
@@ -78,16 +79,12 @@ const App = () => {
               <History className="w-5 h-5 text-muted-foreground" />
             </button>
           ) : activeTab === "research" ? (
-            <a
-              href="https://substack.com"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setShowSavedReports(true)}
               className="p-2 rounded-lg hover:bg-secondary transition-colors"
             >
-              <svg className="w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
-              </svg>
-            </a>
+              <Bookmark className="w-5 h-5 text-muted-foreground" />
+            </button>
           ) : (
             <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
               <Bot className="w-5 h-5 text-muted-foreground" />
