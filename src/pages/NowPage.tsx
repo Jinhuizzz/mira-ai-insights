@@ -107,7 +107,6 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex, onSubPageChange }: 
       setCurrentIndex((i) => i + 1);
       setDirection(null);
       setFlipped(false);
-      onSubPageChange?.(false);
     }, 300);
   };
 
@@ -223,7 +222,6 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex, onSubPageChange }: 
                 setActiveCards(newsCards);
                 setRecapMode(false);
                 setFlipped(false);
-                onSubPageChange?.(false);
               }}
               className="w-full px-6 py-2.5 rounded-xl bg-secondary text-secondary-foreground text-sm font-semibold hover:bg-secondary/80 transition-colors"
             >
@@ -343,7 +341,7 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex, onSubPageChange }: 
             <div
               className="absolute inset-0 cursor-pointer"
               style={{ backfaceVisibility: "hidden", pointerEvents: flipped ? "none" : "auto" }}
-              onClick={() => { setFlipped(true); onSubPageChange?.(true); }}
+              onClick={() => setFlipped(true)}
             >
               {/* Background image */}
               <div className="absolute inset-0">
@@ -450,7 +448,7 @@ const NowPage = ({ onAskMira, currentIndex, setCurrentIndex, onSubPageChange }: 
                     </button>
                   </div>
                 </div>
-                <button onClick={() => { setFlipped(false); onSubPageChange?.(false); }} className="text-[10px] text-muted-foreground/60 text-center mt-3 w-full">Tap to flip back</button>
+                <button onClick={() => setFlipped(false)} className="text-[10px] text-muted-foreground/60 text-center mt-3 w-full">Tap to flip back</button>
               </div>
             </div>
             </div>{/* end inner flip wrapper */}
