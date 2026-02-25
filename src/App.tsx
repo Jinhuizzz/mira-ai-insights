@@ -1,4 +1,5 @@
 import { useState } from "react";
+import watchwiseLogo from "./assets/watchwise-logo.png";
 import { Bell, FileText, BarChart3, Menu, History, Bot, Bookmark, Plus } from "lucide-react";
 import MiraBrainIcon from "./components/MiraBrainIcon";
 import { motion, AnimatePresence } from "framer-motion";
@@ -73,10 +74,7 @@ const App = () => {
           ) : activeTab === "watchlist" ? (
             <span className="gradient-holographic-text">Watchlist</span>
           ) : (
-            <>
-              <span className="gradient-holographic-text">watchwise</span>
-              <span className="text-foreground">.ai</span>
-            </>
+            <img src={watchwiseLogo} alt="WatchWise.ai" className="h-6" />
           )}
         </h1>
         <div className="flex items-center gap-2">
