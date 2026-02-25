@@ -301,7 +301,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
       )}
 
       {/* Input Area */}
-      <div className="px-4 pb-4 pt-2">
+      <div className="mt-auto px-4 pb-4 pt-2">
         <div className="relative flex items-center">
           <div className="relative flex-1">
             {/* Plus button inside input */}
