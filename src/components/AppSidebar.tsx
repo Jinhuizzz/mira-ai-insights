@@ -144,9 +144,12 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                         onClick={() => setShowInviteModal(true)}
                         className="w-full rounded-2xl bg-secondary p-4 hover:bg-secondary/80 transition-all text-left group"
                       >
-                        <div className="flex items-center gap-2.5 mb-1.5">
-                          <Gift className="w-4 h-4 text-primary" />
-                          <span className="text-sm font-semibold">Invite & Earn</span>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <div className="flex items-center gap-2.5">
+                            <Gift className="w-4 h-4 text-primary" />
+                            <span className="text-sm font-semibold">Invite & Earn</span>
+                          </div>
+                          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
                         </div>
                         <p className="text-xs text-muted-foreground leading-relaxed">
                           Invite friends with your referral code. You'll both get <span className="font-semibold text-foreground">500 points</span>.
