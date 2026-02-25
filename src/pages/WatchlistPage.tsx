@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { toast } from "sonner";
 import { ArrowLeft, TrendingUp, TrendingDown, ChevronUp, ChevronDown, Search, Plus, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SparklineChart from "../components/SparklineChart";
@@ -154,6 +155,7 @@ const WatchlistPage = ({ onSubPageChange, showAddStock, onCloseAddStock }: Watch
 
   const handleAddStock = (ticker: string) => {
     setWatchlistTickers(prev => [...prev, ticker]);
+    toast.success(`${ticker} added to watchlist`);
   };
 
   const handleRemoveStock = (ticker: string) => {
