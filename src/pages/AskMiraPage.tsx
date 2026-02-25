@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target, Pencil } from "lucide-react";
+import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target, Pencil, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NewsContext {
@@ -232,18 +232,28 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              onClick={() => setViewingArchivedChat(chat)}
-              className="bg-card border border-border/50 rounded-xl px-4 py-3 cursor-pointer hover:border-border transition-all"
+              className="bg-card border border-border/50 rounded-xl px-4 py-3 flex items-center gap-3"
             >
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-semibold">{chat.topic}</span>
-                <span className="text-[10px] text-muted-foreground">{chat.date}</span>
+              <div
+                className="flex-1 min-w-0 cursor-pointer"
+                onClick={() => setViewingArchivedChat(chat)}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-sm font-semibold">{chat.topic}</span>
+                  <span className="text-[10px] text-muted-foreground">{chat.date}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {chat.persona && <span className="text-[10px] px-2 py-0.5 rounded-md bg-accent/15 text-accent">{chat.persona}</span>}
+                  {chat.focus && <span className="text-[10px] px-2 py-0.5 rounded-md bg-secondary text-muted-foreground">{chat.focus}</span>}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1.5 truncate">{chat.messages[chat.messages.length - 1]?.content}</p>
               </div>
-              <div className="flex items-center gap-2">
-                {chat.persona && <span className="text-[10px] px-2 py-0.5 rounded-md bg-accent/15 text-accent">{chat.persona}</span>}
-                {chat.focus && <span className="text-[10px] px-2 py-0.5 rounded-md bg-secondary text-muted-foreground">{chat.focus}</span>}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1.5 truncate">{chat.messages[chat.messages.length - 1]?.content}</p>
+              <button
+                onClick={(e) => { e.stopPropagation(); setArchivedChats(prev => prev.filter(c => c.id !== chat.id)); }}
+                className="p-1.5 rounded-lg text-muted-foreground/40 hover:text-destructive hover:bg-destructive/10 transition-colors shrink-0"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
             </motion.div>
           ))}
           {archivedChats.length === 0 && (
