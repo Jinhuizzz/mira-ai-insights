@@ -300,7 +300,7 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
         >
           {/* Header */}
           <div className="flex items-center justify-between gap-3 mb-5">
-            <h2 className="text-base font-bold leading-snug whitespace-nowrap">
+            <h2 className="text-base font-bold leading-snug min-w-0">
               Wall-Street Grade research, in seconds.
             </h2>
             <div className="flex items-center gap-2 flex-shrink-0">
