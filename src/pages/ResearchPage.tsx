@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronRight, ExternalLink, Search, ArrowLeft, Calendar, X, Bookmark, BookOpen, History } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
@@ -9,6 +9,8 @@ interface ResearchPageProps {
   credits: number;
   onConsumeCredits: (amount: number) => void;
   onSubPageChange?: (isSubPage: boolean) => void;
+  showSavedReports?: boolean;
+  onCloseSavedReports?: () => void;
 }
 
 const latestReport = {
@@ -66,6 +68,54 @@ const readingHistory = [
 ];
 
 const datePeriods = ["Last 7 days", "Last 30 days", "Last 90 days", "All time"];
+
+const savedReports = [
+  { id: 1, title: "NVIDIA: The AI Infrastructure Kingpin", ticker: "NVDA", date: "Feb 20", readTime: "5 min" },
+  { id: 2, title: "Apple's Services Flywheel Accelerates", ticker: "AAPL", date: "Feb 19", readTime: "7 min" },
+  { id: 3, title: "Tesla at a Valuation Crossroads", ticker: "TSLA", date: "Feb 18", readTime: "6 min" },
+  { id: 4, title: "Microsoft Cloud Momentum Continues", ticker: "MSFT", date: "Feb 17", readTime: "5 min" },
+];
+
+/* ─── Saved Reports Screen ─── */
+const SavedReportsScreen = ({ onBack }: { onBack: () => void }) => (
+  <motion.div
+    initial={{ opacity: 0, x: 40 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: 40 }}
+    transition={{ duration: 0.2 }}
+    className="px-4 py-4"
+  >
+    <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground mb-5 hover:text-foreground transition-colors">
+      <ArrowLeft className="w-4 h-4" />
+      Back
+    </button>
+    <h2 className="text-lg font-bold mb-1">Saved Reports</h2>
+    <p className="text-xs text-muted-foreground mb-4">Your bookmarked reports</p>
+    <div className="flex flex-col gap-2">
+      {savedReports.map((item, i) => (
+        <motion.div
+          key={item.id}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.05 }}
+          className="bg-card border border-border/50 rounded-xl px-4 py-3 flex items-center justify-between cursor-pointer hover:border-border transition-all"
+        >
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
+              <span className="text-[10px] text-muted-foreground">{item.readTime}</span>
+            </div>
+            <span className="text-sm font-medium truncate block">{item.title}</span>
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+            <span className="text-xs text-muted-foreground">{item.date}</span>
+            <Bookmark className="w-3.5 h-3.5 text-primary fill-primary" />
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+);
 
 /* ─── Reading History Screen ─── */
 const ReadingHistoryScreen = ({ onBack }: { onBack: () => void }) => (
@@ -220,14 +270,22 @@ const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
 };
 
 /* ─── Research Home ─── */
-const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange }: ResearchPageProps) => {
+const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedReports, onCloseSavedReports }: ResearchPageProps) => {
   const [showBrowse, setShowBrowse] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [activeSection, setActiveSection] = useState<"focus" | "recent">("focus");
 
+  useEffect(() => {
+    if (showSavedReports) {
+      onSubPageChange?.(true);
+    }
+  }, [showSavedReports]);
+
   return (
     <AnimatePresence mode="wait">
-      {showBrowse ? (
+      {showSavedReports ? (
+        <SavedReportsScreen key="saved" onBack={() => { onCloseSavedReports?.(); onSubPageChange?.(false); }} />
+      ) : showBrowse ? (
         <BrowseReportsScreen key="browse" onBack={() => { setShowBrowse(false); onSubPageChange?.(false); }} />
       ) : showHistory ? (
         <ReadingHistoryScreen key="history" onBack={() => { setShowHistory(false); onSubPageChange?.(false); }} />
