@@ -96,14 +96,18 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                     <div className="px-4 pb-4">
                       <button
                         onClick={() => setView("credits")}
-                        className="w-full rounded-2xl bg-secondary/40 p-4 hover:bg-secondary/60 transition-all text-left group"
+                        className="w-full rounded-2xl bg-secondary p-4 hover:bg-secondary/80 transition-all text-left group"
                       >
-                        <div className="flex items-center gap-2 mb-2">
-                          <CircleDollarSign className="w-4 h-4 text-amber-400" />
-                          <span className="text-xs font-semibold text-muted-foreground">Credit</span>
-                          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 ml-auto group-hover:text-muted-foreground transition-colors" />
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <CircleDollarSign className="w-4 h-4 text-amber-400" />
+                            <span className="text-sm font-semibold">Credit</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-lg font-bold">{credits}</span>
+                            <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
+                          </div>
                         </div>
-                        <div className="text-2xl font-bold">{credits}</div>
                       </button>
                     </div>
 
