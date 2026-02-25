@@ -523,44 +523,31 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                   transition={{ delay: i * 0.05 }}
                   className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all"
                 >
-                  <div className="flex">
-                    {/* Left: Text */}
-                    <div className="flex-1 p-3.5 flex flex-col justify-between min-w-0">
-                      <div>
-                        <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
-                          {item.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
-                                tag === "Earnings Alert"
-                                  ? "bg-accent/15 text-accent"
-                                  : tag === "BULLISH"
-                                  ? "bg-bullish/15 text-bullish"
-                                  : tag === "BEARISH"
-                                  ? "bg-bearish/15 text-bearish"
-                                  : "bg-secondary text-muted-foreground"
-                              }`}
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <h3 className="text-sm font-semibold leading-tight mb-1">{item.title}</h3>
-                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{item.summary}</p>
-                      </div>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-[10px] text-muted-foreground">{item.date}</span>
-                        <span className="text-[10px] text-muted-foreground">·</span>
-                        <span className="text-[10px] text-primary font-medium">{item.source}</span>
-                      </div>
+                  <div className="p-3.5">
+                    <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                            tag === "Earnings Alert"
+                              ? "bg-accent/15 text-accent"
+                              : tag === "BULLISH"
+                              ? "bg-bullish/15 text-bullish"
+                              : tag === "BEARISH"
+                              ? "bg-bearish/15 text-bearish"
+                              : "bg-secondary text-muted-foreground"
+                          }`}
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
-                    {/* Right: Image */}
-                    <div className="w-24 flex-shrink-0">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
+                    <h3 className="text-sm font-semibold leading-tight mb-1">{item.title}</h3>
+                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{item.summary}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-[10px] text-muted-foreground">{item.date}</span>
+                      <span className="text-[10px] text-muted-foreground">·</span>
+                      <span className="text-[10px] text-primary font-medium">{item.source}</span>
                     </div>
                   </div>
                 </motion.div>
