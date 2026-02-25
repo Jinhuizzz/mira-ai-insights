@@ -472,7 +472,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
               className="w-full max-w-sm bg-card border border-border rounded-2xl p-5 shadow-lg"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-base font-bold mb-4">New Conversation</h3>
+              
 
               {/* Topic */}
               <div className="mb-4">
@@ -518,13 +518,13 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 />
               </div>
 
-              {/* Send button */}
+              {/* Start button */}
               <button
                 onClick={handleConfirmNewChat}
-                className="w-full py-3 rounded-xl gradient-holographic text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                className="w-full py-2 rounded-lg gradient-holographic text-primary-foreground font-medium text-xs flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity"
               >
-                <Send className="w-4 h-4" />
-                Send
+                <Send className="w-3.5 h-3.5" />
+                Start
               </button>
             </motion.div>
           </motion.div>
