@@ -54,7 +54,7 @@ const App = () => {
       case "now": return <NowPage onAskMira={handleAskMiraFromNow} currentIndex={nowCardIndex} setCurrentIndex={setNowCardIndex} onSubPageChange={setIsSubPage} />;
       case "mira": return <AskMiraPage key={miraSessionKey} credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} onSubPageChange={setIsSubPage} showHistory={showMiraHistory} onCloseHistory={() => setShowMiraHistory(false)} />;
       case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} onSubPageChange={setIsSubPage} showSavedReports={showSavedReports} onCloseSavedReports={() => setShowSavedReports(false)} showReadingHistory={showReadingHistory} onCloseReadingHistory={() => setShowReadingHistory(false)} />;
-      case "watchlist": return <WatchlistPage onSubPageChange={setIsSubPage} showAddStock={showAddStock} onCloseAddStock={() => setShowAddStock(false)} />;
+      case "watchlist": return <WatchlistPage onSubPageChange={setIsSubPage} showAddStock={showAddStock} onCloseAddStock={() => setShowAddStock(false)} onRequestAddStock={() => setShowAddStock(true)} />;
     }
   };
 

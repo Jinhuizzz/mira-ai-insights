@@ -108,9 +108,10 @@ interface WatchlistPageProps {
   onSubPageChange?: (isSubPage: boolean) => void;
   showAddStock?: boolean;
   onCloseAddStock?: () => void;
+  onRequestAddStock?: () => void;
 }
 
-const WatchlistPage = ({ onSubPageChange, showAddStock, onCloseAddStock }: WatchlistPageProps) => {
+const WatchlistPage = ({ onSubPageChange, showAddStock, onCloseAddStock, onRequestAddStock }: WatchlistPageProps) => {
   const [selected, setSelected] = useState<typeof defaultWatchlist[0] | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("symbol");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
@@ -361,11 +362,14 @@ const WatchlistPage = ({ onSubPageChange, showAddStock, onCloseAddStock }: Watch
             {/* Stock List */}
             {sortedStocks.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                <button
+                  onClick={() => { onRequestAddStock?.(); }}
+                  className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 hover:bg-primary/20 transition-colors"
+                >
                   <Plus className="w-7 h-7 text-primary" />
-                </div>
+                </button>
                 <p className="text-sm text-muted-foreground leading-relaxed max-w-[260px]">
-                  We'll push relevant news to you based on the stocks you add to your watchlist.
+                  We'll tailor your news feed based on your watchlist.
                 </p>
               </div>
             ) : (
