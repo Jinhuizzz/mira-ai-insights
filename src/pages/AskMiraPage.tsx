@@ -519,13 +519,23 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
               </div>
 
               {/* Start button */}
-              <button
-                onClick={handleConfirmNewChat}
-                className="w-full py-2 rounded-lg gradient-holographic text-primary-foreground font-medium text-xs flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity"
-              >
-                <Send className="w-3.5 h-3.5" />
-                Start
-              </button>
+              {(() => {
+                const allFilled = chatName.trim() !== "" && persona.trim() !== "" && focus.trim() !== "";
+                return (
+                  <button
+                    onClick={allFilled ? handleConfirmNewChat : undefined}
+                    disabled={!allFilled}
+                    className={`w-full py-2 rounded-lg font-medium text-xs flex items-center justify-center gap-1.5 transition-all ${
+                      allFilled
+                        ? "gradient-holographic text-primary-foreground hover:opacity-90"
+                        : "bg-muted text-muted-foreground cursor-not-allowed"
+                    }`}
+                  >
+                    <Send className="w-3.5 h-3.5" />
+                    Start
+                  </button>
+                );
+              })()}
             </motion.div>
           </motion.div>
         )}
