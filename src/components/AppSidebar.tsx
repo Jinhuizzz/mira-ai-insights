@@ -92,23 +92,26 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                       <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
                     </button>
 
-                    {/* Credit Card - Standalone */}
-                    <div className="px-4 pb-4">
+                    {/* Credit Card - Compact */}
+                    <div className="px-4 pb-3">
                       <button
                         onClick={() => setView("credits")}
-                        className="w-full rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 p-4 hover:from-primary/15 hover:to-primary/10 transition-all text-left shadow-sm"
+                        className="w-full rounded-xl border border-border/40 bg-secondary/20 backdrop-blur-sm px-3 py-2.5 hover:bg-secondary/40 transition-all text-left group"
                       >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2">
-                            <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
-                              <CircleDollarSign className="w-4 h-4 text-primary" />
-                            </div>
-                            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Credit</span>
+                        <div className="flex items-center gap-2.5">
+                          <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <CircleDollarSign className="w-3.5 h-3.5 text-primary" />
                           </div>
-                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[10px] text-muted-foreground uppercase tracking-wider leading-none mb-0.5">Credit</div>
+                            <div className="text-base font-bold leading-none">{credits}</div>
+                          </div>
+                          <div className="text-[9px] text-muted-foreground/60 text-right leading-tight">
+                            <div>daily</div>
+                            <div className="font-medium text-muted-foreground">500</div>
+                          </div>
+                          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
                         </div>
-                        <div className="text-2xl font-bold">{credits}</div>
-                        <div className="text-[10px] text-muted-foreground mt-1">Daily refresh: 500</div>
                       </button>
                     </div>
 
