@@ -64,12 +64,10 @@ const App = () => {
             <span className="gradient-holographic-text">MIRA</span>
           ) : activeTab === "research" ? (
             <span className="gradient-holographic-text">Research</span>
-          ) : activeTab === "watchlist" ? (
-            <span className="gradient-holographic-text">Watchlist</span>
           ) : (
             <>
-              <span className="gradient-holographic-text">Watch</span>
-              <span className="text-foreground">Wise</span>
+              <span className="gradient-holographic-text">watchwise</span>
+              <span className="text-foreground">.ai</span>
             </>
           )}
         </h1>
