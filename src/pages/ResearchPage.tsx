@@ -27,15 +27,26 @@ const latestReport = {
   image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=300&h=300&fit=crop",
 };
 
-const continueReading: Array<{
-  id: number;
-  title: string;
-  ticker: string;
-  progress: number;
-  currentPage: number;
-  totalPages: number;
-  image: string;
-}> = [];
+const continueReading = [
+  {
+    id: 1,
+    title: "Tesla at a Valuation Crossroads",
+    ticker: "TSLA",
+    progress: 45,
+    currentPage: 10,
+    totalPages: 30,
+    image: "https://images.unsplash.com/photo-1617886903355-9354c0e4cadc?w=200&h=200&fit=crop",
+  },
+  {
+    id: 2,
+    title: "Apple's Services Flywheel Accelerates",
+    ticker: "AAPL",
+    progress: 72,
+    currentPage: 18,
+    totalPages: 25,
+    image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=200&h=200&fit=crop",
+  },
+];
 
 const inFocusItems = [
   { id: 1, title: "AI Boom: Who Wins the Next Wave?", tag: "AI", date: "Feb 20" },
