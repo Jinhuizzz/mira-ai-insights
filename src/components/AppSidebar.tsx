@@ -149,13 +149,13 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                       <Trash2 className="w-4 h-4 text-muted-foreground" />
                       <span className="text-sm">Clear Cache</span>
                     </button>
-                    <a
-                      href="mailto:marketing@watchwise.ai"
+                    <button
+                      onClick={() => window.open("mailto:marketing@watchwise.ai", "_blank")}
                       className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-secondary/50 transition-colors text-left"
                     >
                       <Mail className="w-4 h-4 text-muted-foreground" />
                       <span className="text-sm">Help Center</span>
-                    </a>
+                    </button>
 
                     {/* Connect */}
                     <div className="px-4 pt-6 pb-2">
