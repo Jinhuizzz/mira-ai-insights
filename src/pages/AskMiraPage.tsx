@@ -21,6 +21,7 @@ interface AskMiraPageProps {
   newsContext?: NewsContext | null;
   onClearContext?: () => void;
   onBack?: () => void;
+  onSubPageChange?: (isSubPage: boolean) => void;
 }
 
 const suggestedQueries = [
@@ -40,7 +41,7 @@ const benefits = [
   "Living inside your messenger",
 ];
 
-const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, onBack }: AskMiraPageProps) => {
+const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, onBack, onSubPageChange }: AskMiraPageProps) => {
   const [deepAnalysis, setDeepAnalysis] = useState(false);
   const [input, setInput] = useState("");
   const [showCreditAnim, setShowCreditAnim] = useState(false);
@@ -94,6 +95,11 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
       }, 1500);
     }
   }, [newsContext]);
+
+  // Notify parent about sub-page state based on messages
+  useEffect(() => {
+    onSubPageChange?.(messages.length > 0);
+  }, [messages.length, onSubPageChange]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
