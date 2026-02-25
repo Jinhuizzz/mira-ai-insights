@@ -213,15 +213,18 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
         transition={{ duration: 0.2 }}
         className="px-4 py-4"
       >
-        <button
-          onClick={() => { onCloseHistory?.(); onSubPageChange?.(false); }}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground mb-5 hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </button>
-        <h2 className="text-lg font-bold mb-1">Chat History</h2>
-        <p className="text-xs text-muted-foreground mb-4">Your past conversations with Mira</p>
+        <div className="flex items-center gap-3 mb-4">
+          <button
+            onClick={() => { onCloseHistory?.(); onSubPageChange?.(false); }}
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <h2 className="text-lg font-bold">Chat History</h2>
+            <p className="text-xs text-muted-foreground">Your past conversations with Mira</p>
+          </div>
+        </div>
         <div className="flex flex-col gap-2">
           {archivedChats.map((chat, i) => (
             <motion.div
@@ -297,18 +300,16 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
         {onBack ? (
           <button
             onClick={onBack}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Back
+            <ArrowLeft className="w-5 h-5" />
           </button>
         ) : hasMessages ? (
           <button
             onClick={archiveAndReset}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Back
+            <ArrowLeft className="w-5 h-5" />
           </button>
         ) : (
           <div />

@@ -176,15 +176,18 @@ const WatchlistPage = ({ onSubPageChange, showAddStock, onCloseAddStock }: Watch
         transition={{ duration: 0.2 }}
         className="px-4 py-4"
       >
-        <button
-          onClick={() => { onCloseAddStock?.(); onSubPageChange?.(false); setAddStockSearch(""); }}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground mb-5 hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </button>
-        <h2 className="text-lg font-bold mb-1">Add Stock</h2>
-        <p className="text-xs text-muted-foreground mb-4">Search and add stocks to your watchlist</p>
+        <div className="flex items-center gap-3 mb-4">
+          <button
+            onClick={() => { onCloseAddStock?.(); onSubPageChange?.(false); setAddStockSearch(""); }}
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <h2 className="text-lg font-bold">Add Stock</h2>
+            <p className="text-xs text-muted-foreground">Search and add stocks to your watchlist</p>
+          </div>
+        </div>
 
         {/* Search */}
         <div className="relative mb-4">
@@ -261,9 +264,9 @@ const WatchlistPage = ({ onSubPageChange, showAddStock, onCloseAddStock }: Watch
             {/* Back */}
             <button
               onClick={() => { setSelected(null); onSubPageChange?.(false); }}
-              className="flex items-center gap-1 text-sm text-muted-foreground mb-4 hover:text-foreground transition-colors"
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors mb-2"
             >
-              <ArrowLeft className="w-4 h-4" /> Back
+              <ArrowLeft className="w-5 h-5" />
             </button>
 
             {/* Header */}
