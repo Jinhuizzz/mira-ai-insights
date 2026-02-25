@@ -373,7 +373,7 @@ const ReadingScreen = ({ report, onBack }: { report: typeof latestReport; onBack
 const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedReports, onCloseSavedReports, showReadingHistory, onCloseReadingHistory }: ResearchPageProps) => {
   const [showBrowse, setShowBrowse] = useState(false);
   const [showReading, setShowReading] = useState(false);
-  // removed activeSection state
+  const [activeSection, setActiveSection] = useState<"focus" | "recent">("focus");
 
   useEffect(() => {
     if (showSavedReports || showReadingHistory) {
@@ -511,48 +511,119 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
             </div>
           )}
 
-          {/* Card Feed */}
+          {/* In Focus / Recent Updates */}
           <div className="mb-6">
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Feed</div>
-            <div className="flex flex-col gap-3">
-              {feedItems.map((item, i) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all"
+            <div className="flex gap-4 mb-3">
+              {(["focus", "recent"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveSection(tab)}
+                  className={`text-xs font-semibold uppercase tracking-wider transition-colors ${
+                    activeSection === tab ? "text-foreground" : "text-muted-foreground/40"
+                  }`}
                 >
-                  <div className="p-3.5">
-                    <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
-                            tag === "Earnings Alert"
-                              ? "bg-accent/15 text-accent"
-                              : tag === "BULLISH"
-                              ? "bg-bullish/15 text-bullish"
-                              : tag === "BEARISH"
-                              ? "bg-bearish/15 text-bearish"
-                              : "bg-secondary text-muted-foreground"
-                          }`}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <h3 className="text-sm font-semibold leading-tight mb-1">{item.title}</h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{item.summary}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-[10px] text-muted-foreground">{item.date}</span>
-                      <span className="text-[10px] text-muted-foreground">·</span>
-                      <span className="text-[10px] text-primary font-medium">{item.source}</span>
-                    </div>
-                  </div>
-                </motion.div>
+                  {tab === "focus" ? "In Focus" : "Recent Updates"}
+                </button>
               ))}
             </div>
+
+            <AnimatePresence mode="wait">
+              {activeSection === "focus" ? (
+                <motion.div
+                  key="focus"
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 16 }}
+                  transition={{ duration: 0.15 }}
+                  className="flex flex-col gap-3"
+                >
+                  {feedItems.filter((_, i) => i < 3).map((item, i) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all"
+                    >
+                      <div className="p-3.5">
+                        <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                          {item.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                                tag === "Earnings Alert"
+                                  ? "bg-accent/15 text-accent"
+                                  : tag === "BULLISH"
+                                  ? "bg-bullish/15 text-bullish"
+                                  : tag === "BEARISH"
+                                  ? "bg-bearish/15 text-bearish"
+                                  : "bg-secondary text-muted-foreground"
+                              }`}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        <h3 className="text-sm font-semibold leading-tight mb-1">{item.title}</h3>
+                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{item.summary}</p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <span className="text-[10px] text-muted-foreground">{item.date}</span>
+                          <span className="text-[10px] text-muted-foreground">·</span>
+                          <span className="text-[10px] text-primary font-medium">{item.source}</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="recent"
+                  initial={{ opacity: 0, x: 16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -16 }}
+                  transition={{ duration: 0.15 }}
+                  className="flex flex-col gap-3"
+                >
+                  {feedItems.filter((_, i) => i >= 2).map((item, i) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all"
+                    >
+                      <div className="p-3.5">
+                        <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                          {item.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                                tag === "Earnings Alert"
+                                  ? "bg-accent/15 text-accent"
+                                  : tag === "BULLISH"
+                                  ? "bg-bullish/15 text-bullish"
+                                  : tag === "BEARISH"
+                                  ? "bg-bearish/15 text-bearish"
+                                  : "bg-secondary text-muted-foreground"
+                              }`}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        <h3 className="text-sm font-semibold leading-tight mb-1">{item.title}</h3>
+                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{item.summary}</p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <span className="text-[10px] text-muted-foreground">{item.date}</span>
+                          <span className="text-[10px] text-muted-foreground">·</span>
+                          <span className="text-[10px] text-primary font-medium">{item.source}</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
         </motion.div>
