@@ -9,7 +9,7 @@ createRoot(document.getElementById("root")!).render(
     <Toaster
       position="top-center"
       theme="dark"
-      offset="45vh"
+      style={{ top: '50%', transform: 'translateY(-50%)' }}
       toastOptions={{
         style: {
           background: 'linear-gradient(135deg, hsl(212 58% 18% / 0.95), hsl(210 100% 65% / 0.15))',
