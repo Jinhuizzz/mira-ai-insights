@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { ArrowLeft, TrendingUp, TrendingDown, ChevronUp, ChevronDown } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { ArrowLeft, TrendingUp, TrendingDown, ChevronUp, ChevronDown, Search, Plus, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SparklineChart from "../components/SparklineChart";
 import LargeChart from "../components/LargeChart";
@@ -11,6 +11,11 @@ const companyLogos: Record<string, string> = {
   NVDA: "https://logo.clearbit.com/nvidia.com",
   MSFT: "https://logo.clearbit.com/microsoft.com",
   AMZN: "https://logo.clearbit.com/amazon.com",
+  GOOGL: "https://logo.clearbit.com/google.com",
+  META: "https://logo.clearbit.com/meta.com",
+  NFLX: "https://logo.clearbit.com/netflix.com",
+  AMD: "https://logo.clearbit.com/amd.com",
+  INTC: "https://logo.clearbit.com/intel.com",
 };
 
 const marketIndices = [
@@ -19,7 +24,15 @@ const marketIndices = [
   { name: "Nasdaq", value: 16388.24, change: 1.14 },
 ];
 
-const watchlistData = [
+const allStocksPool = [
+  { ticker: "GOOGL", name: "Alphabet Inc.", price: 141.80, change: 1.92, changePct: 1.37 },
+  { ticker: "META", name: "Meta Platforms", price: 485.20, change: 7.30, changePct: 1.53 },
+  { ticker: "NFLX", name: "Netflix Inc.", price: 628.50, change: -3.15, changePct: -0.50 },
+  { ticker: "AMD", name: "Advanced Micro Devices", price: 162.35, change: 4.20, changePct: 2.65 },
+  { ticker: "INTC", name: "Intel Corp.", price: 43.80, change: -0.95, changePct: -2.12 },
+];
+
+const defaultWatchlist = [
   {
     ticker: "AAPL", name: "Apple Inc.", price: 189.84, change: 2.34, changePct: 1.25,
     sparkline: [182, 184, 183, 186, 185, 187, 188, 189, 190, 189.84],
@@ -57,7 +70,7 @@ const watchlistData = [
     marketCap: "$1.81T", peRatio: "65.4", volume: "42.1M", avgVolume: "45.8M",
     high52w: "$756.06", low52w: "$392.30", dividend: "0.02%", eps: "$11.24",
     sector: "Technology",
-    description: "NVIDIA Corporation provides graphics, computing and networking solutions. The company operates through Graphics and Compute & Networking segments.",
+    description: "NVIDIA Corporation provides graphics, computing and networking solutions.",
   },
   {
     ticker: "MSFT", name: "Microsoft Corp.", price: 390.25, change: -5.18, changePct: -1.31,
@@ -70,7 +83,7 @@ const watchlistData = [
     marketCap: "$2.90T", peRatio: "35.1", volume: "22.8M", avgVolume: "25.4M",
     high52w: "$430.82", low52w: "$309.45", dividend: "0.72%", eps: "$11.12",
     sector: "Technology",
-    description: "Microsoft Corporation develops and supports software, services, devices and solutions worldwide across productivity, cloud, and personal computing.",
+    description: "Microsoft Corporation develops and supports software, services, devices and solutions worldwide.",
   },
   {
     ticker: "AMZN", name: "Amazon.com Inc.", price: 178.92, change: 3.45, changePct: 1.96,
@@ -83,7 +96,7 @@ const watchlistData = [
     marketCap: "$1.86T", peRatio: "58.3", volume: "48.7M", avgVolume: "52.1M",
     high52w: "$189.77", low52w: "$118.35", dividend: "—", eps: "$3.07",
     sector: "Consumer Discretionary",
-    description: "Amazon.com, Inc. engages in the retail sale of consumer products, advertising, and subscription services through online and physical stores worldwide.",
+    description: "Amazon.com, Inc. engages in the retail sale of consumer products, advertising, and subscription services.",
   },
 ];
 
@@ -92,12 +105,24 @@ type SortDir = "asc" | "desc";
 
 interface WatchlistPageProps {
   onSubPageChange?: (isSubPage: boolean) => void;
+  showAddStock?: boolean;
+  onCloseAddStock?: () => void;
 }
 
-const WatchlistPage = ({ onSubPageChange }: WatchlistPageProps) => {
-  const [selected, setSelected] = useState<typeof watchlistData[0] | null>(null);
+const WatchlistPage = ({ onSubPageChange, showAddStock, onCloseAddStock }: WatchlistPageProps) => {
+  const [selected, setSelected] = useState<typeof defaultWatchlist[0] | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("symbol");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
+  const [watchlistTickers, setWatchlistTickers] = useState<string[]>(defaultWatchlist.map(s => s.ticker));
+  const [addStockSearch, setAddStockSearch] = useState("");
+
+  useEffect(() => {
+    if (showAddStock) {
+      onSubPageChange?.(true);
+    }
+  }, [showAddStock]);
+
+  const watchlistData = useMemo(() => defaultWatchlist.filter(s => watchlistTickers.includes(s.ticker)), [watchlistTickers]);
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -117,12 +142,108 @@ const WatchlistPage = ({ onSubPageChange }: WatchlistPageProps) => {
       return sortDir === "asc" ? a.changePct - b.changePct : b.changePct - a.changePct;
     });
     return sorted;
-  }, [sortKey, sortDir]);
+  }, [watchlistData, sortKey, sortDir]);
+
+  const filteredAddStocks = useMemo(() => {
+    return allStocksPool.filter(s =>
+      !watchlistTickers.includes(s.ticker) &&
+      (s.ticker.toLowerCase().includes(addStockSearch.toLowerCase()) ||
+       s.name.toLowerCase().includes(addStockSearch.toLowerCase()))
+    );
+  }, [addStockSearch, watchlistTickers]);
+
+  const handleAddStock = (ticker: string) => {
+    setWatchlistTickers(prev => [...prev, ticker]);
+  };
+
+  const handleRemoveStock = (ticker: string) => {
+    setWatchlistTickers(prev => prev.filter(t => t !== ticker));
+  };
 
   const SortIcon = ({ col }: { col: SortKey }) => {
     if (sortKey !== col) return <ChevronUp className="w-3 h-3 text-muted-foreground/40" />;
     return sortDir === "asc" ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />;
   };
+
+  if (showAddStock) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 40 }}
+        transition={{ duration: 0.2 }}
+        className="px-4 py-4"
+      >
+        <button
+          onClick={() => { onCloseAddStock?.(); onSubPageChange?.(false); setAddStockSearch(""); }}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground mb-5 hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </button>
+        <h2 className="text-lg font-bold mb-1">Add Stock</h2>
+        <p className="text-xs text-muted-foreground mb-4">Search and add stocks to your watchlist</p>
+
+        {/* Search */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Search by ticker or name..."
+            value={addStockSearch}
+            onChange={(e) => setAddStockSearch(e.target.value)}
+            className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-secondary/60 border border-border/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
+            autoFocus
+          />
+        </div>
+
+        {/* Available stocks */}
+        <div className="flex flex-col gap-2">
+          {filteredAddStocks.map((stock, i) => (
+            <motion.div
+              key={stock.ticker}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              className="bg-card border border-border/50 rounded-xl px-4 py-3 flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  src={companyLogos[stock.ticker] || ""}
+                  alt={stock.name}
+                  className="w-8 h-8 rounded-lg bg-secondary object-contain"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
+                <div>
+                  <div className="text-sm font-bold font-mono">{stock.ticker}</div>
+                  <div className="text-xs text-muted-foreground">{stock.name}</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <div className="text-sm font-mono font-semibold">${stock.price.toFixed(2)}</div>
+                  <div className={`text-xs font-mono ${stock.change >= 0 ? "text-bullish" : "text-bearish"}`}>
+                    {stock.change >= 0 ? "+" : ""}{stock.changePct.toFixed(2)}%
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleAddStock(stock.ticker)}
+                  className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.div>
+          ))}
+          {filteredAddStocks.length === 0 && (
+            <p className="text-sm text-muted-foreground text-center py-8">
+              {addStockSearch ? "No matching stocks found" : "All available stocks are in your watchlist"}
+            </p>
+          )}
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <div className="px-4 py-4">

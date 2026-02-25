@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, FileText, BarChart3, Menu, History, Bot, Bookmark } from "lucide-react";
+import { Bell, FileText, BarChart3, Menu, History, Bot, Bookmark, Plus } from "lucide-react";
 import MiraBrainIcon from "./components/MiraBrainIcon";
 import { motion, AnimatePresence } from "framer-motion";
 import NowPage from "./pages/NowPage";
@@ -36,6 +36,7 @@ const App = () => {
   const [showSavedReports, setShowSavedReports] = useState(false);
   const [showReadingHistory, setShowReadingHistory] = useState(false);
   const [showMiraHistory, setShowMiraHistory] = useState(false);
+  const [showAddStock, setShowAddStock] = useState(false);
 
   const consumeCredits = (amount: number) => {
     setCredits((prev) => Math.max(0, prev - amount));
@@ -52,7 +53,7 @@ const App = () => {
       case "now": return <NowPage onAskMira={handleAskMiraFromNow} currentIndex={nowCardIndex} setCurrentIndex={setNowCardIndex} onSubPageChange={setIsSubPage} />;
       case "mira": return <AskMiraPage key={miraSessionKey} credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} onSubPageChange={setIsSubPage} showHistory={showMiraHistory} onCloseHistory={() => setShowMiraHistory(false)} />;
       case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} onSubPageChange={setIsSubPage} showSavedReports={showSavedReports} onCloseSavedReports={() => setShowSavedReports(false)} showReadingHistory={showReadingHistory} onCloseReadingHistory={() => setShowReadingHistory(false)} />;
-      case "watchlist": return <WatchlistPage onSubPageChange={setIsSubPage} />;
+      case "watchlist": return <WatchlistPage onSubPageChange={setIsSubPage} showAddStock={showAddStock} onCloseAddStock={() => setShowAddStock(false)} />;
     }
   };
 
@@ -69,6 +70,8 @@ const App = () => {
             <span className="gradient-holographic-text">MIRA</span>
           ) : activeTab === "research" ? (
             <span className="gradient-holographic-text">Research</span>
+          ) : activeTab === "watchlist" ? (
+            <span className="gradient-holographic-text">Watchlist</span>
           ) : (
             <>
               <span className="gradient-holographic-text">watchwise</span>
@@ -96,6 +99,10 @@ const App = () => {
                 <Bookmark className="w-5 h-5 text-muted-foreground" />
               </button>
             </>
+          ) : activeTab === "watchlist" ? (
+            <button onClick={() => setShowAddStock(true)} className="p-2 rounded-lg hover:bg-secondary transition-colors">
+              <Plus className="w-5 h-5 text-muted-foreground" />
+            </button>
           ) : (
             <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
               <Bot className="w-5 h-5 text-muted-foreground" />
