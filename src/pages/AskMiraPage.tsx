@@ -24,6 +24,12 @@ interface ArchivedChat {
   date: string;
 }
 
+interface CreatedTeam {
+  id: number;
+  name: string;
+  focus: string;
+}
+
 interface AskMiraPageProps {
   credits: number;
   onConsumeCredits: (amount: number) => void;
@@ -81,6 +87,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
     ], date: "Feb 20" },
   ]);
   const [viewingArchivedChat, setViewingArchivedChat] = useState<ArchivedChat | null>(null);
+  const [createdTeams, setCreatedTeams] = useState<CreatedTeam[]>([]);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const processedContextRef = useRef<string | null>(null);
   const plusMenuRef = useRef<HTMLDivElement>(null);
@@ -167,6 +174,10 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
 
   const handleConfirmNewChat = () => {
     setShowNewChatModal(false);
+    // Save created team
+    const newTeam: CreatedTeam = { id: Date.now(), name: persona, focus };
+    setCreatedTeams((prev) => [...prev, newTeam]);
+    setChatName(persona);
     // Add Mira's opening message
     const miraGreeting: ChatMessage = {
       id: Date.now(),
@@ -303,26 +314,42 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
 
   return (
     <div className={`flex flex-col ${hasMessages ? "h-[calc(100vh-3.5rem)]" : "h-[calc(100vh-8rem)]"}`}>
-      <div className="flex items-center justify-between px-4 pt-4">
-        {onBack ? (
-          <button
-            onClick={onBack}
-            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-        ) : hasMessages ? (
+      {/* Chat header with team name */}
+      {hasMessages && persona ? (
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-border/50">
           <button
             onClick={archiveAndReset}
-            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+            className="flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-        ) : (
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-semibold truncate">{persona}</h3>
+            {focus && <p className="text-[10px] text-muted-foreground">{focus}</p>}
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between px-4 pt-4">
+          {onBack ? (
+            <button
+              onClick={onBack}
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          ) : hasMessages ? (
+            <button
+              onClick={archiveAndReset}
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          ) : (
+            <div />
+          )}
           <div />
-        )}
-        <div />
-      </div>
+        </div>
+      )}
 
       {!hasMessages ? (
         <div className="flex-1 flex flex-col items-center justify-center px-4">
@@ -342,6 +369,39 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 </button>
               </div>
             </motion.div>
+          )}
+
+          {/* Created teams */}
+          {createdTeams.length > 0 && (
+            <div className="w-full max-w-sm mb-6">
+              <div className="flex flex-col gap-2">
+                {createdTeams.map((team) => (
+                  <button
+                    key={team.id}
+                    onClick={() => {
+                      setPersona(team.name);
+                      setFocus(team.focus);
+                      setChatName(team.name);
+                      const miraGreeting: ChatMessage = {
+                        id: Date.now(),
+                        role: "assistant",
+                        content: "What can I do for you?",
+                      };
+                      setMessages([miraGreeting]);
+                    }}
+                    className="flex items-center gap-3 bg-card border border-border/50 rounded-xl px-4 py-3 hover:border-border transition-all text-left"
+                  >
+                    <div className="w-9 h-9 rounded-xl gradient-holographic flex items-center justify-center shrink-0">
+                      <span className="text-sm font-bold text-primary-foreground">{team.name.charAt(0).toUpperCase()}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold truncate">{team.name}</p>
+                      <p className="text-[11px] text-muted-foreground truncate">{team.focus}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
           )}
 
           <motion.button
