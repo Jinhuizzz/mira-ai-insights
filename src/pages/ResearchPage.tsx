@@ -241,13 +241,13 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange }: ResearchPa
           className="px-4 py-4"
         >
           {/* Header */}
-          <div className="flex items-center justify-between gap-3 mb-5">
-            <h2 className="text-xs font-bold leading-snug whitespace-nowrap">
+          <div className="mb-5">
+            <h2 className="text-xs font-bold leading-snug whitespace-nowrap mb-2.5">
               Wall-Street Grade research, in seconds.
             </h2>
             <button
               onClick={() => { setShowBrowse(true); onSubPageChange?.(true); }}
-              className="flex-shrink-0 text-[10px] font-semibold px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap"
+              className="text-[10px] font-semibold px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap"
             >
               Browse all reports
             </button>
