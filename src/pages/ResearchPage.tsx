@@ -123,11 +123,13 @@ const SavedReportsScreen = ({ onBack }: { onBack: () => void }) => (
     transition={{ duration: 0.2 }}
     className="px-4 py-4"
   >
-    <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground mb-5 hover:text-foreground transition-colors">
-      <ArrowLeft className="w-4 h-4" />
-      Back
-    </button>
-    <h2 className="text-lg font-bold mb-1">Saved Reports</h2>
+    <div className="flex items-center gap-3 mb-4">
+      <button onClick={onBack} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors">
+        <ArrowLeft className="w-5 h-5" />
+      </button>
+      <h2 className="text-lg font-bold">Saved Reports</h2>
+    </div>
+    
     <p className="text-xs text-muted-foreground mb-4">Your bookmarked reports</p>
     <div className="flex flex-col gap-2">
       {savedReports.map((item, i) => (
@@ -164,11 +166,12 @@ const ReadingHistoryScreen = ({ onBack }: { onBack: () => void }) => (
     transition={{ duration: 0.2 }}
     className="px-4 py-4"
   >
-    <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground mb-5 hover:text-foreground transition-colors">
-      <ArrowLeft className="w-4 h-4" />
-      Back
-    </button>
-    <h2 className="text-lg font-bold mb-4">Reading History</h2>
+    <div className="flex items-center gap-3 mb-4">
+      <button onClick={onBack} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors">
+        <ArrowLeft className="w-5 h-5" />
+      </button>
+      <h2 className="text-lg font-bold">Reading History</h2>
+    </div>
     <div className="flex flex-col gap-2">
       {readingHistory.map((item, i) => (
         <motion.div
@@ -213,9 +216,8 @@ const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
     >
       {/* Header with search + back */}
       <div className="flex items-center justify-between mb-5">
-        <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          Back
+        <button onClick={onBack} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors">
+          <ArrowLeft className="w-5 h-5" />
         </button>
         <button
           onClick={() => setShowSearch(!showSearch)}
