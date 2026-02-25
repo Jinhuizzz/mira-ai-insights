@@ -431,9 +431,9 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => { setShowReading(true); onSubPageChange?.(true); }}
-                        className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-primary text-primary-foreground"
+                        className="w-7 h-7 rounded-full flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                       >
-                        Start Reading
+                        <BookOpen className="w-3.5 h-3.5" />
                       </button>
                       <button className="text-muted-foreground hover:text-foreground transition-colors">
                         <Bookmark className="w-3.5 h-3.5" />
