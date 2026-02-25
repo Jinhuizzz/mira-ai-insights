@@ -303,7 +303,7 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
             <h2 className="text-sm font-bold leading-snug min-w-0">
               Wall-Street Grade research, in seconds.
             </h2>
-            <div className="flex items-center gap-1.5 flex-shrink-0">
+            <div className="flex flex-col gap-1.5 flex-shrink-0">
               <button
                 onClick={() => { setShowBrowse(true); onSubPageChange?.(true); }}
                 className="text-[9px] font-semibold px-2 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap"
