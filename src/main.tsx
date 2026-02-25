@@ -19,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
           borderRadius: '12px',
           fontSize: '13px',
           fontWeight: 500,
+          textAlign: 'center' as const,
         }
       }}
     />
