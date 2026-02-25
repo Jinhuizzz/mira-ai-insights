@@ -374,13 +374,13 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                 href="https://substack.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[9px] font-semibold px-2 py-1.5 rounded-lg bg-secondary text-foreground hover:bg-secondary/80 border border-border/50 transition-colors whitespace-nowrap text-center"
+                className="text-[11px] font-semibold px-2.5 py-1.5 rounded-lg bg-secondary text-foreground hover:bg-secondary/80 border border-border/50 transition-colors whitespace-nowrap text-center"
               >
                 Subscribe our Substack
               </a>
               <button
                 onClick={() => { setShowBrowse(true); onSubPageChange?.(true); }}
-                className="text-[9px] font-semibold px-2 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap"
+                className="text-[11px] font-semibold px-2.5 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap"
               >
                 Browse all reports
               </button>
