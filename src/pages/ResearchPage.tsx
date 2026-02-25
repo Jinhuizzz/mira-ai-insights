@@ -316,14 +316,10 @@ const ReadingScreen = ({ report, onBack }: { report: typeof latestReport; onBack
     transition={{ duration: 0.2 }}
     className="flex flex-col h-full"
   >
-    <div className="flex items-center gap-3 px-4 py-3 border-b border-border/50">
+    <div className="flex items-center px-4 py-3 border-b border-border/50">
       <button onClick={onBack} className="flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft className="w-5 h-5" />
       </button>
-      <div className="flex-1 min-w-0">
-        <span className="text-[10px] font-mono font-semibold text-primary">{report.ticker}</span>
-        <h3 className="text-sm font-semibold truncate">{report.title}</h3>
-      </div>
     </div>
     <div className="flex-1 overflow-y-auto px-4 py-6">
       <div className="bg-secondary/30 border border-border/50 rounded-xl p-6 mb-4">
