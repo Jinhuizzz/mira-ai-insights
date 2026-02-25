@@ -398,7 +398,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
               <div className="grid grid-cols-3 gap-3">
                 {createdTeams.map((team) => (
                   <div key={team.id} className="relative group">
-                    {/* Action buttons top-right */}
+                    {/* Action buttons top-right (hide delete for default Generalist) */}
                     <div className="absolute top-1.5 right-1.5 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                       <button
                         onClick={(e) => {
@@ -410,15 +410,17 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                       >
                         <Pencil className="w-2.5 h-2.5 text-muted-foreground" />
                       </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCreatedTeams((prev) => prev.filter((t) => t.id !== team.id));
-                        }}
-                        className="w-5 h-5 rounded-md bg-secondary/80 flex items-center justify-center hover:bg-destructive/20"
-                      >
-                        <Trash2 className="w-2.5 h-2.5 text-muted-foreground" />
-                      </button>
+                      {team.id !== 0 && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCreatedTeams((prev) => prev.filter((t) => t.id !== team.id));
+                          }}
+                          className="w-5 h-5 rounded-md bg-secondary/80 flex items-center justify-center hover:bg-destructive/20"
+                        >
+                          <Trash2 className="w-2.5 h-2.5 text-muted-foreground" />
+                        </button>
+                      )}
                     </div>
 
                     {/* Rename modal */}
