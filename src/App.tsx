@@ -74,7 +74,23 @@ const App = () => {
           ) : activeTab === "watchlist" ? (
             <span className="gradient-holographic-text">Watchlist</span>
           ) : (
-            <span className="gradient-holographic-text">WatchWise.ai</span>
+            <span className="flex items-center gap-0">
+              <svg width="22" height="18" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-0.5 -mt-px">
+                <path d="M2 2L9 20L13.5 6" stroke="url(#wg1)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                <path d="M8 2L15 20L19.5 6" stroke="url(#wg2)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                <defs>
+                  <linearGradient id="wg1" x1="2" y1="2" x2="13" y2="20" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#4B8BF5"/>
+                    <stop offset="1" stopColor="#2E5FCC"/>
+                  </linearGradient>
+                  <linearGradient id="wg2" x1="8" y1="2" x2="19" y2="20" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#2E5FCC"/>
+                    <stop offset="1" stopColor="#5B9BFF"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <span className="text-foreground font-normal">atch</span><span className="text-foreground font-semibold">Wise</span><span style={{ color: '#4B8BF5' }}>.ai</span>
+            </span>
           )}
         </h1>
         <div className="flex items-center gap-2">
