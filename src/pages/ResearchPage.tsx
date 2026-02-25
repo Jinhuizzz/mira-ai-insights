@@ -519,7 +519,7 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                   key={tab}
                   onClick={() => setActiveSection(tab)}
                   className={`text-xs font-semibold uppercase tracking-wider transition-colors ${
-                    activeSection === tab ? "text-foreground" : "text-muted-foreground/40"
+                    activeSection === tab ? "text-foreground" : "text-muted-foreground/60"
                   }`}
                 >
                   {tab === "focus" ? "In Focus" : "Recent Updates"}
