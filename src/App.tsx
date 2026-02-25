@@ -63,9 +63,11 @@ const App = () => {
       {/* Header */}
       {!isSubPage && (
       <header className="flex items-center justify-between px-4 py-3 border-b border-border/50 glass sticky top-0 z-40">
+        <div className="w-20 flex justify-start">
         <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-secondary transition-colors">
           <Menu className="w-5 h-5 text-muted-foreground" />
         </button>
+        </div>
         <h1 className="text-lg font-bold tracking-tight">
           {activeTab === "mira" ? (
             <span className="gradient-holographic-text">MIRA</span>
@@ -77,23 +79,17 @@ const App = () => {
             <span className="gradient-holographic-text">WatchWise.ai</span>
           )}
         </h1>
-        <div className="flex items-center gap-2">
+        <div className="w-20 flex justify-end items-center gap-2">
           {activeTab === "mira" ? (
             <button onClick={() => setShowMiraHistory(true)} className="p-2 rounded-lg hover:bg-secondary transition-colors">
               <History className="w-5 h-5 text-muted-foreground" />
             </button>
           ) : activeTab === "research" ? (
             <>
-              <button
-                onClick={() => setShowReadingHistory(true)}
-                className="p-2 rounded-lg hover:bg-secondary transition-colors"
-              >
+              <button onClick={() => setShowReadingHistory(true)} className="p-2 rounded-lg hover:bg-secondary transition-colors">
                 <History className="w-5 h-5 text-muted-foreground" />
               </button>
-              <button
-                onClick={() => setShowSavedReports(true)}
-                className="p-2 rounded-lg hover:bg-secondary transition-colors"
-              >
+              <button onClick={() => setShowSavedReports(true)} className="p-2 rounded-lg hover:bg-secondary transition-colors">
                 <Bookmark className="w-5 h-5 text-muted-foreground" />
               </button>
             </>
