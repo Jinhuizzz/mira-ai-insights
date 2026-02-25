@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Globe, Mail, CircleDollarSign, ChevronRight, ArrowLeft, Camera, Pencil, LogOut } from "lucide-react";
+import { X, Globe, Mail, CircleDollarSign, ChevronRight, ArrowLeft, Camera, Pencil, LogOut, Gift } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
@@ -129,6 +129,36 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                             <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
                           </div>
                         </div>
+                      </button>
+                    </div>
+
+                    {/* Invite & Earn Card */}
+                    <div className="px-4 pb-4">
+                      <button
+                        onClick={() => {
+                          if (navigator.share) {
+                            navigator.share({
+                              title: "Join WatchWise",
+                              text: "Use my referral code to sign up and we'll both get 500 points!",
+                              url: "https://watchwise.ai/invite",
+                            }).catch(() => {});
+                          } else {
+                            navigator.clipboard.writeText("https://watchwise.ai/invite");
+                            // Could add a toast here
+                          }
+                        }}
+                        className="w-full rounded-2xl bg-gradient-to-br from-primary/15 to-accent/20 border border-primary/20 p-4 hover:from-primary/20 hover:to-accent/25 transition-all text-left group"
+                      >
+                        <div className="flex items-center gap-2.5 mb-1.5">
+                          <Gift className="w-5 h-5 text-primary" />
+                          <span className="text-sm font-bold">Invite & Earn</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Invite friends with your referral code.
+                        </p>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          You'll both get <span className="font-semibold text-foreground">500 points</span>.
+                        </p>
                       </button>
                     </div>
 
