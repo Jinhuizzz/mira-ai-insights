@@ -484,7 +484,7 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5">
                           <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
-                          <span className="text-[9px] text-muted-foreground">{item.progress}% · p.{item.currentPage}/{item.totalPages}</span>
+                          <span className="text-[9px] text-muted-foreground">{item.progress}% complete · p.{item.currentPage}/{item.totalPages}</span>
                         </div>
                         <p className="text-[11px] font-medium truncate mt-0.5">{item.title}</p>
                         <Progress value={item.progress} className="h-1 bg-secondary mt-1.5" />
