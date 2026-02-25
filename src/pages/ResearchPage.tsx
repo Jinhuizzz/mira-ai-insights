@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronRight, ExternalLink, Search, ArrowLeft, Calendar, X, Bookmark, BookOpen } from "lucide-react";
+import { ChevronRight, ExternalLink, Search, ArrowLeft, Calendar, X, Bookmark, BookOpen, History } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -58,13 +58,59 @@ const recentUpdates = [
 
 const sectors = ["Technology", "Healthcare", "Finance", "Energy", "Consumer", "Industrial"];
 
+const readingHistory = [
+  { id: 1, title: "Meta's Advertising Engine Roars", ticker: "META", date: "Feb 15", readTime: "5 min" },
+  { id: 2, title: "Amazon's AWS Growth Trajectory", ticker: "AMZN", date: "Feb 12", readTime: "7 min" },
+  { id: 3, title: "Google's Search Dominance Under Threat?", ticker: "GOOGL", date: "Feb 10", readTime: "6 min" },
+  { id: 4, title: "Netflix Subscriber Surge Analysis", ticker: "NFLX", date: "Feb 8", readTime: "4 min" },
+];
+
 const datePeriods = ["Last 7 days", "Last 30 days", "Last 90 days", "All time"];
+
+/* ─── Reading History Screen ─── */
+const ReadingHistoryScreen = ({ onBack }: { onBack: () => void }) => (
+  <motion.div
+    initial={{ opacity: 0, x: 40 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: 40 }}
+    transition={{ duration: 0.2 }}
+    className="px-4 py-4"
+  >
+    <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground mb-5 hover:text-foreground transition-colors">
+      <ArrowLeft className="w-4 h-4" />
+      Back
+    </button>
+    <h2 className="text-lg font-bold mb-4">Reading History</h2>
+    <div className="flex flex-col gap-2">
+      {readingHistory.map((item, i) => (
+        <motion.div
+          key={item.id}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.05 }}
+          className="bg-card border border-border/50 rounded-xl px-4 py-3 flex items-center justify-between cursor-pointer hover:border-border transition-all"
+        >
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
+              <span className="text-[10px] text-muted-foreground">{item.readTime}</span>
+            </div>
+            <span className="text-sm font-medium truncate block">{item.title}</span>
+          </div>
+          <span className="text-xs text-muted-foreground flex-shrink-0 ml-2">{item.date}</span>
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+);
 
 /* ─── Browse Reports Screen ─── */
 const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
   const [selectedPeriod, setSelectedPeriod] = useState("All time");
   const [earningsAlert, setEarningsAlert] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
 
   const toggleSector = (s: string) =>
     setSelectedSectors((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
@@ -77,11 +123,43 @@ const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
       transition={{ duration: 0.2 }}
       className="px-4 py-4"
     >
-      {/* Back header */}
-      <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground mb-5 hover:text-foreground transition-colors">
-        <ArrowLeft className="w-4 h-4" />
-        Back
-      </button>
+      {/* Header with back + search */}
+      <div className="flex items-center justify-between mb-5">
+        <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </button>
+        <button
+          onClick={() => setShowSearch(!showSearch)}
+          className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-all"
+        >
+          {showSearch ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
+        </button>
+      </div>
+
+      {/* Search input (collapsible) */}
+      <AnimatePresence>
+        {showSearch && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden mb-4"
+          >
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search reports..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-secondary/60 border border-border/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
+                autoFocus
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <h2 className="text-lg font-bold mb-4">Browse Reports</h2>
 
@@ -136,7 +214,6 @@ const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
 
       <Separator className="my-4" />
 
-      {/* Placeholder results */}
       <div className="text-xs text-muted-foreground text-center py-8">Select filters to browse reports</div>
     </motion.div>
   );
@@ -144,14 +221,16 @@ const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
 
 /* ─── Research Home ─── */
 const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange }: ResearchPageProps) => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [showBrowse, setShowBrowse] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [activeSection, setActiveSection] = useState<"focus" | "recent">("focus");
 
   return (
     <AnimatePresence mode="wait">
       {showBrowse ? (
         <BrowseReportsScreen key="browse" onBack={() => { setShowBrowse(false); onSubPageChange?.(false); }} />
+      ) : showHistory ? (
+        <ReadingHistoryScreen key="history" onBack={() => { setShowHistory(false); onSubPageChange?.(false); }} />
       ) : (
         <motion.div
           key="home"
@@ -162,29 +241,16 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange }: ResearchPa
           className="px-4 py-4"
         >
           {/* Header */}
-          <div className="flex items-start justify-between gap-3 mb-3">
-            <h2 className="text-base font-bold leading-snug flex-1">
+          <div className="flex items-center justify-between gap-3 mb-5">
+            <h2 className="text-xs font-bold leading-snug whitespace-nowrap">
               Wall-Street Grade research, in seconds.
             </h2>
             <button
               onClick={() => { setShowBrowse(true); onSubPageChange?.(true); }}
-              className="flex-shrink-0 text-xs font-medium w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center"
-              title="Browse"
+              className="flex-shrink-0 text-[10px] font-semibold px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap"
             >
-              <Search className="w-3.5 h-3.5" />
+              Browse all reports
             </button>
-          </div>
-
-          {/* Search Bar */}
-          <div className="relative mb-5">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search companies, sectors"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-secondary/60 border border-border/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
-            />
           </div>
 
           <Separator className="mb-5" />
@@ -244,42 +310,45 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange }: ResearchPa
 
           {/* Continue Reading */}
           {continueReading.length > 0 && (
-            <div className="mb-6">
+            <div className="mb-4">
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Continue Reading</div>
-              <div className="flex flex-col gap-2">
+              <div className="flex gap-2.5 overflow-x-auto pb-2 -mx-4 px-4" style={{ scrollbarWidth: 'none' }}>
                 {continueReading.map((item, i) => (
                   <motion.div
                     key={item.id}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: 12 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all"
+                    className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all flex-shrink-0 w-40"
                   >
-                    <div className="flex items-center gap-3 p-3">
-                      <img
-                        src={item.image}
-                        alt={item.ticker}
-                        className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1.5 mb-0.5">
-                          <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
-                        </div>
-                        <p className="text-xs font-medium truncate">{item.title}</p>
-                        <div className="mt-1.5">
-                          <Progress value={item.progress} className="h-1 bg-secondary" />
-                          <span className="text-[10px] text-muted-foreground mt-0.5 block">
-                            {item.progress}% complete · page {item.currentPage} of {item.totalPages}
-                          </span>
-                        </div>
+                    <div className="p-2.5">
+                      <img src={item.image} alt={item.ticker} className="w-8 h-8 rounded-md object-cover mb-2" />
+                      <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
+                      <p className="text-[11px] font-medium truncate mt-0.5">{item.title}</p>
+                      <div className="mt-2">
+                        <Progress value={item.progress} className="h-1 bg-secondary" />
+                        <span className="text-[9px] text-muted-foreground mt-0.5 block">
+                          {item.progress}% · p.{item.currentPage}/{item.totalPages}
+                        </span>
                       </div>
-                      <BookOpen className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                     </div>
                   </motion.div>
                 ))}
               </div>
             </div>
           )}
+
+          {/* Reading History Button */}
+          <button
+            onClick={() => { setShowHistory(true); onSubPageChange?.(true); }}
+            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary/40 border border-border/50 hover:border-border transition-all mb-6 cursor-pointer"
+          >
+            <div className="flex items-center gap-2.5">
+              <History className="w-4 h-4 text-muted-foreground" />
+              <span className="text-xs font-semibold">Reading History</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </button>
 
           {/* Swipeable Tabs: In Focus / Recent Updates */}
           <div className="mb-6">
