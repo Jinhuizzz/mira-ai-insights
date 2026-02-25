@@ -299,16 +299,18 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
           className="px-4 py-4"
         >
           {/* Header */}
-          <div className="flex items-center justify-between gap-3 mb-5">
-            <h2 className="text-base font-bold leading-snug min-w-0">
-              Wall-Street Grade research, in seconds.
-            </h2>
-            <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="mb-5">
+            <div className="flex items-center justify-between gap-3 mb-2.5">
+              <h2 className="text-base font-bold leading-snug min-w-0">
+                Wall-Street Grade research, in seconds.
+              </h2>
+            </div>
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => { setShowBrowse(true); onSubPageChange?.(true); }}
                 className="text-[10px] font-semibold px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap"
               >
-                Browse
+                Browse all reports
               </button>
               <a
                 href="https://substack.com"
@@ -316,7 +318,7 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                 rel="noopener noreferrer"
                 className="text-[10px] font-semibold px-3 py-1.5 rounded-lg bg-secondary text-foreground hover:bg-secondary/80 border border-border/50 transition-colors whitespace-nowrap"
               >
-                Substack
+                Subscribe to our Substack
               </a>
             </div>
           </div>
