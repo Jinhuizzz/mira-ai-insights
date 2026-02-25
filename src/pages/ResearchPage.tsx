@@ -433,17 +433,7 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
               animate={{ opacity: 1, y: 0 }}
               className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all"
             >
-              <div className="flex">
-                {/* Left: Company Image */}
-                <div className="w-28 flex-shrink-0">
-                  <img
-                    src={latestReport.image}
-                    alt={latestReport.ticker}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                {/* Right: Info */}
-                <div className="flex-1 p-3.5 flex flex-col justify-between min-w-0">
+              <div className="p-3.5">
                   <div>
                     <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
                       {latestReport.tags.map((tag) => (
@@ -476,7 +466,6 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                       </button>
                     </div>
                   </div>
-                </div>
               </div>
             </motion.div>
           </div>
