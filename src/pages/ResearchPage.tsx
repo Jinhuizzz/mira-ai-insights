@@ -482,7 +482,6 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                     className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all flex-shrink-0 w-64"
                   >
                     <div className="flex items-center gap-3 p-2.5">
-                      <img src={item.image} alt={item.ticker} className="w-9 h-9 rounded-md object-cover flex-shrink-0" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5">
                           <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
