@@ -371,10 +371,27 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             </motion.div>
           )}
 
-          {/* Created teams */}
+          <motion.button
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            onClick={() => {
+              setChatName("");
+              setPersona("");
+              setFocus("");
+              setShowNewChatModal(true);
+            }}
+            className="flex flex-col items-center gap-3 group mb-6"
+          >
+            <div className="w-16 h-16 rounded-2xl border-2 border-dashed border-border hover:border-primary/50 flex items-center justify-center transition-colors group-hover:bg-secondary/60">
+              <Plus className="w-7 h-7 text-muted-foreground group-hover:text-primary transition-colors" />
+            </div>
+            <span className="text-sm font-semibold text-foreground">Create your AI team</span>
+          </motion.button>
+
+          {/* Created teams - square cards */}
           {createdTeams.length > 0 && (
-            <div className="w-full max-w-sm mb-6">
-              <div className="flex flex-col gap-2">
+            <div className="w-full max-w-sm">
+              <div className="grid grid-cols-3 gap-3">
                 {createdTeams.map((team) => (
                   <button
                     key={team.id}
@@ -389,37 +406,18 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                       };
                       setMessages([miraGreeting]);
                     }}
-                    className="flex items-center gap-3 bg-card border border-border/50 rounded-xl px-4 py-3 hover:border-border transition-all text-left"
+                    className="aspect-square flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
                   >
-                    <div className="w-9 h-9 rounded-xl gradient-holographic flex items-center justify-center shrink-0">
-                      <span className="text-sm font-bold text-primary-foreground">{team.name.charAt(0).toUpperCase()}</span>
+                    <div className="w-10 h-10 rounded-xl gradient-holographic flex items-center justify-center shrink-0">
+                      <span className="text-base font-bold text-primary-foreground">{team.name.charAt(0).toUpperCase()}</span>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold truncate">{team.name}</p>
-                      <p className="text-[11px] text-muted-foreground truncate">{team.focus}</p>
-                    </div>
+                    <p className="text-xs font-semibold text-center truncate w-full">{team.name}</p>
+                    <p className="text-[10px] text-muted-foreground text-center truncate w-full">{team.focus}</p>
                   </button>
                 ))}
               </div>
             </div>
           )}
-
-          <motion.button
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            onClick={() => {
-              setChatName("");
-              setPersona("");
-              setFocus("");
-              setShowNewChatModal(true);
-            }}
-            className="flex flex-col items-center gap-3 group"
-          >
-            <div className="w-16 h-16 rounded-2xl border-2 border-dashed border-border hover:border-primary/50 flex items-center justify-center transition-colors group-hover:bg-secondary/60">
-              <Plus className="w-7 h-7 text-muted-foreground group-hover:text-primary transition-colors" />
-            </div>
-            <span className="text-sm font-semibold text-foreground">Create your AI team</span>
-          </motion.button>
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
