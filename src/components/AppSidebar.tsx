@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { X, Globe, Mail, CircleDollarSign, ChevronRight, ArrowLeft, Camera, Pencil, LogOut, Gift } from "lucide-react";
+import { useState, useCallback } from "react";
+import { X, Globe, Mail, CircleDollarSign, ChevronRight, ArrowLeft, Camera, Pencil, LogOut, Gift, Copy, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
@@ -51,6 +51,15 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
   const [editingName, setEditingName] = useState(false);
   const [nameInput, setNameInput] = useState(username);
   const [selectedLang, setSelectedLang] = useState("en");
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const inviteCode = "Z8X9C-2";
+
+  const handleCopyCode = useCallback(() => {
+    navigator.clipboard.writeText(inviteCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [inviteCode]);
 
   const handleClose = () => {
     setView("main");
@@ -58,6 +67,7 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
   };
 
   return (
+    <>
     <AnimatePresence>
       {open && (
         <>
@@ -133,17 +143,7 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                         </button>
                         <div className="h-px bg-border/30 mx-4" />
                         <button
-                          onClick={() => {
-                            if (navigator.share) {
-                              navigator.share({
-                                title: "Join WatchWise",
-                                text: "Use my referral code to sign up and we'll both get 500 points!",
-                                url: "https://watchwise.ai/invite",
-                              }).catch(() => {});
-                            } else {
-                              navigator.clipboard.writeText("https://watchwise.ai/invite");
-                            }
-                          }}
+                          onClick={() => setShowInviteModal(true)}
                           className="w-full p-4 hover:bg-secondary/80 transition-all text-left group"
                         >
                           <div className="flex items-center gap-2.5 mb-1.5">
@@ -291,6 +291,67 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
         </>
       )}
     </AnimatePresence>
+
+      {/* Invite Code Modal */}
+      <AnimatePresence>
+        {showInviteModal && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-background/70 backdrop-blur-sm z-[60]"
+              onClick={() => { setShowInviteModal(false); setCopied(false); }}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="fixed inset-0 z-[60] flex items-center justify-center p-6 pointer-events-none"
+            >
+              <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-sm shadow-xl pointer-events-auto relative">
+                <button
+                  onClick={() => { setShowInviteModal(false); setCopied(false); }}
+                  className="absolute top-3 right-3 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                <div className="text-center mb-5">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                    <Gift className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-bold mb-1">Your Invitation Code</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Share this code with your friends. You'll both get 500 points.
+                  </p>
+                </div>
+
+                <div className="bg-secondary/60 border border-border/50 rounded-xl px-4 py-3.5 text-center mb-5">
+                  <span className="text-2xl font-bold font-mono tracking-widest">{inviteCode}</span>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => { setShowInviteModal(false); setCopied(false); }}
+                    className="flex-1 px-4 py-2.5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-secondary/50 transition-colors"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={handleCopyCode}
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+                  >
+                    {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy</>}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
