@@ -3,7 +3,7 @@ import { ChevronRight, ExternalLink, Search, ArrowLeft, Calendar, X, Bookmark, M
 import { motion, AnimatePresence } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "@/components/ui/progress";
+// Progress component removed - using custom arc progress
 
 interface ResearchPageProps {
   credits: number;
@@ -473,26 +473,46 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
             <div className="mb-4">
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Continue Reading</div>
               <div className="flex gap-2.5 overflow-x-auto pb-2 -mx-4 px-4" style={{ scrollbarWidth: 'none' }}>
-                {continueReading.map((item, i) => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, x: 12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all flex-shrink-0 w-64"
-                  >
-                    <div className="flex items-center gap-3 p-2.5">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
-                          <span className="text-[9px] text-muted-foreground">{item.progress}% complete · p.{item.currentPage}/{item.totalPages}</span>
+                {continueReading.map((item, i) => {
+                  const radius = 18;
+                  const circumference = 2 * Math.PI * radius;
+                  const strokeDashoffset = circumference - (item.progress / 100) * circumference;
+                  return (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, x: 12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all flex-shrink-0 w-64"
+                    >
+                      <div className="flex items-center gap-3 p-3">
+                        {/* Arc Progress */}
+                        <div className="relative flex-shrink-0 w-12 h-12">
+                          <svg className="w-12 h-12 -rotate-90" viewBox="0 0 44 44">
+                            <circle cx="22" cy="22" r={radius} fill="none" className="stroke-secondary" strokeWidth="3" />
+                            <circle
+                              cx="22" cy="22" r={radius} fill="none"
+                              className="stroke-primary"
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                              strokeDasharray={circumference}
+                              strokeDashoffset={strokeDashoffset}
+                              style={{ transition: "stroke-dashoffset 0.5s ease" }}
+                            />
+                          </svg>
+                          <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold">{item.progress}%</span>
                         </div>
-                        <p className="text-[11px] font-medium truncate mt-0.5">{item.title}</p>
-                        <Progress value={item.progress} className="h-1 bg-secondary mt-1.5" />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
+                            <span className="text-[9px] text-muted-foreground">p.{item.currentPage}/{item.totalPages}</span>
+                          </div>
+                          <p className="text-[11px] font-medium truncate mt-0.5">{item.title}</p>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           )}
