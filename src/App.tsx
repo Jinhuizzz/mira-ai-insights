@@ -75,26 +75,27 @@ const App = () => {
             <span className="gradient-holographic-text">Watchlist</span>
           ) : (
             <span className="flex items-center">
-              <svg width="20" height="18" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-0.5 shrink-0">
-                <polygon points="0,0 6,0 14,24 11,24" fill="url(#ww-g1)" />
-                <polygon points="6,0 12,0 20,24 14,24" fill="url(#ww-g2)" />
-                <polygon points="12,0 18,0 26,24 20,24" fill="url(#ww-g3)" />
+              <svg width="22" height="20" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-0.5 shrink-0">
+                {/* Three slanted parallelogram blades forming the W mark */}
+                <path d="M6 4C6 2.9 6.7 2 7.5 2L10.5 2C11.3 2 12.2 2.9 12.5 4L17 30C17.3 31.1 16.8 32 16 32L13 32C12.2 32 11.3 31.1 11 30L6 4Z" fill="url(#ww1)" rx="2"/>
+                <path d="M13 4C13 2.9 13.7 2 14.5 2L17.5 2C18.3 2 19.2 2.9 19.5 4L24 30C24.3 31.1 23.8 32 23 32L20 32C19.2 32 18.3 31.1 18 30L13 4Z" fill="url(#ww2)" rx="2"/>
+                <path d="M20 4C20 2.9 20.7 2 21.5 2L24.5 2C25.3 2 26.2 2.9 26.5 4L31 30C31.3 31.1 30.8 32 30 32L27 32C26.2 32 25.3 31.1 25 30L20 4Z" fill="url(#ww3)" rx="2"/>
                 <defs>
-                  <linearGradient id="ww-g1" x1="0" y1="0" x2="14" y2="24" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#1A3A8F"/>
-                    <stop offset="1" stopColor="#3565D4"/>
+                  <linearGradient id="ww1" x1="8" y1="2" x2="15" y2="32" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#1B2F73"/>
+                    <stop offset="1" stopColor="#2952B8"/>
                   </linearGradient>
-                  <linearGradient id="ww-g2" x1="6" y1="0" x2="20" y2="24" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#2B55C5"/>
-                    <stop offset="1" stopColor="#4B8BF5"/>
+                  <linearGradient id="ww2" x1="15" y1="2" x2="22" y2="32" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#2952B8"/>
+                    <stop offset="1" stopColor="#3D72E0"/>
                   </linearGradient>
-                  <linearGradient id="ww-g3" x1="12" y1="0" x2="26" y2="24" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#4B8BF5"/>
-                    <stop offset="1" stopColor="#6EA8FF"/>
+                  <linearGradient id="ww3" x1="22" y1="2" x2="29" y2="32" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#3D72E0"/>
+                    <stop offset="1" stopColor="#5B9BFF"/>
                   </linearGradient>
                 </defs>
               </svg>
-              <span className="text-foreground font-normal tracking-tight">atch</span><span className="text-foreground font-semibold tracking-tight">Wise</span><span style={{ color: '#4B8BF5' }}>.ai</span>
+              <span className="text-[hsl(var(--muted-foreground))] font-normal tracking-tight" style={{ color: '#B0B8C8' }}>atch</span><span className="text-foreground font-semibold tracking-tight">Wise</span><span style={{ color: '#4B8BF5' }}>.ai</span>
             </span>
           )}
         </h1>
