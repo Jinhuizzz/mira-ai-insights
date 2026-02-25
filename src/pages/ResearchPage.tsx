@@ -456,17 +456,17 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                     initial={{ opacity: 0, x: 12 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all flex-shrink-0 w-40"
+                    className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all flex-shrink-0 w-64"
                   >
-                    <div className="p-2.5">
-                      <img src={item.image} alt={item.ticker} className="w-8 h-8 rounded-md object-cover mb-2" />
-                      <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
-                      <p className="text-[11px] font-medium truncate mt-0.5">{item.title}</p>
-                      <div className="mt-2">
-                        <Progress value={item.progress} className="h-1 bg-secondary" />
-                        <span className="text-[9px] text-muted-foreground mt-0.5 block">
-                          {item.progress}% · p.{item.currentPage}/{item.totalPages}
-                        </span>
+                    <div className="flex items-center gap-3 p-2.5">
+                      <img src={item.image} alt={item.ticker} className="w-9 h-9 rounded-md object-cover flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
+                          <span className="text-[9px] text-muted-foreground">{item.progress}% · p.{item.currentPage}/{item.totalPages}</span>
+                        </div>
+                        <p className="text-[11px] font-medium truncate mt-0.5">{item.title}</p>
+                        <Progress value={item.progress} className="h-1 bg-secondary mt-1.5" />
                       </div>
                     </div>
                   </motion.div>
