@@ -29,7 +29,7 @@ interface NewsContext {
 const App = () => {
   const [activeTab, setActiveTab] = useState<TabId>("now");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [credits, setCredits] = useState(20);
+  const [credits, setCredits] = useState(500);
   const [newsContext, setNewsContext] = useState<NewsContext | null>(null);
   const [nowCardIndex, setNowCardIndex] = useState(0);
   const [miraSessionKey, setMiraSessionKey] = useState(0);
