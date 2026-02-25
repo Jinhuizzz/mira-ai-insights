@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Globe, Trash2, Mail, CircleDollarSign, ChevronRight, ArrowLeft, Camera, Pencil, LogOut } from "lucide-react";
+import { X, Globe, Mail, CircleDollarSign, ChevronRight, ArrowLeft, Camera, Pencil, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
@@ -142,12 +142,6 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                     >
                       <Globe className="w-4 h-4 text-muted-foreground" />
                       <span className="text-sm">Language</span>
-                    </button>
-                    <button
-                      className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-secondary/50 transition-colors text-left"
-                    >
-                      <Trash2 className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">Clear Cache</span>
                     </button>
                     <button
                       onClick={() => window.open("mailto:marketing@watchwise.ai", "_blank")}
