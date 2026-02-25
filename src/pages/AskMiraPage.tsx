@@ -138,15 +138,6 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
 
   const handleSend = () => {
     if (!input.trim()) return;
-    // If no messages yet, show new chat setup modal
-    if (messages.length === 0) {
-      setPendingInput(input);
-      setChatName(input.slice(0, 40));
-      setPersona("");
-      setFocus("");
-      setShowNewChatModal(true);
-      return;
-    }
     sendMessage(input);
   };
 
@@ -176,7 +167,13 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
 
   const handleConfirmNewChat = () => {
     setShowNewChatModal(false);
-    sendMessage(pendingInput);
+    // Add Mira's opening message
+    const miraGreeting: ChatMessage = {
+      id: Date.now(),
+      role: "assistant",
+      content: "What can I do for you?",
+    };
+    setMessages([miraGreeting]);
     setPendingInput("");
   };
 
@@ -328,7 +325,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
       </div>
 
       {!hasMessages ? (
-        <div className="flex-1 flex flex-col items-center px-4 py-6">
+        <div className="flex-1 flex flex-col items-center justify-center px-4">
           {newsContext && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -347,20 +344,22 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             </motion.div>
           )}
 
-          <div className="w-full max-w-sm mb-6 mt-16">
-            <div className="text-xs text-muted-foreground font-medium mb-2 uppercase tracking-wider">Try asking</div>
-            <div className="flex flex-wrap gap-2">
-              {suggestedQueries.map((q) => (
-                <button
-                  key={q}
-                  onClick={() => setInput(q)}
-                  className="text-xs bg-secondary hover:bg-secondary/80 rounded-lg px-3 py-1.5 transition-colors text-secondary-foreground"
-                >
-                  {q}
-                </button>
-              ))}
+          <motion.button
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            onClick={() => {
+              setChatName("");
+              setPersona("");
+              setFocus("");
+              setShowNewChatModal(true);
+            }}
+            className="flex flex-col items-center gap-3 group"
+          >
+            <div className="w-16 h-16 rounded-2xl border-2 border-dashed border-border hover:border-primary/50 flex items-center justify-center transition-colors group-hover:bg-secondary/60">
+              <Plus className="w-7 h-7 text-muted-foreground group-hover:text-primary transition-colors" />
             </div>
-          </div>
+            <span className="text-sm font-semibold text-foreground">Create your AI team</span>
+          </motion.button>
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
@@ -416,24 +415,19 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
 
       {/* Claim Your Own Agent Banner */}
       {!hasMessages && (
-        <div className="px-4 pb-2">
+        <div className="px-4 pb-4">
           <button
             onClick={() => setShowClaimAgent(true)}
             className="w-full flex items-center gap-3 bg-secondary/60 hover:bg-secondary border border-border/40 rounded-xl px-4 py-3 transition-colors group"
           >
-            {/* WatchWise + Platform integration icon */}
             <div className="w-9 h-9 rounded-xl bg-card border border-border/60 flex items-center justify-center shrink-0 relative">
               <span className="text-sm font-bold gradient-holographic-text leading-none">W</span>
               <div className="absolute -bottom-1 -right-1 flex -space-x-1">
                 <div className="w-3.5 h-3.5 rounded-full bg-[hsl(200_80%_55%)] border border-background flex items-center justify-center">
-                  <svg viewBox="0 0 24 24" fill="none" className="w-2 h-2 text-white">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.97 1.25-5.55 3.67-.53.36-1 .54-1.42.53-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.41-1.41-.87.03-.24.37-.49 1.02-.74 3.99-1.74 6.65-2.89 7.99-3.44 3.81-1.59 4.6-1.87 5.12-1.87.11 0 .37.03.53.17.14.12.18.28.2.45-.01.06.01.24 0 .38z" fill="currentColor"/>
-                  </svg>
+                  <svg viewBox="0 0 24 24" fill="none" className="w-2 h-2 text-white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.97 1.25-5.55 3.67-.53.36-1 .54-1.42.53-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.41-1.41-.87.03-.24.37-.49 1.02-.74 3.99-1.74 6.65-2.89 7.99-3.44 3.81-1.59 4.6-1.87 5.12-1.87.11 0 .37.03.53.17.14.12.18.28.2.45-.01.06.01.24 0 .38z" fill="currentColor"/></svg>
                 </div>
                 <div className="w-3.5 h-3.5 rounded-full bg-[hsl(235_86%_65%)] border border-background flex items-center justify-center">
-                  <svg viewBox="0 0 24 24" fill="none" className="w-2 h-2 text-white">
-                    <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" fill="currentColor"/>
-                  </svg>
+                  <svg viewBox="0 0 24 24" fill="none" className="w-2 h-2 text-white"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" fill="currentColor"/></svg>
                 </div>
               </div>
             </div>
@@ -446,82 +440,69 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
         </div>
       )}
 
-      {/* Input Area */}
-      <div className="mt-auto px-4 pb-4 pt-2">
-        <div className="relative flex items-center">
-          <div className="relative flex-1">
-            {/* Plus button inside input */}
-            <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10" ref={plusMenuRef}>
+      {/* Input Area - only shown when in chat */}
+      {hasMessages && (
+        <div className="mt-auto px-4 pb-4 pt-2">
+          <div className="relative flex items-center">
+            <div className="relative flex-1">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10" ref={plusMenuRef}>
+                <button
+                  onClick={() => setShowPlusMenu(!showPlusMenu)}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                    showPlusMenu ? "bg-accent/15 text-accent" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                  }`}
+                  title="Add files/photos"
+                >
+                  <Plus className={`w-5 h-5 transition-transform ${showPlusMenu ? "rotate-45" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {showPlusMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute bottom-full left-0 mb-2 w-52 bg-card border border-border rounded-xl shadow-lg overflow-hidden z-50"
+                    >
+                      <button onClick={() => setShowPlusMenu(false)} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-secondary transition-colors">
+                        <FileText className="w-4 h-4 text-muted-foreground" />
+                        Add File
+                      </button>
+                      <div className="h-px bg-border" />
+                      <button onClick={() => setShowPlusMenu(false)} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-secondary transition-colors">
+                        <ImageIcon className="w-4 h-4 text-muted-foreground" />
+                        Add Photo
+                      </button>
+                      <div className="h-px bg-border" />
+                      <button
+                        onClick={() => { setDeepAnalysis(!deepAnalysis); setShowPlusMenu(false); }}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-secondary transition-colors"
+                      >
+                        <BrainCircuit className={`w-4 h-4 ${deepAnalysis ? "text-accent" : "text-muted-foreground"}`} />
+                        <span className="flex-1 text-left">Enable Deep Analysis</span>
+                        {deepAnalysis && <div className="w-2 h-2 rounded-full bg-accent shadow-[0_0_6px_hsl(var(--accent))]" />}
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                placeholder="Ask Mira anything..."
+                className="w-full bg-card border border-border/50 rounded-xl pl-12 pr-12 py-3.5 text-sm outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
+              />
               <button
-                onClick={() => setShowPlusMenu(!showPlusMenu)}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                  showPlusMenu ? "bg-accent/15 text-accent" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                }`}
-                title="Add files/photos"
+                onClick={handleSend}
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg gradient-holographic flex items-center justify-center"
               >
-                <Plus className={`w-5 h-5 transition-transform ${showPlusMenu ? "rotate-45" : ""}`} />
+                <Send className="w-4 h-4 text-primary-foreground" />
               </button>
-
-              {/* Plus menu dropdown */}
-              <AnimatePresence>
-                {showPlusMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute bottom-full left-0 mb-2 w-52 bg-card border border-border rounded-xl shadow-lg overflow-hidden z-50"
-                  >
-                    <button
-                      onClick={() => setShowPlusMenu(false)}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-secondary transition-colors"
-                    >
-                      <FileText className="w-4 h-4 text-muted-foreground" />
-                      Add File
-                    </button>
-                    <div className="h-px bg-border" />
-                    <button
-                      onClick={() => setShowPlusMenu(false)}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-secondary transition-colors"
-                    >
-                      <ImageIcon className="w-4 h-4 text-muted-foreground" />
-                      Add Photo
-                    </button>
-                    <div className="h-px bg-border" />
-                    <button
-                      onClick={() => {
-                        setDeepAnalysis(!deepAnalysis);
-                        setShowPlusMenu(false);
-                      }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-secondary transition-colors"
-                    >
-                      <BrainCircuit className={`w-4 h-4 ${deepAnalysis ? "text-accent" : "text-muted-foreground"}`} />
-                      <span className="flex-1 text-left">Enable Deep Analysis</span>
-                      {deepAnalysis && (
-                        <div className="w-2 h-2 rounded-full bg-accent shadow-[0_0_6px_hsl(var(--accent))]" />
-                      )}
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
-
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Ask Mira anything..."
-              className="w-full bg-card border border-border/50 rounded-xl pl-12 pr-12 py-3.5 text-sm outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
-            />
-            <button
-              onClick={handleSend}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg gradient-holographic flex items-center justify-center"
-            >
-              <Send className="w-4 h-4 text-primary-foreground" />
-            </button>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Claim Agent Overlay */}
       <AnimatePresence>
@@ -618,7 +599,10 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
               className="w-full max-w-sm bg-card border border-border rounded-2xl p-5 shadow-lg"
               onClick={(e) => e.stopPropagation()}
             >
-              
+              <div className="mb-5 text-center">
+                <h3 className="text-base font-bold text-foreground">Build your think tank, divide and conquer.</h3>
+                <p className="text-[11px] text-muted-foreground mt-1">* You can create up to 5 teams.</p>
+              </div>
 
               {/* Topic */}
               <div className="mb-4">
