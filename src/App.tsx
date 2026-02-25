@@ -34,6 +34,7 @@ const App = () => {
   const [miraSessionKey, setMiraSessionKey] = useState(0);
   const [isSubPage, setIsSubPage] = useState(false);
   const [showSavedReports, setShowSavedReports] = useState(false);
+  const [showReadingHistory, setShowReadingHistory] = useState(false);
 
   const consumeCredits = (amount: number) => {
     setCredits((prev) => Math.max(0, prev - amount));
@@ -49,7 +50,7 @@ const App = () => {
     switch (activeTab) {
       case "now": return <NowPage onAskMira={handleAskMiraFromNow} currentIndex={nowCardIndex} setCurrentIndex={setNowCardIndex} onSubPageChange={setIsSubPage} />;
       case "mira": return <AskMiraPage key={miraSessionKey} credits={credits} onConsumeCredits={consumeCredits} newsContext={newsContext} onClearContext={() => setNewsContext(null)} onBack={newsContext ? () => setActiveTab("now") : undefined} onSubPageChange={setIsSubPage} />;
-      case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} onSubPageChange={setIsSubPage} showSavedReports={showSavedReports} onCloseSavedReports={() => setShowSavedReports(false)} />;
+      case "research": return <ResearchPage credits={credits} onConsumeCredits={consumeCredits} onSubPageChange={setIsSubPage} showSavedReports={showSavedReports} onCloseSavedReports={() => setShowSavedReports(false)} showReadingHistory={showReadingHistory} onCloseReadingHistory={() => setShowReadingHistory(false)} />;
       case "watchlist": return <WatchlistPage onSubPageChange={setIsSubPage} />;
     }
   };
@@ -79,12 +80,20 @@ const App = () => {
               <History className="w-5 h-5 text-muted-foreground" />
             </button>
           ) : activeTab === "research" ? (
-            <button
-              onClick={() => setShowSavedReports(true)}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors"
-            >
-              <Bookmark className="w-5 h-5 text-muted-foreground" />
-            </button>
+            <>
+              <button
+                onClick={() => setShowReadingHistory(true)}
+                className="p-2 rounded-lg hover:bg-secondary transition-colors"
+              >
+                <History className="w-5 h-5 text-muted-foreground" />
+              </button>
+              <button
+                onClick={() => setShowSavedReports(true)}
+                className="p-2 rounded-lg hover:bg-secondary transition-colors"
+              >
+                <Bookmark className="w-5 h-5 text-muted-foreground" />
+              </button>
+            </>
           ) : (
             <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
               <Bot className="w-5 h-5 text-muted-foreground" />
