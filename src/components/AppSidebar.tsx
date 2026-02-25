@@ -92,20 +92,23 @@ const AppSidebar = ({ open, onClose, credits }: AppSidebarProps) => {
                       <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
                     </button>
 
-                    {/* Credit Card - Clickable */}
+                    {/* Credit Card - Standalone */}
                     <div className="px-4 pb-4">
                       <button
                         onClick={() => setView("credits")}
-                        className="w-full rounded-xl border border-border/50 bg-secondary/30 p-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left"
+                        className="w-full rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 p-4 hover:from-primary/15 hover:to-primary/10 transition-all text-left shadow-sm"
                       >
-                        <div className="h-9 w-9 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
-                          <Coins className="w-4 h-4 text-primary" />
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
+                              <Coins className="w-4 h-4 text-primary" />
+                            </div>
+                            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Credit</span>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
                         </div>
-                        <div className="flex-1">
-                          <div className="text-xs text-muted-foreground">Credit</div>
-                          <div className="text-lg font-bold leading-tight">{credits}</div>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                        <div className="text-2xl font-bold">{credits}</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">Daily refresh: 500</div>
                       </button>
                     </div>
 
