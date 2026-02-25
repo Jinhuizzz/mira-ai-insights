@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ChevronRight, ExternalLink, Search, ArrowLeft, Calendar, X } from "lucide-react";
+import { ChevronRight, ExternalLink, Search, ArrowLeft, Calendar, X, Bookmark, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
 
 interface ResearchPageProps {
   credits: number;
@@ -17,7 +18,31 @@ const latestReport = {
   date: "Feb 20",
   readTime: "5 min read",
   color: "from-accent/20 to-primary/5",
+  tags: ["Earnings Alert", "NEUTRAL"],
+  summary: "NVIDIA continues to dominate the AI chip market with record datacenter revenue and expanding margins.",
+  image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=300&h=300&fit=crop",
 };
+
+const continueReading = [
+  {
+    id: 1,
+    title: "Tesla at a Valuation Crossroads",
+    ticker: "TSLA",
+    progress: 45,
+    currentPage: 10,
+    totalPages: 30,
+    image: "https://images.unsplash.com/photo-1617886903355-9354c0e4cadc?w=200&h=200&fit=crop",
+  },
+  {
+    id: 2,
+    title: "Apple's Services Flywheel Accelerates",
+    ticker: "AAPL",
+    progress: 72,
+    currentPage: 18,
+    totalPages: 25,
+    image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=200&h=200&fit=crop",
+  },
+];
 
 const inFocusItems = [
   { id: 1, title: "AI Boom: Who Wins the Next Wave?", tag: "AI", date: "Feb 20" },
@@ -136,6 +161,20 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange }: ResearchPa
           transition={{ duration: 0.15 }}
           className="px-4 py-4"
         >
+          {/* Header */}
+          <div className="flex items-start justify-between gap-3 mb-3">
+            <h2 className="text-base font-bold leading-snug flex-1">
+              Wall-Street Grade research, in seconds.
+            </h2>
+            <button
+              onClick={() => { setShowBrowse(true); onSubPageChange?.(true); }}
+              className="flex-shrink-0 text-xs font-medium w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center"
+              title="Browse"
+            >
+              <Search className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
           {/* Search Bar */}
           <div className="relative mb-5">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -148,19 +187,6 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange }: ResearchPa
             />
           </div>
 
-          {/* Header */}
-          <div className="flex items-start justify-between gap-3 mb-3">
-            <h2 className="text-lg font-bold leading-snug flex-1">
-              Wall-Street Grade research, in seconds.
-            </h2>
-            <button
-              onClick={() => { setShowBrowse(true); onSubPageChange?.(true); }}
-              className="flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground whitespace-nowrap"
-            >
-              Browse
-            </button>
-          </div>
-
           <Separator className="mb-5" />
 
           {/* Latest Report */}
@@ -169,16 +195,91 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange }: ResearchPa
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`bg-gradient-to-br ${latestReport.color} bg-card border border-border/50 rounded-xl p-5 cursor-pointer hover:border-border transition-all`}
+              className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all"
             >
-              <div className="text-xs font-mono font-semibold text-primary mb-2">{latestReport.ticker}</div>
-              <h3 className="text-base font-semibold leading-tight mb-2">{latestReport.title}</h3>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">{latestReport.readTime}</span>
-                <span className="text-xs text-muted-foreground">{latestReport.date}</span>
+              <div className="flex">
+                {/* Left: Company Image */}
+                <div className="w-28 flex-shrink-0">
+                  <img
+                    src={latestReport.image}
+                    alt={latestReport.ticker}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {/* Right: Info */}
+                <div className="flex-1 p-3.5 flex flex-col justify-between min-w-0">
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                      {latestReport.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                            tag === "Earnings Alert"
+                              ? "bg-accent/15 text-accent"
+                              : "bg-secondary text-muted-foreground"
+                          }`}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <h3 className="text-sm font-semibold leading-tight mb-1">{latestReport.title}</h3>
+                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{latestReport.summary}</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-2.5">
+                    <span className="text-[10px] text-muted-foreground">{latestReport.date}</span>
+                    <div className="flex items-center gap-2">
+                      <button className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-primary text-primary-foreground">
+                        Start Reading
+                      </button>
+                      <button className="text-muted-foreground hover:text-foreground transition-colors">
+                        <Bookmark className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
+
+          {/* Continue Reading */}
+          {continueReading.length > 0 && (
+            <div className="mb-6">
+              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Continue Reading</div>
+              <div className="flex flex-col gap-2">
+                {continueReading.map((item, i) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all"
+                  >
+                    <div className="flex items-center gap-3 p-3">
+                      <img
+                        src={item.image}
+                        alt={item.ticker}
+                        className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="text-[10px] font-mono font-semibold text-primary">{item.ticker}</span>
+                        </div>
+                        <p className="text-xs font-medium truncate">{item.title}</p>
+                        <div className="mt-1.5">
+                          <Progress value={item.progress} className="h-1 bg-secondary" />
+                          <span className="text-[10px] text-muted-foreground mt-0.5 block">
+                            {item.progress}% complete · page {item.currentPage} of {item.totalPages}
+                          </span>
+                        </div>
+                      </div>
+                      <BookOpen className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Swipeable Tabs: In Focus / Recent Updates */}
           <div className="mb-6">
