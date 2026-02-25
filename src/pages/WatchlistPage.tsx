@@ -114,7 +114,7 @@ const WatchlistPage = ({ onSubPageChange, showAddStock, onCloseAddStock }: Watch
   const [selected, setSelected] = useState<typeof defaultWatchlist[0] | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("symbol");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
-  const [watchlistTickers, setWatchlistTickers] = useState<string[]>(defaultWatchlist.map(s => s.ticker));
+  const [watchlistTickers, setWatchlistTickers] = useState<string[]>([]);
   const [addStockSearch, setAddStockSearch] = useState("");
 
   useEffect(() => {
@@ -359,43 +359,53 @@ const WatchlistPage = ({ onSubPageChange, showAddStock, onCloseAddStock }: Watch
             </div>
 
             {/* Stock List */}
-            <div className="space-y-2">
-              {sortedStocks.map((stock, i) => {
-                const bullish = stock.change >= 0;
-                return (
-                  <motion.button
-                    key={stock.ticker}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    onClick={() => { setSelected(stock); onSubPageChange?.(true); }}
-                    className="w-full bg-card rounded-xl p-3 border border-border/50 hover:border-border transition-all flex items-center gap-3"
-                  >
-                    {/* Logo */}
-                    <img
-                      src={companyLogos[stock.ticker]}
-                      alt={stock.name}
-                      className="w-9 h-9 rounded-lg bg-secondary object-contain shrink-0"
-                      onError={(e) => {
-                        e.currentTarget.src = "";
-                        e.currentTarget.className = "w-9 h-9 rounded-lg bg-secondary shrink-0 flex items-center justify-center";
-                      }}
-                    />
-                    <div className="flex-1 text-left">
-                      <div className="text-sm font-bold font-mono">{stock.ticker}</div>
-                      <div className="text-xs text-muted-foreground">{stock.name}</div>
-                    </div>
-                    <SparklineChart data={stock.sparkline} bullish={bullish} />
-                    <div className="text-right min-w-[70px]">
-                      <div className="text-sm font-mono font-semibold">${stock.price.toFixed(2)}</div>
-                      <div className={`text-xs font-mono ${bullish ? "text-bullish" : "text-bearish"}`}>
-                        {bullish ? "+" : ""}{stock.changePct.toFixed(2)}%
+            {sortedStocks.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                  <Plus className="w-7 h-7 text-primary" />
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed max-w-[260px]">
+                  We'll push relevant news to you based on the stocks you add to your watchlist.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {sortedStocks.map((stock, i) => {
+                  const bullish = stock.change >= 0;
+                  return (
+                    <motion.button
+                      key={stock.ticker}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      onClick={() => { setSelected(stock); onSubPageChange?.(true); }}
+                      className="w-full bg-card rounded-xl p-3 border border-border/50 hover:border-border transition-all flex items-center gap-3"
+                    >
+                      <img
+                        src={companyLogos[stock.ticker]}
+                        alt={stock.name}
+                        className="w-9 h-9 rounded-lg bg-secondary object-contain shrink-0"
+                        onError={(e) => {
+                          e.currentTarget.src = "";
+                          e.currentTarget.className = "w-9 h-9 rounded-lg bg-secondary shrink-0 flex items-center justify-center";
+                        }}
+                      />
+                      <div className="flex-1 text-left">
+                        <div className="text-sm font-bold font-mono">{stock.ticker}</div>
+                        <div className="text-xs text-muted-foreground">{stock.name}</div>
                       </div>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
+                      <SparklineChart data={stock.sparkline} bullish={bullish} />
+                      <div className="text-right min-w-[70px]">
+                        <div className="text-sm font-mono font-semibold">${stock.price.toFixed(2)}</div>
+                        <div className={`text-xs font-mono ${bullish ? "text-bullish" : "text-bearish"}`}>
+                          {bullish ? "+" : ""}{stock.changePct.toFixed(2)}%
+                        </div>
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
