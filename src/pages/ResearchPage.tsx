@@ -175,17 +175,17 @@ const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
       transition={{ duration: 0.2 }}
       className="px-4 py-4"
     >
-      {/* Header with back + search */}
+      {/* Header with search + back */}
       <div className="flex items-center justify-between mb-5">
-        <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </button>
         <button
           onClick={() => setShowSearch(!showSearch)}
           className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-all"
         >
           {showSearch ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
+        </button>
+        <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          Back
+          <ArrowLeft className="w-4 h-4 rotate-180" />
         </button>
       </div>
 
@@ -271,9 +271,72 @@ const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
   );
 };
 
+/* ─── Reading Screen ─── */
+const ReadingScreen = ({ report, onBack }: { report: typeof latestReport; onBack: () => void }) => (
+  <motion.div
+    initial={{ opacity: 0, x: 40 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: 40 }}
+    transition={{ duration: 0.2 }}
+    className="flex flex-col h-full"
+  >
+    <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
+      <div className="flex-1 min-w-0">
+        <span className="text-[10px] font-mono font-semibold text-primary">{report.ticker}</span>
+        <h3 className="text-sm font-semibold truncate">{report.title}</h3>
+      </div>
+      <button onClick={onBack} className="flex-shrink-0 ml-3 text-muted-foreground hover:text-foreground transition-colors">
+        <X className="w-4 h-4" />
+      </button>
+    </div>
+    <div className="flex-1 overflow-y-auto px-4 py-6">
+      <div className="bg-secondary/30 border border-border/50 rounded-xl p-6 mb-4">
+        <div className="flex items-center gap-2 mb-3">
+          {report.tags.map((tag) => (
+            <span key={tag} className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${tag === "Earnings Alert" ? "bg-accent/15 text-accent" : "bg-secondary text-muted-foreground"}`}>{tag}</span>
+          ))}
+          <span className="text-[10px] text-muted-foreground ml-auto">{report.date} · {report.readTime}</span>
+        </div>
+        <h2 className="text-lg font-bold mb-2">{report.title}</h2>
+        <p className="text-sm text-muted-foreground leading-relaxed">{report.summary}</p>
+      </div>
+      <div className="bg-card border border-border/50 rounded-xl overflow-hidden">
+        <div className="bg-secondary/60 px-4 py-2 flex items-center justify-between border-b border-border/50">
+          <span className="text-[10px] font-semibold text-muted-foreground">PDF Report · Page 1 of 30</span>
+          <button className="text-[10px] font-medium text-primary hover:underline">Download</button>
+        </div>
+        <div className="p-6 space-y-4">
+          <h3 className="text-base font-bold">Executive Summary</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {report.summary} The company reported quarterly revenue of $22.1 billion, a 265% increase from a year ago. Data center revenue was $18.4 billion, up 409% year over year.
+          </p>
+          <h3 className="text-base font-bold mt-6">Key Metrics</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {[{ label: "Revenue", value: "$22.1B" }, { label: "EPS", value: "$5.16" }, { label: "Gross Margin", value: "76.0%" }, { label: "YoY Growth", value: "+265%" }].map((m) => (
+              <div key={m.label} className="bg-secondary/40 rounded-lg p-3">
+                <span className="text-[10px] text-muted-foreground block">{m.label}</span>
+                <span className="text-sm font-bold">{m.value}</span>
+              </div>
+            ))}
+          </div>
+          <h3 className="text-base font-bold mt-6">Analysis</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            NVIDIA's position in the AI infrastructure market continues to strengthen, driven by unprecedented demand for GPU computing. The H100 and upcoming B100 architectures represent a significant moat against competitors.
+          </p>
+          <h3 className="text-base font-bold mt-6">Valuation</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            At current levels, the stock trades at approximately 35x forward earnings. Our model suggests a fair value range of $700-$850 based on DCF analysis with a 12-month horizon.
+          </p>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+);
+
 /* ─── Research Home ─── */
 const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedReports, onCloseSavedReports, showReadingHistory, onCloseReadingHistory }: ResearchPageProps) => {
   const [showBrowse, setShowBrowse] = useState(false);
+  const [showReading, setShowReading] = useState(false);
   const [activeSection, setActiveSection] = useState<"focus" | "recent">("focus");
 
   useEffect(() => {
@@ -288,6 +351,8 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
         <SavedReportsScreen key="saved" onBack={() => { onCloseSavedReports?.(); onSubPageChange?.(false); }} />
       ) : showReadingHistory ? (
         <ReadingHistoryScreen key="history" onBack={() => { onCloseReadingHistory?.(); onSubPageChange?.(false); }} />
+      ) : showReading ? (
+        <ReadingScreen key="reading" report={latestReport} onBack={() => { setShowReading(false); onSubPageChange?.(false); }} />
       ) : showBrowse ? (
         <BrowseReportsScreen key="browse" onBack={() => { setShowBrowse(false); onSubPageChange?.(false); }} />
       ) : (
@@ -364,7 +429,10 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                   <div className="flex items-center justify-between mt-2.5">
                     <span className="text-[10px] text-muted-foreground">{latestReport.date}</span>
                     <div className="flex items-center gap-2">
-                      <button className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-primary text-primary-foreground">
+                      <button
+                        onClick={() => { setShowReading(true); onSubPageChange?.(true); }}
+                        className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-primary text-primary-foreground"
+                      >
                         Start Reading
                       </button>
                       <button className="text-muted-foreground hover:text-foreground transition-colors">
@@ -406,7 +474,6 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
               </div>
             </div>
           )}
-
 
           {/* Swipeable Tabs: In Focus / Recent Updates */}
           <div className="mb-6">
