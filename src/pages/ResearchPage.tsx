@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronRight, ExternalLink, Search, ArrowLeft, Calendar, X, Bookmark, BookOpen, History } from "lucide-react";
+import { ChevronRight, ExternalLink, Search, ArrowLeft, Calendar, X, Bookmark, MousePointerClick, History } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -433,7 +433,7 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
                         onClick={() => { setShowReading(true); onSubPageChange?.(true); }}
                         className="w-7 h-7 rounded-full flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                       >
-                        <BookOpen className="w-3.5 h-3.5" />
+                        <MousePointerClick className="w-3.5 h-3.5" />
                       </button>
                       <button className="text-muted-foreground hover:text-foreground transition-colors">
                         <Bookmark className="w-3.5 h-3.5" />
