@@ -11,6 +11,8 @@ interface ResearchPageProps {
   onSubPageChange?: (isSubPage: boolean) => void;
   showSavedReports?: boolean;
   onCloseSavedReports?: () => void;
+  showReadingHistory?: boolean;
+  onCloseReadingHistory?: () => void;
 }
 
 const latestReport = {
@@ -270,25 +272,24 @@ const BrowseReportsScreen = ({ onBack }: { onBack: () => void }) => {
 };
 
 /* ─── Research Home ─── */
-const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedReports, onCloseSavedReports }: ResearchPageProps) => {
+const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedReports, onCloseSavedReports, showReadingHistory, onCloseReadingHistory }: ResearchPageProps) => {
   const [showBrowse, setShowBrowse] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
   const [activeSection, setActiveSection] = useState<"focus" | "recent">("focus");
 
   useEffect(() => {
-    if (showSavedReports) {
+    if (showSavedReports || showReadingHistory) {
       onSubPageChange?.(true);
     }
-  }, [showSavedReports]);
+  }, [showSavedReports, showReadingHistory]);
 
   return (
     <AnimatePresence mode="wait">
       {showSavedReports ? (
         <SavedReportsScreen key="saved" onBack={() => { onCloseSavedReports?.(); onSubPageChange?.(false); }} />
+      ) : showReadingHistory ? (
+        <ReadingHistoryScreen key="history" onBack={() => { onCloseReadingHistory?.(); onSubPageChange?.(false); }} />
       ) : showBrowse ? (
         <BrowseReportsScreen key="browse" onBack={() => { setShowBrowse(false); onSubPageChange?.(false); }} />
-      ) : showHistory ? (
-        <ReadingHistoryScreen key="history" onBack={() => { setShowHistory(false); onSubPageChange?.(false); }} />
       ) : (
         <motion.div
           key="home"
@@ -406,17 +407,6 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
             </div>
           )}
 
-          {/* Reading History Button */}
-          <button
-            onClick={() => { setShowHistory(true); onSubPageChange?.(true); }}
-            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary/40 border border-border/50 hover:border-border transition-all mb-6 cursor-pointer"
-          >
-            <div className="flex items-center gap-2.5">
-              <History className="w-4 h-4 text-muted-foreground" />
-              <span className="text-xs font-semibold">Reading History</span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-          </button>
 
           {/* Swipeable Tabs: In Focus / Recent Updates */}
           <div className="mb-6">
