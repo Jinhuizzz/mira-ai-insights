@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target } from "lucide-react";
+import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target, Pencil } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NewsContext {
@@ -461,25 +461,25 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-end justify-center"
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center px-6"
             onClick={() => setShowNewChatModal(false)}
           >
             <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 300 }}
-              className="w-full max-w-lg bg-card border-t border-border rounded-t-2xl p-5 pb-8"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: "spring", damping: 24, stiffness: 300 }}
+              className="w-full max-w-sm bg-card border border-border rounded-2xl p-5 shadow-lg"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Handle bar */}
-              <div className="w-10 h-1 rounded-full bg-muted-foreground/30 mx-auto mb-5" />
-
               <h3 className="text-base font-bold mb-4">New Conversation</h3>
 
-              {/* Chat Name */}
+              {/* Topic */}
               <div className="mb-4">
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 block">Chat Name</label>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  Topic
+                  <Pencil className="w-3 h-3 text-muted-foreground/60" />
+                </label>
                 <input
                   value={chatName}
                   onChange={(e) => setChatName(e.target.value)}
@@ -488,11 +488,12 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 />
               </div>
 
-              {/* Persona */}
+              {/* Identity */}
               <div className="mb-4">
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                   <User className="w-3 h-3" />
-                  Persona
+                  Identity
+                  <Pencil className="w-3 h-3 text-muted-foreground/60" />
                 </label>
                 <input
                   value={persona}
@@ -507,6 +508,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                   <Target className="w-3 h-3" />
                   Focus
+                  <Pencil className="w-3 h-3 text-muted-foreground/60" />
                 </label>
                 <input
                   value={focus}
