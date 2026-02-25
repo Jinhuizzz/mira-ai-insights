@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target, Pencil, Trash2 } from "lucide-react";
+import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target, Pencil, Trash2, MoreVertical } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NewsContext {
@@ -87,7 +87,11 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
     ], date: "Feb 20" },
   ]);
   const [viewingArchivedChat, setViewingArchivedChat] = useState<ArchivedChat | null>(null);
-  const [createdTeams, setCreatedTeams] = useState<CreatedTeam[]>([]);
+  const [createdTeams, setCreatedTeams] = useState<CreatedTeam[]>([
+    { id: 0, name: "Generalist", focus: "Ask anything" },
+  ]);
+  const [renamingTeamId, setRenamingTeamId] = useState<number | null>(null);
+  const [renameValue, setRenameValue] = useState("");
   const chatEndRef = useRef<HTMLDivElement>(null);
   const processedContextRef = useRef<string | null>(null);
   const plusMenuRef = useRef<HTMLDivElement>(null);
@@ -393,27 +397,84 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             <div className="w-full max-w-sm">
               <div className="grid grid-cols-3 gap-3">
                 {createdTeams.map((team) => (
-                  <button
-                    key={team.id}
-                    onClick={() => {
-                      setPersona(team.name);
-                      setFocus(team.focus);
-                      setChatName(team.name);
-                      const miraGreeting: ChatMessage = {
-                        id: Date.now(),
-                        role: "assistant",
-                        content: "What can I do for you?",
-                      };
-                      setMessages([miraGreeting]);
-                    }}
-                    className="aspect-square flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
-                  >
-                    <div className="w-10 h-10 rounded-xl gradient-holographic flex items-center justify-center shrink-0">
-                      <span className="text-base font-bold text-primary-foreground">{team.name.charAt(0).toUpperCase()}</span>
+                  <div key={team.id} className="relative group">
+                    {/* Action buttons top-right */}
+                    <div className="absolute top-1.5 right-1.5 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setRenamingTeamId(team.id);
+                          setRenameValue(team.name);
+                        }}
+                        className="w-5 h-5 rounded-md bg-secondary/80 flex items-center justify-center hover:bg-secondary"
+                      >
+                        <Pencil className="w-2.5 h-2.5 text-muted-foreground" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCreatedTeams((prev) => prev.filter((t) => t.id !== team.id));
+                        }}
+                        className="w-5 h-5 rounded-md bg-secondary/80 flex items-center justify-center hover:bg-destructive/20"
+                      >
+                        <Trash2 className="w-2.5 h-2.5 text-muted-foreground" />
+                      </button>
                     </div>
-                    <p className="text-xs font-semibold text-center truncate w-full">{team.name}</p>
-                    <p className="text-[10px] text-muted-foreground text-center truncate w-full">{team.focus}</p>
-                  </button>
+
+                    {/* Rename modal */}
+                    {renamingTeamId === team.id && (
+                      <div className="absolute inset-0 z-20 bg-card border border-border rounded-2xl flex flex-col items-center justify-center gap-2 p-2">
+                        <input
+                          value={renameValue}
+                          onChange={(e) => setRenameValue(e.target.value)}
+                          className="w-full text-xs text-center bg-secondary/50 rounded-lg px-2 py-1.5 outline-none border border-border/50 focus:border-primary/50"
+                          autoFocus
+                        />
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => setRenamingTeamId(null)}
+                            className="w-6 h-6 rounded-md bg-secondary flex items-center justify-center"
+                          >
+                            <X className="w-3 h-3 text-muted-foreground" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              if (renameValue.trim()) {
+                                setCreatedTeams((prev) =>
+                                  prev.map((t) => t.id === team.id ? { ...t, name: renameValue.trim() } : t)
+                                );
+                              }
+                              setRenamingTeamId(null);
+                            }}
+                            className="w-6 h-6 rounded-md bg-primary flex items-center justify-center"
+                          >
+                            <Check className="w-3 h-3 text-primary-foreground" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    <button
+                      onClick={() => {
+                        setPersona(team.name);
+                        setFocus(team.focus);
+                        setChatName(team.name);
+                        const miraGreeting: ChatMessage = {
+                          id: Date.now(),
+                          role: "assistant",
+                          content: "What can I do for you?",
+                        };
+                        setMessages([miraGreeting]);
+                      }}
+                      className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
+                    >
+                      <div className="w-10 h-10 rounded-xl gradient-holographic flex items-center justify-center shrink-0">
+                        <span className="text-base font-bold text-primary-foreground">{team.name.charAt(0).toUpperCase()}</span>
+                      </div>
+                      <p className="text-xs font-semibold text-center truncate w-full">{team.name}</p>
+                      <p className="text-[10px] text-muted-foreground text-center truncate w-full">{team.focus}</p>
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>
