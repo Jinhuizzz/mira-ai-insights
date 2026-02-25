@@ -48,16 +48,52 @@ const continueReading = [
   },
 ];
 
-const inFocusItems = [
-  { id: 1, title: "AI Boom: Who Wins the Next Wave?", tag: "AI", date: "Feb 20" },
-  { id: 2, title: "EV War Heats Up in China", tag: "EV", date: "Feb 19" },
-  { id: 3, title: "Rate Cuts: What It Means for Tech", tag: "Macro", date: "Feb 18" },
-];
-
-const recentUpdates = [
-  { id: 1, title: "Apple's Services Flywheel Accelerates", ticker: "AAPL", date: "Feb 19" },
-  { id: 2, title: "Tesla at a Valuation Crossroads", ticker: "TSLA", date: "Feb 18" },
-  { id: 3, title: "Microsoft Cloud Momentum Continues", ticker: "MSFT", date: "Feb 17" },
+const feedItems = [
+  {
+    id: 1,
+    title: "AI Boom: Who Wins the Next Wave?",
+    tags: ["Earnings Alert", "NEUTRAL"],
+    summary: "A deep dive into the companies best positioned to capitalize on the next wave of AI infrastructure spending.",
+    date: "Feb 20",
+    source: "WatchWise AI",
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=200&h=200&fit=crop",
+  },
+  {
+    id: 2,
+    title: "EV War Heats Up in China",
+    tags: ["Sector Watch", "BEARISH"],
+    summary: "Chinese EV makers are slashing prices aggressively, putting pressure on margins across the industry.",
+    date: "Feb 19",
+    source: "WatchWise AI",
+    image: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=200&h=200&fit=crop",
+  },
+  {
+    id: 3,
+    title: "Rate Cuts: What It Means for Tech",
+    tags: ["Macro", "BULLISH"],
+    summary: "Anticipated rate cuts could fuel a new rally in growth stocks. Here's how to position your portfolio.",
+    date: "Feb 18",
+    source: "WatchWise AI",
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&h=200&fit=crop",
+  },
+  {
+    id: 4,
+    title: "Apple's Services Flywheel Accelerates",
+    tags: ["Earnings Alert", "BULLISH"],
+    summary: "Apple's services segment hit a record $23B in revenue, now accounting for over 25% of total sales.",
+    date: "Feb 17",
+    source: "WatchWise AI",
+    image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=200&h=200&fit=crop",
+  },
+  {
+    id: 5,
+    title: "Microsoft Cloud Momentum Continues",
+    tags: ["Earnings Alert", "NEUTRAL"],
+    summary: "Azure revenue grew 29% YoY as enterprise AI adoption drives cloud migration at an accelerating pace.",
+    date: "Feb 16",
+    source: "WatchWise AI",
+    image: "https://images.unsplash.com/photo-1633419461186-7d40a38105ec?w=200&h=200&fit=crop",
+  },
 ];
 
 const sectors = ["Technology", "Healthcare", "Finance", "Energy", "Consumer", "Industrial"];
@@ -337,7 +373,7 @@ const ReadingScreen = ({ report, onBack }: { report: typeof latestReport; onBack
 const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedReports, onCloseSavedReports, showReadingHistory, onCloseReadingHistory }: ResearchPageProps) => {
   const [showBrowse, setShowBrowse] = useState(false);
   const [showReading, setShowReading] = useState(false);
-  const [activeSection, setActiveSection] = useState<"focus" | "recent">("focus");
+  // removed activeSection state
 
   useEffect(() => {
     if (showSavedReports || showReadingHistory) {
@@ -475,82 +511,61 @@ const ResearchPage = ({ credits, onConsumeCredits, onSubPageChange, showSavedRep
             </div>
           )}
 
-          {/* Swipeable Tabs: In Focus / Recent Updates */}
+          {/* Card Feed */}
           <div className="mb-6">
-            <div className="flex gap-1 bg-secondary/60 rounded-lg p-1 mb-3">
-              {(["focus", "recent"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveSection(tab)}
-                  className={`relative flex-1 text-xs font-semibold py-1.5 rounded-md transition-all ${
-                    activeSection === tab ? "text-foreground" : "text-muted-foreground"
-                  }`}
+            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Feed</div>
+            <div className="flex flex-col gap-3">
+              {feedItems.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-card border border-border/50 rounded-xl overflow-hidden cursor-pointer hover:border-border transition-all"
                 >
-                  {activeSection === tab && (
-                    <motion.div
-                      layoutId="researchTab"
-                      className="absolute inset-0 bg-card rounded-md border border-border/50 shadow-sm"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative z-10">{tab === "focus" ? "In Focus" : "Recent Updates"}</span>
-                </button>
+                  <div className="flex">
+                    {/* Left: Text */}
+                    <div className="flex-1 p-3.5 flex flex-col justify-between min-w-0">
+                      <div>
+                        <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                          {item.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                                tag === "Earnings Alert"
+                                  ? "bg-accent/15 text-accent"
+                                  : tag === "BULLISH"
+                                  ? "bg-bullish/15 text-bullish"
+                                  : tag === "BEARISH"
+                                  ? "bg-bearish/15 text-bearish"
+                                  : "bg-secondary text-muted-foreground"
+                              }`}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        <h3 className="text-sm font-semibold leading-tight mb-1">{item.title}</h3>
+                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{item.summary}</p>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-[10px] text-muted-foreground">{item.date}</span>
+                        <span className="text-[10px] text-muted-foreground">·</span>
+                        <span className="text-[10px] text-primary font-medium">{item.source}</span>
+                      </div>
+                    </div>
+                    {/* Right: Image */}
+                    <div className="w-24 flex-shrink-0">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
               ))}
             </div>
-
-            <AnimatePresence mode="wait">
-              {activeSection === "focus" ? (
-                <motion.div
-                  key="focus"
-                  initial={{ opacity: 0, x: -16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 16 }}
-                  transition={{ duration: 0.15 }}
-                  className="flex flex-col gap-2"
-                >
-                  {inFocusItems.map((item, i) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="bg-card border border-border/50 rounded-xl px-4 py-3 flex items-center justify-between cursor-pointer hover:border-border transition-all"
-                    >
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-accent/15 text-accent">{item.tag}</span>
-                        <span className="text-sm font-medium truncate">{item.title}</span>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 ml-2" />
-                    </motion.div>
-                  ))}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="recent"
-                  initial={{ opacity: 0, x: 16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -16 }}
-                  transition={{ duration: 0.15 }}
-                  className="flex flex-col gap-2"
-                >
-                  {recentUpdates.map((item, i) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="bg-card border border-border/50 rounded-xl px-4 py-3 flex items-center justify-between cursor-pointer hover:border-border transition-all"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <div className="text-xs font-mono font-semibold text-primary mb-0.5">{item.ticker}</div>
-                        <span className="text-sm font-medium truncate block">{item.title}</span>
-                      </div>
-                      <span className="text-xs text-muted-foreground flex-shrink-0 ml-2">{item.date}</span>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
 
         </motion.div>
