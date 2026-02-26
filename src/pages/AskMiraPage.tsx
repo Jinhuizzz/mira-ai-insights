@@ -413,8 +413,8 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                       </div>
                     </div>
                   </div>
-                  <p className="text-xs font-semibold text-center truncate w-full">Connect</p>
-                  <p className="text-[10px] text-muted-foreground text-center leading-tight w-full">to your platforms</p>
+                  <p className="text-xs font-semibold text-center truncate w-full">Your own bot</p>
+                  <p className="text-[10px] text-muted-foreground text-center leading-tight w-full">connect to your platforms</p>
                 </button>
                 {createdTeams.map((team) => (
                   <div key={team.id} className="relative group">
@@ -632,7 +632,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
               <button onClick={() => setShowClaimAgent(false)} className="flex items-center gap-1.5 p-2 text-muted-foreground hover:text-foreground transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <h2 className="text-sm font-semibold">Claim Your Agent</h2>
+              <h2 className="text-sm font-semibold">Your own bot</h2>
               <div className="w-9" />
             </div>
 
