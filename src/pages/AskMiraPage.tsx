@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target, Pencil, Trash2, MoreVertical, FlaskConical } from "lucide-react";
+import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target, Pencil, Trash2, MoreVertical, FlaskConical, MessageCircle } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -98,7 +98,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
   ]);
   const [viewingArchivedChat, setViewingArchivedChat] = useState<ArchivedChat | null>(null);
   const [createdTeams, setCreatedTeams] = useState<CreatedTeam[]>([
-    { id: 0, name: "Generalist", focus: "Ask anything" },
+    { id: 0, name: "Generalist", focus: "Ask Anything" },
   ]);
   const [showDeepResearchAlert, setShowDeepResearchAlert] = useState(false);
   const [renamingTeamId, setRenamingTeamId] = useState<number | null>(null);
@@ -408,7 +408,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 <div className="relative">
                 <button
                   onClick={() => setShowClaimAgent(true)}
-                  className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
+                  className="aspect-square w-full flex flex-col items-center justify-center gap-2 border border-dashed border-accent/40 bg-accent/5 rounded-2xl p-3 hover:border-accent/70 hover:bg-accent/10 transition-all"
                 >
                   <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0 relative">
                     <span className="text-base font-bold gradient-holographic-text leading-none">W</span>
@@ -421,8 +421,8 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                       </div>
                     </div>
                   </div>
-                  <p className="text-xs font-semibold text-center truncate w-full">Your own bot</p>
-                  <p className="text-[10px] text-muted-foreground text-center truncate w-full">connect to your platforms</p>
+                  <p className="text-xs font-semibold text-center w-full">Your own bot</p>
+                  <p className="text-[10px] text-muted-foreground text-center w-full leading-tight">connect to your platforms</p>
                 </button>
                 </div>
                 {/* Senior Researcher card */}
@@ -434,8 +434,8 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                     <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
                       <FlaskConical className="w-5 h-5 text-accent" />
                     </div>
-                    <p className="text-xs font-semibold text-center truncate w-full">Senior Researcher</p>
-                    <p className="text-[10px] text-muted-foreground text-center truncate w-full">Deep Dive</p>
+                    <p className="text-xs font-semibold text-center w-full">Senior Researcher</p>
+                    <p className="text-[10px] text-muted-foreground text-center w-full leading-tight">Deep Dive</p>
                   </button>
                 </div>
                 {createdTeams.map((team) => (
@@ -513,10 +513,14 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                       className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
                     >
                       <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
-                        <span className="text-base font-bold gradient-holographic-text">{team.name.charAt(0).toUpperCase()}</span>
+                        {team.id === 0 ? (
+                          <MessageCircle className="w-5 h-5 text-accent" />
+                        ) : (
+                          <span className="text-base font-bold gradient-holographic-text">{team.name.charAt(0).toUpperCase()}</span>
+                        )}
                       </div>
-                      <p className="text-xs font-semibold text-center truncate w-full">{team.name}</p>
-                      <p className="text-[10px] text-muted-foreground text-center truncate w-full">{team.focus}</p>
+                      <p className="text-xs font-semibold text-center w-full">{team.name}</p>
+                      <p className="text-[10px] text-muted-foreground text-center w-full leading-tight">{team.focus}</p>
                     </button>
                   </div>
                 ))}
