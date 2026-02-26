@@ -375,28 +375,26 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             </motion.div>
           )}
 
-          <motion.button
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            onClick={() => {
-              setChatName("");
-              setPersona("");
-              setFocus("");
-              setShowNewChatModal(true);
-            }}
-            className="flex flex-col items-center gap-3 group mb-6"
-          >
-            <div className="w-16 h-16 rounded-2xl border-2 border-dashed border-border hover:border-primary/50 flex items-center justify-center transition-colors group-hover:bg-secondary/60">
-              <Plus className="w-7 h-7 text-muted-foreground group-hover:text-primary transition-colors" />
-            </div>
-            <span className="text-sm font-semibold text-foreground">Build your Agent Team</span>
-            <span className="text-[11px] text-muted-foreground max-w-[200px] text-center leading-tight">AI persona that remembers, learns, and empowers your growth.</span>
-          </motion.button>
+          <div className="text-center mb-6">
+            <p className="text-sm font-semibold text-foreground">Build your Agent Team</p>
+            <p className="text-[11px] text-muted-foreground max-w-[200px] mx-auto leading-tight mt-1">AI persona that remembers, learns, and empowers your growth.</p>
+          </div>
 
-          {/* Created teams - square cards */}
-          {createdTeams.length > 0 && (
-            <div className="w-full max-w-sm">
+          <div className="w-full max-w-sm">
               <div className="grid grid-cols-3 gap-3">
+                {/* Create new team card */}
+                <button
+                  onClick={() => {
+                    setChatName("");
+                    setPersona("");
+                    setFocus("");
+                    setShowNewChatModal(true);
+                  }}
+                  className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border/50 rounded-2xl p-3 hover:border-primary/50 transition-all group"
+                >
+                  <Plus className="w-7 h-7 text-muted-foreground group-hover:text-primary transition-colors" />
+                  <p className="text-[10px] text-muted-foreground font-medium">New Agent</p>
+                </button>
                 {/* Connect card */}
                 <button
                   onClick={() => setShowClaimAgent(true)}
@@ -500,7 +498,6 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 ))}
               </div>
             </div>
-          )}
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
