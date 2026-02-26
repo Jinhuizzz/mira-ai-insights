@@ -98,7 +98,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
   ]);
   const [viewingArchivedChat, setViewingArchivedChat] = useState<ArchivedChat | null>(null);
   const [createdTeams, setCreatedTeams] = useState<CreatedTeam[]>([
-    { id: 0, name: "Generalist", focus: "Ask Anything" },
+    { id: 0, name: "Generalist", focus: "Instant Answers to Anything" },
   ]);
   const [showDeepResearchAlert, setShowDeepResearchAlert] = useState(false);
   const [renamingTeamId, setRenamingTeamId] = useState<number | null>(null);
@@ -398,7 +398,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             <Plus className="w-7 h-7 text-muted-foreground group-hover:text-primary transition-colors" />
           </button>
           <div className="text-center mb-6">
-            <p className="text-sm font-semibold text-foreground">Build Your Agent Team</p>
+            <p className="text-sm font-semibold text-foreground">Build Your Team</p>
             <p className="text-[11px] text-muted-foreground max-w-[200px] mx-auto leading-tight mt-1">AI persona that remembers, learns, and empowers your growth.</p>
           </div>
 
@@ -421,7 +421,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                       </div>
                     </div>
                   </div>
-                  <p className="text-xs font-semibold text-center w-full leading-tight">Your own bot</p>
+                  <p className="text-xs font-semibold text-center w-full leading-tight">Your Own Agent</p>
                   <p className="text-[10px] text-muted-foreground text-center w-full leading-tight">connect to your platforms</p>
                 </button>
                 </div>
@@ -657,7 +657,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
               <button onClick={() => setShowClaimAgent(false)} className="flex items-center gap-1.5 p-2 text-muted-foreground hover:text-foreground transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <h2 className="text-sm font-semibold">Your own bot</h2>
+              <h2 className="text-sm font-semibold">Your Own Agent</h2>
               <div className="w-9" />
             </div>
 
