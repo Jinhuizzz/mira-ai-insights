@@ -488,8 +488,8 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                       }}
                       className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
                     >
-                      <div className="w-10 h-10 rounded-xl gradient-holographic flex items-center justify-center shrink-0">
-                        <span className="text-base font-bold text-primary-foreground">{team.name.charAt(0).toUpperCase()}</span>
+                      <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
+                        <span className="text-base font-bold gradient-holographic-text">{team.name.charAt(0).toUpperCase()}</span>
                       </div>
                       <p className="text-xs font-semibold text-center truncate w-full">{team.name}</p>
                       <p className="text-[10px] text-muted-foreground text-center truncate w-full">{team.focus}</p>
