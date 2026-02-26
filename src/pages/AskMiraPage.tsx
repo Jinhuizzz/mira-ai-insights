@@ -408,7 +408,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 <div className="relative">
                 <button
                   onClick={() => setShowClaimAgent(true)}
-                  className="aspect-square w-full flex flex-col items-center justify-center gap-2 border border-dashed border-accent/40 bg-accent/5 rounded-2xl p-3 hover:border-accent/70 hover:bg-accent/10 transition-all"
+                  className="aspect-square w-full h-full flex flex-col items-center justify-center gap-2 border border-dashed border-accent/40 bg-accent/5 rounded-2xl p-3 overflow-hidden hover:border-accent/70 hover:bg-accent/10 transition-all"
                 >
                   <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0 relative">
                     <span className="text-base font-bold gradient-holographic-text leading-none">W</span>
@@ -421,7 +421,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                       </div>
                     </div>
                   </div>
-                  <p className="text-xs font-semibold text-center w-full">Your own bot</p>
+                  <p className="text-xs font-semibold text-center w-full leading-tight">Your own bot</p>
                   <p className="text-[10px] text-muted-foreground text-center w-full leading-tight">connect to your platforms</p>
                 </button>
                 </div>
@@ -429,12 +429,12 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 <div className="relative">
                   <button
                     onClick={() => setShowDeepResearchAlert(true)}
-                    className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
+                    className="aspect-square w-full h-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 overflow-hidden hover:border-border transition-all"
                   >
                     <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
                       <FlaskConical className="w-5 h-5 text-accent" />
                     </div>
-                    <p className="text-xs font-semibold text-center w-full">Senior Researcher</p>
+                    <p className="text-xs font-semibold text-center w-full leading-tight">Senior Researcher</p>
                     <p className="text-[10px] text-muted-foreground text-center w-full leading-tight">Deep Dive</p>
                   </button>
                 </div>
@@ -510,7 +510,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                         };
                         setMessages([miraGreeting]);
                       }}
-                      className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
+                      className="aspect-square w-full h-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 overflow-hidden hover:border-border transition-all"
                     >
                       <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
                         {team.id === 0 ? (
@@ -519,7 +519,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                           <span className="text-base font-bold gradient-holographic-text">{team.name.charAt(0).toUpperCase()}</span>
                         )}
                       </div>
-                      <p className="text-xs font-semibold text-center w-full">{team.name}</p>
+                      <p className="text-xs font-semibold text-center w-full leading-tight">{team.name}</p>
                       <p className="text-[10px] text-muted-foreground text-center w-full leading-tight">{team.focus}</p>
                     </button>
                   </div>
