@@ -1,5 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target, Pencil, Trash2, MoreVertical } from "lucide-react";
+import { Send, ArrowLeft, History, X, Check, Sparkles, Plus, FileText, ImageIcon, BrainCircuit, User, Target, Pencil, Trash2, MoreVertical, FlaskConical } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NewsContext {
@@ -90,6 +100,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
   const [createdTeams, setCreatedTeams] = useState<CreatedTeam[]>([
     { id: 0, name: "Generalist", focus: "Ask anything" },
   ]);
+  const [showDeepResearchAlert, setShowDeepResearchAlert] = useState(false);
   const [renamingTeamId, setRenamingTeamId] = useState<number | null>(null);
   const [renameValue, setRenameValue] = useState("");
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -413,6 +424,19 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                   <p className="text-xs font-semibold text-center truncate w-full">Your own bot</p>
                   <p className="text-[10px] text-muted-foreground text-center truncate w-full">connect to your platforms</p>
                 </button>
+                </div>
+                {/* Senior Researcher card */}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowDeepResearchAlert(true)}
+                    className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
+                      <FlaskConical className="w-5 h-5 text-accent" />
+                    </div>
+                    <p className="text-xs font-semibold text-center truncate w-full">Senior Researcher</p>
+                    <p className="text-[10px] text-muted-foreground text-center truncate w-full">Deep Dive</p>
+                  </button>
                 </div>
                 {createdTeams.map((team) => (
                   <div key={team.id} className="relative group">
@@ -769,6 +793,40 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Deep Research Alert Dialog */}
+      <AlertDialog open={showDeepResearchAlert} onOpenChange={setShowDeepResearchAlert}>
+        <AlertDialogContent className="max-w-sm rounded-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <FlaskConical className="w-5 h-5 text-accent" />
+              Deep Research Mode
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Deep research requires more time to think and respond. The AI will conduct a thorough, multi-step analysis for higher quality results.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="gradient-holographic text-primary-foreground"
+              onClick={() => {
+                setPersona("Senior Researcher");
+                setFocus("Deep Dive");
+                setChatName("Senior Researcher");
+                setDeepAnalysis(true);
+                const miraGreeting: ChatMessage = {
+                  id: Date.now(),
+                  role: "assistant",
+                  content: "Deep Research mode activated. I'll take extra time to think through complex questions thoroughly. What would you like me to investigate?",
+                };
+                setMessages([miraGreeting]);
+              }}
+            >
+              Start Deep Research Immediately
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
