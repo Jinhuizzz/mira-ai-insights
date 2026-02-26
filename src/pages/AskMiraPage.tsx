@@ -375,45 +375,45 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
             </motion.div>
           )}
 
+          <button
+            onClick={() => {
+              setChatName("");
+              setPersona("");
+              setFocus("");
+              setShowNewChatModal(true);
+            }}
+            className="w-14 h-14 rounded-2xl border-2 border-dashed border-border hover:border-primary/50 flex items-center justify-center transition-colors group mb-3"
+          >
+            <Plus className="w-7 h-7 text-muted-foreground group-hover:text-primary transition-colors" />
+          </button>
           <div className="text-center mb-6">
-            <p className="text-sm font-semibold text-foreground">Build your Agent Team</p>
+            <p className="text-sm font-semibold text-foreground">Build Your Agent Team</p>
             <p className="text-[11px] text-muted-foreground max-w-[200px] mx-auto leading-tight mt-1">AI persona that remembers, learns, and empowers your growth.</p>
           </div>
 
           <div className="w-full max-w-sm">
               <div className="grid grid-cols-3 gap-3">
-                {/* Create new team card */}
-                <button
-                  onClick={() => {
-                    setChatName("");
-                    setPersona("");
-                    setFocus("");
-                    setShowNewChatModal(true);
-                  }}
-                  className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border/50 rounded-2xl p-3 hover:border-primary/50 transition-all group"
-                >
-                  <Plus className="w-7 h-7 text-muted-foreground group-hover:text-primary transition-colors" />
-                  <p className="text-[10px] text-muted-foreground font-medium">New Agent</p>
-                </button>
                 {/* Connect card */}
+                <div className="relative">
                 <button
                   onClick={() => setShowClaimAgent(true)}
                   className="aspect-square w-full flex flex-col items-center justify-center gap-2 bg-card border border-border/50 rounded-2xl p-3 hover:border-border transition-all"
                 >
                   <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0 relative">
                     <span className="text-sm font-bold gradient-holographic-text leading-none">W</span>
-                    <div className="absolute -bottom-1 -right-1 flex -space-x-1">
-                      <div className="w-3.5 h-3.5 rounded-full bg-[hsl(200_80%_55%)] border border-background flex items-center justify-center">
-                        <svg viewBox="0 0 24 24" fill="none" className="w-2 h-2 text-white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.97 1.25-5.55 3.67-.53.36-1 .54-1.42.53-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.41-1.41-.87.03-.24.37-.49 1.02-.74 3.99-1.74 6.65-2.89 7.99-3.44 3.81-1.59 4.6-1.87 5.12-1.87.11 0 .37.03.53.17.14.12.18.28.2.45-.01.06.01.24 0 .38z" fill="currentColor"/></svg>
+                    <div className="absolute -bottom-0.5 -right-0.5 flex -space-x-1">
+                      <div className="w-3 h-3 rounded-full bg-[hsl(200_80%_55%)] border border-background flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" fill="none" className="w-1.5 h-1.5 text-white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.97 1.25-5.55 3.67-.53.36-1 .54-1.42.53-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.41-1.41-.87.03-.24.37-.49 1.02-.74 3.99-1.74 6.65-2.89 7.99-3.44 3.81-1.59 4.6-1.87 5.12-1.87.11 0 .37.03.53.17.14.12.18.28.2.45-.01.06.01.24 0 .38z" fill="currentColor"/></svg>
                       </div>
-                      <div className="w-3.5 h-3.5 rounded-full bg-[hsl(235_86%_65%)] border border-background flex items-center justify-center">
-                        <svg viewBox="0 0 24 24" fill="none" className="w-2 h-2 text-white"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" fill="currentColor"/></svg>
+                      <div className="w-3 h-3 rounded-full bg-[hsl(235_86%_65%)] border border-background flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" fill="none" className="w-1.5 h-1.5 text-white"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" fill="currentColor"/></svg>
                       </div>
                     </div>
                   </div>
                   <p className="text-xs font-semibold text-center truncate w-full">Your own bot</p>
                   <p className="text-[10px] text-muted-foreground text-center leading-tight w-full">connect to your platforms</p>
                 </button>
+                </div>
                 {createdTeams.map((team) => (
                   <div key={team.id} className="relative group">
                     {/* Action buttons top-right (hide delete for default Generalist) */}
