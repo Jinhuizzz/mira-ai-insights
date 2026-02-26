@@ -630,7 +630,7 @@ const AskMiraPage = ({ credits, onConsumeCredits, newsContext, onClearContext, o
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                placeholder="Ask Mira anything..."
+                placeholder={deepAnalysis ? "Ask a question..." : "Ask Mira anything..."}
                 className="w-full bg-card border border-border/50 rounded-xl pl-12 pr-12 py-3.5 text-sm outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
               />
               <button
